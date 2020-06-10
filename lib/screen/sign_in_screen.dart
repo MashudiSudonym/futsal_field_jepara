@@ -79,10 +79,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Padding buildCountryCodePhoneNumberField(BuildContext context) {
     return Padding(
       padding:
-      EdgeInsets.only(left: MediaQuery
-          .of(context)
-          .size
-          .width / 100 * 15),
+          EdgeInsets.only(left: MediaQuery.of(context).size.width / 100 * 15),
       child: Row(
         children: <Widget>[
           // country code
