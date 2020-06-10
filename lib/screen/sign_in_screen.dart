@@ -99,10 +99,7 @@ class _SignInScreenState extends State<SignInScreen> {
             ),
           ),
           SizedBox(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width / 100 * 2,
+            width: MediaQuery.of(context).size.width / 100 * 2,
           ),
           // phone number input
           Container(
