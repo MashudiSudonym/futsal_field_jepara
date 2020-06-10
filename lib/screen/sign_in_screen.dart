@@ -117,18 +117,12 @@ class _SignInScreenState extends State<SignInScreen> {
                 border: InputBorder.none,
                 hintText: "Phone Number",
                 hintStyle: TextStyle(
-                  fontSize: MediaQuery
-                      .of(context)
-                      .size
-                      .width / 100 * 5,
+                  fontSize: MediaQuery.of(context).size.width / 100 * 5,
                   color: kTextLightColor,
                 ),
               ),
               style: TextStyle(
-                fontSize: MediaQuery
-                    .of(context)
-                    .size
-                    .width / 100 * 5,
+                fontSize: MediaQuery.of(context).size.width / 100 * 5,
                 fontWeight: FontWeight.bold,
                 color: kTitleTextColor,
               ),
@@ -144,20 +138,14 @@ class _SignInScreenState extends State<SignInScreen> {
   Padding buildSignInButton(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery
-            .of(context)
-            .size
-            .width / 100 * 4,
+        horizontal: MediaQuery.of(context).size.width / 100 * 4,
       ),
       child: FlatButton(
         child: Center(
           child: Text(
             "Sign In",
             style: TextStyle(
-              fontSize: MediaQuery
-                  .of(context)
-                  .size
-                  .width / 100 * 5,
+              fontSize: MediaQuery.of(context).size.width / 100 * 5,
               fontWeight: FontWeight.w600,
               color: kTitleTextColor,
             ),
