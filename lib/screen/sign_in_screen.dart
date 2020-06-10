@@ -12,7 +12,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final countryCodeInputController = TextEditingController();
+  String countryCodeInput;
   final phoneInputController = TextEditingController();
 
   // flutter toast for show data
@@ -26,7 +26,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   void dispose() {
-    countryCodeInputController.dispose();
     phoneInputController.dispose();
     super.dispose();
   }
@@ -61,14 +60,14 @@ class _SignInScreenState extends State<SignInScreen> {
             Center(
               child: Image(
                 image: AssetImage("assets/icon.png"),
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width / 100 * 50,
+                width: MediaQuery.of(context).size.width / 100 * 50,
               ),
             ),
             // country code phone number and text field
             buildCountryCodePhoneNumberField(context),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 100 * 2,
+            ),
             // sign in button layout
             buildSignInButton(context),
           ],
@@ -93,7 +92,7 @@ class _SignInScreenState extends State<SignInScreen> {
               color: Colors.grey[100],
             ),
             child: CountryCodePicker(
-              onChanged: (c) => countryCodeInputController,
+              onInit: (countryCode) => countryCodeInput = countryCode.dialCode,
               initialSelection: 'ID',
               showCountryOnly: false,
               alignLeft: false,
@@ -138,7 +137,10 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
               style: TextStyle(
-                fontSize: 20.0,
+                fontSize: MediaQuery
+                    .of(context)
+                    .size
+                    .width / 100 * 5,
                 fontWeight: FontWeight.bold,
                 color: kTitleTextColor,
               ),
@@ -164,14 +166,17 @@ class _SignInScreenState extends State<SignInScreen> {
           child: Text(
             "Sign In",
             style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: kBodyTextColor,
+              fontSize: MediaQuery
+                  .of(context)
+                  .size
+                  .width / 100 * 5,
+              fontWeight: FontWeight.w600,
+              color: kTitleTextColor,
             ),
           ),
         ),
         onPressed: () {
-          showToast("${phoneInputController.text}");
+          showToast("$countryCodeInput${phoneInputController.text}");
           // Navigator.of(context).pushNamed(VerificationScreen.id);
         },
       ),
