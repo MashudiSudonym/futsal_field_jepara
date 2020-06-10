@@ -103,15 +103,9 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
           // phone number input
           Container(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width / 100 * 45,
+            width: MediaQuery.of(context).size.width / 100 * 45,
             padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery
-                  .of(context)
-                  .size
-                  .width / 100 * 2,
+              horizontal: MediaQuery.of(context).size.width / 100 * 2,
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
