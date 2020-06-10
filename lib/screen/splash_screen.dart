@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:futsal_field_jepara/screen/sign_in_screen.dart';
@@ -45,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Center(
         child: Image(
-          width: 170.0,
+          width: MediaQuery.of(context).size.width / 2,
           image: AssetImage("assets/icon.png"),
         ),
       ),

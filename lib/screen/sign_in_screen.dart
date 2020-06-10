@@ -52,97 +52,128 @@ class _SignInScreenState extends State<SignInScreen> {
             Padding(
               padding: EdgeInsets.only(
                 top: MediaQuery.of(context).viewPadding.top,
-                bottom: isKeyboardShowing ? 100 : 200,
+                bottom: isKeyboardShowing
+                    ? MediaQuery.of(context).size.width / 100 * 25
+                    : MediaQuery.of(context).size.width / 100 * 50,
               ),
             ),
             // image logo
             Center(
               child: Image(
                 image: AssetImage("assets/icon.png"),
-                width: 170.0,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width / 100 * 50,
               ),
             ),
             // country code phone number and text field
-            Padding(
-              padding: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width * 0.05),
-              child: Row(
-                children: <Widget>[
-                  // country code
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Colors.grey[100],
-                    ),
-                    child: CountryCodePicker(
-                      onChanged: (c) => countryCodeInputController,
-                      initialSelection: 'ID',
-                      showCountryOnly: false,
-                      alignLeft: false,
-                      textStyle: TextStyle(
-                        color: kTitleTextColor,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  // phone number input
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: kBackgroundColor,
-                    ),
-                    child: TextField(
-                      cursorColor: kTitleTextColor,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Phone Number",
-                        hintStyle: TextStyle(
-                          fontSize: 20.0,
-                          color: kTextLightColor,
-                        ),
-                      ),
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: kTitleTextColor,
-                      ),
-                      keyboardType: TextInputType.number,
-                      controller: phoneInputController,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            buildCountryCodePhoneNumberField(context),
             // sign in button layout
-            Padding(
-              padding: EdgeInsets.only(
-                left: MediaQuery.of(context).size.height * 0.10,
-                right: MediaQuery.of(context).size.height * 0.10,
-                top: MediaQuery.of(context).size.width / 16,
-              ),
-              child: FlatButton(
-                child: Center(
-                  child: Text(
-                    "Sign In",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: kBodyTextColor,
-                    ),
-                  ),
-                ),
-                onPressed: () {
-                  showToast("${countryCodeInputController.text}${phoneInputController.text}");
-                  // Navigator.of(context).pushNamed(VerificationScreen.id);
-                },
-              ),
-            ),
+            buildSignInButton(context),
           ],
         ),
+      ),
+    );
+  }
+
+  Padding buildCountryCodePhoneNumberField(BuildContext context) {
+    return Padding(
+      padding:
+      EdgeInsets.only(left: MediaQuery
+          .of(context)
+          .size
+          .width / 100 * 15),
+      child: Row(
+        children: <Widget>[
+          // country code
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.grey[100],
+            ),
+            child: CountryCodePicker(
+              onChanged: (c) => countryCodeInputController,
+              initialSelection: 'ID',
+              showCountryOnly: false,
+              alignLeft: false,
+              textStyle: TextStyle(
+                color: kTitleTextColor,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: MediaQuery
+                .of(context)
+                .size
+                .width / 100 * 2,
+          ),
+          // phone number input
+          Container(
+            width: MediaQuery
+                .of(context)
+                .size
+                .width / 100 * 45,
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery
+                  .of(context)
+                  .size
+                  .width / 100 * 2,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: kBackgroundColor,
+            ),
+            child: TextField(
+              cursorColor: kTitleTextColor,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: "Phone Number",
+                hintStyle: TextStyle(
+                  fontSize: MediaQuery
+                      .of(context)
+                      .size
+                      .width / 100 * 5,
+                  color: kTextLightColor,
+                ),
+              ),
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                color: kTitleTextColor,
+              ),
+              keyboardType: TextInputType.number,
+              controller: phoneInputController,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding buildSignInButton(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: MediaQuery
+            .of(context)
+            .size
+            .width / 100 * 4,
+      ),
+      child: FlatButton(
+        child: Center(
+          child: Text(
+            "Sign In",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: kBodyTextColor,
+            ),
+          ),
+        ),
+        onPressed: () {
+          showToast("${phoneInputController.text}");
+          // Navigator.of(context).pushNamed(VerificationScreen.id);
+        },
       ),
     );
   }
