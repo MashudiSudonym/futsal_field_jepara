@@ -1,4 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'sign_in_screen.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class HomeScreen extends StatefulWidget {
   static const String id = "home_screen";
@@ -16,7 +21,10 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Center(
         child: RaisedButton(
-          onPressed: () {},
+          onPressed: () async {
+            await _auth.signOut();
+            Navigator.of(context).pushReplacementNamed(SignInScreen.id);
+          },
           child: Center(
             child: Text("Sign Out"),
           ),

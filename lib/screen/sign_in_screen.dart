@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
 
+import 'home_screen.dart';
+
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class SignInScreen extends StatefulWidget {
@@ -193,6 +195,7 @@ class _SignInScreenState extends State<SignInScreen> {
               _auth.signInWithCredential(phoneAuthCredential);
               setState(() {
                 _message = "success";
+                Navigator.of(context).pushReplacementNamed(HomeScreen.id);
               });
             };
 
@@ -289,9 +292,12 @@ class _SignInScreenState extends State<SignInScreen> {
                     .then((value) => value.user)
                     .catchError(
                   (e) {
-                    _message =
-                        "Wrong Code Verification, Please resend the otp sms code.";
+                    setState(() {
+                      _message =
+                          "Wrong Code Verification, Please resend the otp sms code.";
+                    });
                     Navigator.of(context).pop();
+                    _verificationCodeInputController.clear();
                   },
                 );
 
@@ -302,10 +308,12 @@ class _SignInScreenState extends State<SignInScreen> {
                 setState(() {
                   if (user != null) {
                     _message = "success";
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pushReplacementNamed(HomeScreen.id);
+                    _verificationCodeInputController.clear();
                   } else {
                     _message = "Sign in failed";
                     Navigator.of(context).pop();
+                    _verificationCodeInputController.clear();
                   }
                 });
               },

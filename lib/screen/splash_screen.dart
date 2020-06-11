@@ -1,9 +1,14 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:futsal_field_jepara/screen/sign_in_screen.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
+
+import 'home_screen.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class SplashScreen extends StatefulWidget {
   static const String id = "splash_screen";
@@ -18,8 +23,11 @@ class _SplashScreenState extends State<SplashScreen> {
   removeScreen() {
     return _timer = Timer(
       Duration(seconds: 2),
-      () {
-        Navigator.of(context).pushReplacementNamed(SignInScreen.id);
+      () async {
+        final FirebaseUser user = await _auth.currentUser();
+        user == null
+            ? Navigator.of(context).pushReplacementNamed(SignInScreen.id)
+            : Navigator.of(context).pushReplacementNamed(HomeScreen.id);
       },
     );
   }
