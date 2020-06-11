@@ -1,7 +1,6 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
 
 import 'home_screen.dart';
@@ -32,10 +31,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // status bar and navigation bar colors
-    FlutterStatusbarcolor.setStatusBarColor(kPrimaryColor);
-    FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
-    FlutterStatusbarcolor.setNavigationBarColor(kPrimaryColor);
     // check keyboard status for conditional layout
     bool _isKeyboardShowing = MediaQuery.of(context).viewInsets.bottom > 0;
 
@@ -195,6 +190,7 @@ class _SignInScreenState extends State<SignInScreen> {
               _auth.signInWithCredential(phoneAuthCredential);
               setState(() {
                 _message = "success";
+                Navigator.of(context).pop();
                 Navigator.of(context).pushReplacementNamed(HomeScreen.id);
               });
             };

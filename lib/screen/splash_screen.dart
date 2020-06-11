@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:futsal_field_jepara/screen/sign_in_screen.dart';
-import 'package:futsal_field_jepara/utils/constants.dart';
 
 import 'home_screen.dart';
 
@@ -46,11 +44,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   build(BuildContext context) {
-    // status bar and navigation bar colors
-    FlutterStatusbarcolor.setStatusBarColor(kPrimaryColor);
-    FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
-    FlutterStatusbarcolor.setNavigationBarColor(kPrimaryColor);
-
     return Scaffold(
       body: Center(
         child: Image(

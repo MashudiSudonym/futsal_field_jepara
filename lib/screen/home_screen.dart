@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Futsal Field"),
+        title: Text("Futsal Field Jepara"),
       ),
       body: Center(
         child: RaisedButton(
