@@ -1,8 +1,10 @@
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class SignInScreen extends StatefulWidget {
   static const String id = "sign_in";
@@ -12,21 +14,17 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  String countryCodeInput;
-  final phoneInputController = TextEditingController();
-
-  // flutter toast for show data
-  void showToast(String text) {
-    Fluttertoast.showToast(
-      msg: "$text",
-      toastLength: Toast.LENGTH_SHORT,
-      timeInSecForIosWeb: 1,
-    );
-  }
+  final _phoneInputController = TextEditingController();
+  final _verificationCodeInputController = TextEditingController();
+  String _countryCodeInput;
+  String _completePhoneNumber;
+  String _message = "";
+  String _verificationId;
 
   @override
   void dispose() {
-    phoneInputController.dispose();
+    _phoneInputController.dispose();
+    _verificationCodeInputController.dispose();
     super.dispose();
   }
 
@@ -36,22 +34,36 @@ class _SignInScreenState extends State<SignInScreen> {
     FlutterStatusbarcolor.setStatusBarColor(kPrimaryColor);
     FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
     FlutterStatusbarcolor.setNavigationBarColor(kPrimaryColor);
-    bool isKeyboardShowing = MediaQuery.of(context).viewInsets.bottom > 0;
+    // check keyboard status for conditional layout
+    bool _isKeyboardShowing = MediaQuery.of(context).viewInsets.bottom > 0;
 
+    return _buildSignInContentLayout(context, _isKeyboardShowing);
+  }
+
+  GestureDetector _buildSignInContentLayout(
+      BuildContext context, bool _isKeyboardShowing) {
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Column(
+        body: _buildSignInContentBodyLayout(context, _isKeyboardShowing),
+      ),
+    );
+  }
+
+  ListView _buildSignInContentBodyLayout(
+      BuildContext context, bool _isKeyboardShowing) {
+    return ListView(
+      children: <Widget>[
+        Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             // image logo position
             Padding(
               padding: EdgeInsets.only(
                 top: MediaQuery.of(context).viewPadding.top,
-                bottom: isKeyboardShowing
+                bottom: _isKeyboardShowing
                     ? MediaQuery.of(context).size.width / 100 * 25
                     : MediaQuery.of(context).size.width / 100 * 50,
               ),
@@ -64,19 +76,38 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
             ),
             // country code phone number and text field
-            buildCountryCodePhoneNumberField(context),
+            _buildCountryCodePhoneNumberFieldLayout(context),
             SizedBox(
-              height: MediaQuery.of(context).size.height / 100 * 2,
+              height: MediaQuery.of(context).size.height / 100 * 1,
+            ),
+            Opacity(
+              opacity: (_message != "" && _message != null) ? 1 : 0,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width / 100 * 4,
+                ),
+                child: Text(
+                  "$_message",
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width / 100 * 3,
+                    color: _message != "success" ? kRedColor : kGreenColor,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 100 * 1,
             ),
             // sign in button layout
-            buildSignInButton(context),
+            _buildSignInButtonLayout(context),
           ],
         ),
-      ),
+      ],
     );
   }
 
-  Padding buildCountryCodePhoneNumberField(BuildContext context) {
+  // country code and phone number text field layout
+  Padding _buildCountryCodePhoneNumberFieldLayout(BuildContext context) {
     return Padding(
       padding:
           EdgeInsets.only(left: MediaQuery.of(context).size.width / 100 * 15),
@@ -89,7 +120,7 @@ class _SignInScreenState extends State<SignInScreen> {
               color: Colors.grey[100],
             ),
             child: CountryCodePicker(
-              onInit: (countryCode) => countryCodeInput = countryCode.dialCode,
+              onInit: (countryCode) => _countryCodeInput = countryCode.dialCode,
               initialSelection: 'ID',
               showCountryOnly: false,
               alignLeft: false,
@@ -117,17 +148,23 @@ class _SignInScreenState extends State<SignInScreen> {
                 border: InputBorder.none,
                 hintText: "Phone Number",
                 hintStyle: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width / 100 * 5,
+                  fontSize: MediaQuery
+                      .of(context)
+                      .size
+                      .width / 100 * 5,
                   color: kTextLightColor,
                 ),
               ),
               style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width / 100 * 5,
+                fontSize: MediaQuery
+                    .of(context)
+                    .size
+                    .width / 100 * 5,
                 fontWeight: FontWeight.bold,
                 color: kTitleTextColor,
               ),
               keyboardType: TextInputType.number,
-              controller: phoneInputController,
+              controller: _phoneInputController,
             ),
           ),
         ],
@@ -135,27 +172,171 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  Padding buildSignInButton(BuildContext context) {
+  // sign in button layout
+  Padding _buildSignInButtonLayout(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width / 100 * 4,
+        horizontal: MediaQuery
+            .of(context)
+            .size
+            .width / 100 * 4,
       ),
       child: FlatButton(
         child: Center(
           child: Text(
             "Sign In",
             style: TextStyle(
-              fontSize: MediaQuery.of(context).size.width / 100 * 5,
+              fontSize: MediaQuery
+                  .of(context)
+                  .size
+                  .width / 100 * 5,
               fontWeight: FontWeight.w600,
               color: kTitleTextColor,
             ),
           ),
         ),
-        onPressed: () {
-          showToast("$countryCodeInput${phoneInputController.text}");
-          // Navigator.of(context).pushNamed(VerificationScreen.id);
+        onPressed: () async {
+          if (_phoneInputController.text != "") {
+            _completePhoneNumber =
+            "$_countryCodeInput${_phoneInputController.text}";
+
+            final PhoneVerificationCompleted verificationCompleted =
+                (AuthCredential phoneAuthCredential) {
+              _auth.signInWithCredential(phoneAuthCredential);
+              setState(() {
+                _message = "success";
+              });
+            };
+
+            final PhoneVerificationFailed verificationFailed =
+                (AuthException authException) {
+              setState(() {
+                _message = authException.message;
+              });
+            };
+
+            final PhoneCodeSent codeSent =
+                (String verificationId, [int forceResendingToken]) async {
+              _verificationId = verificationId;
+              _dialogVerification(context);
+            };
+
+            final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
+                (String verificationId) {
+              _verificationId = verificationId;
+            };
+
+            await _auth.verifyPhoneNumber(
+                phoneNumber: _completePhoneNumber,
+                timeout: const Duration(seconds: 5),
+                verificationCompleted: verificationCompleted,
+                verificationFailed: verificationFailed,
+                codeSent: codeSent,
+                codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+          } else {
+            setState(() {
+              _message = "Please input phone number!!";
+            });
+          }
         },
       ),
+    );
+  }
+
+  // dialog for input code verification
+  void _dialogVerification(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            "Verification Code",
+            style: TextStyle(
+              fontSize: MediaQuery
+                  .of(context)
+                  .size
+                  .width / 100 * 5,
+              color: kTitleTextColor,
+            ),
+          ),
+          content: Container(
+            child: TextField(
+              cursorColor: kTitleTextColor,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: "Your Code",
+                hintStyle: TextStyle(
+                  fontSize: MediaQuery
+                      .of(context)
+                      .size
+                      .width / 100 * 5,
+                  color: kTextLightColor,
+                ),
+              ),
+              style: TextStyle(
+                fontSize: MediaQuery
+                    .of(context)
+                    .size
+                    .width / 100 * 5,
+                fontWeight: FontWeight.bold,
+                color: kTitleTextColor,
+              ),
+              keyboardType: TextInputType.number,
+              controller: _verificationCodeInputController,
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Center(
+                child: Text(
+                  "Send Code",
+                  style: TextStyle(
+                    fontSize: MediaQuery
+                        .of(context)
+                        .size
+                        .width / 100 * 5,
+                    fontWeight: FontWeight.w600,
+                    color: kBodyTextColor,
+                  ),
+                ),
+              ),
+              onPressed: () async {
+                final AuthCredential credential =
+                PhoneAuthProvider.getCredential(
+                  verificationId: _verificationId,
+                  smsCode: _verificationCodeInputController.text,
+                );
+
+                final FirebaseUser user = await _auth
+                    .signInWithCredential(credential)
+                    .then((value) => value.user)
+                    .catchError(
+                      (e) {
+                    _message =
+                    "Wrong Code Verification, Please resend the otp sms code.";
+                    Navigator.of(context).pop();
+                  },
+                );
+
+                final FirebaseUser currentUser = await _auth.currentUser();
+
+                assert(user.uid == currentUser.uid);
+
+                setState(() {
+                  if (user != null) {
+                    _message = "success";
+                    Navigator.of(context).pop();
+                  } else {
+                    _message = "Sign in failed";
+                    Navigator.of(context).pop();
+                  }
+                });
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

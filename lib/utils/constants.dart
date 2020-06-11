@@ -11,17 +11,3 @@ const kGreenColor = Color(0xFF36C12C);
 const kPrimaryColor = Color(0xFFFFFFFF);
 final kShadowColor = Color(0xFFB7B7B7).withOpacity(.16);
 final kShadowBlueColor = Color(0xFF4056C6).withOpacity(.15);
-
-// Text Style
-const kHeadingTextStyle = TextStyle(
-  fontSize: 22,
-  fontWeight: FontWeight.w600,
-);
-
-const kSubTextStyle = TextStyle(fontSize: 16, color: kTextLightColor);
-
-const kTitleTextstyle = TextStyle(
-  fontSize: 18,
-  color: kTitleTextColor,
-  fontWeight: FontWeight.bold,
-);
