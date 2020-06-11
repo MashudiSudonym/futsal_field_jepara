@@ -148,18 +148,12 @@ class _SignInScreenState extends State<SignInScreen> {
                 border: InputBorder.none,
                 hintText: "Phone Number",
                 hintStyle: TextStyle(
-                  fontSize: MediaQuery
-                      .of(context)
-                      .size
-                      .width / 100 * 5,
+                  fontSize: MediaQuery.of(context).size.width / 100 * 5,
                   color: kTextLightColor,
                 ),
               ),
               style: TextStyle(
-                fontSize: MediaQuery
-                    .of(context)
-                    .size
-                    .width / 100 * 5,
+                fontSize: MediaQuery.of(context).size.width / 100 * 5,
                 fontWeight: FontWeight.bold,
                 color: kTitleTextColor,
               ),
@@ -176,20 +170,14 @@ class _SignInScreenState extends State<SignInScreen> {
   Padding _buildSignInButtonLayout(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery
-            .of(context)
-            .size
-            .width / 100 * 4,
+        horizontal: MediaQuery.of(context).size.width / 100 * 4,
       ),
       child: FlatButton(
         child: Center(
           child: Text(
             "Sign In",
             style: TextStyle(
-              fontSize: MediaQuery
-                  .of(context)
-                  .size
-                  .width / 100 * 5,
+              fontSize: MediaQuery.of(context).size.width / 100 * 5,
               fontWeight: FontWeight.w600,
               color: kTitleTextColor,
             ),
@@ -198,7 +186,7 @@ class _SignInScreenState extends State<SignInScreen> {
         onPressed: () async {
           if (_phoneInputController.text != "") {
             _completePhoneNumber =
-            "$_countryCodeInput${_phoneInputController.text}";
+                "$_countryCodeInput${_phoneInputController.text}";
 
             final PhoneVerificationCompleted verificationCompleted =
                 (AuthCredential phoneAuthCredential) {
@@ -253,10 +241,7 @@ class _SignInScreenState extends State<SignInScreen> {
           title: Text(
             "Verification Code",
             style: TextStyle(
-              fontSize: MediaQuery
-                  .of(context)
-                  .size
-                  .width / 100 * 5,
+              fontSize: MediaQuery.of(context).size.width / 100 * 5,
               color: kTitleTextColor,
             ),
           ),
@@ -267,18 +252,12 @@ class _SignInScreenState extends State<SignInScreen> {
                 border: InputBorder.none,
                 hintText: "Your Code",
                 hintStyle: TextStyle(
-                  fontSize: MediaQuery
-                      .of(context)
-                      .size
-                      .width / 100 * 5,
+                  fontSize: MediaQuery.of(context).size.width / 100 * 5,
                   color: kTextLightColor,
                 ),
               ),
               style: TextStyle(
-                fontSize: MediaQuery
-                    .of(context)
-                    .size
-                    .width / 100 * 5,
+                fontSize: MediaQuery.of(context).size.width / 100 * 5,
                 fontWeight: FontWeight.bold,
                 color: kTitleTextColor,
               ),
@@ -292,10 +271,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: Text(
                   "Send Code",
                   style: TextStyle(
-                    fontSize: MediaQuery
-                        .of(context)
-                        .size
-                        .width / 100 * 5,
+                    fontSize: MediaQuery.of(context).size.width / 100 * 5,
                     fontWeight: FontWeight.w600,
                     color: kBodyTextColor,
                   ),
@@ -303,7 +279,7 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               onPressed: () async {
                 final AuthCredential credential =
-                PhoneAuthProvider.getCredential(
+                    PhoneAuthProvider.getCredential(
                   verificationId: _verificationId,
                   smsCode: _verificationCodeInputController.text,
                 );
@@ -312,9 +288,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     .signInWithCredential(credential)
                     .then((value) => value.user)
                     .catchError(
-                      (e) {
+                  (e) {
                     _message =
-                    "Wrong Code Verification, Please resend the otp sms code.";
+                        "Wrong Code Verification, Please resend the otp sms code.";
                     Navigator.of(context).pop();
                   },
                 );
