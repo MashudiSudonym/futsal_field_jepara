@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
 
-import 'home_screen.dart';
+import 'main_screen.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -191,7 +191,7 @@ class _SignInScreenState extends State<SignInScreen> {
               setState(() {
                 _message = "success";
                 Navigator.of(context)
-                    .pushNamedAndRemoveUntil(HomeScreen.id, (route) => false);
+                    .pushNamedAndRemoveUntil(MainScreen.id, (route) => false);
               });
             };
 
@@ -305,7 +305,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   if (user != null) {
                     _message = "success";
                     Navigator.of(context).pushNamedAndRemoveUntil(
-                        HomeScreen.id, (route) => false);
+                        MainScreen.id, (route) => false);
                   } else {
                     _message = "Sign in failed";
                     Navigator.of(context).pop();

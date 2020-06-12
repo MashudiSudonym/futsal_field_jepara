@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import 'package:futsal_field_jepara/screen/home_screen.dart';
+import 'package:futsal_field_jepara/screen/main_screen.dart';
 import 'package:futsal_field_jepara/screen/sign_in_screen.dart';
 import 'package:futsal_field_jepara/screen/splash_screen.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         SignInScreen.id: (context) => SignInScreen(),
-        HomeScreen.id: (context) => HomeScreen(),
+        MainScreen.id: (context) => MainScreen(),
       },
     );
   }

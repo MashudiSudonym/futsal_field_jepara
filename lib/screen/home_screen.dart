@@ -1,13 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import 'sign_in_screen.dart';
+import 'package:futsal_field_jepara/screen/sign_in_screen.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class HomeScreen extends StatefulWidget {
-  static const String id = "home_screen";
-
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -18,6 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Futsal Field Jepara"),
+        elevation: 0.0,
       ),
       body: Center(
         child: RaisedButton(

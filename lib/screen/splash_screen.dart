@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:futsal_field_jepara/screen/sign_in_screen.dart';
 
-import 'home_screen.dart';
+import 'main_screen.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
         final FirebaseUser user = await _auth.currentUser();
         user == null
             ? Navigator.of(context).pushReplacementNamed(SignInScreen.id)
-            : Navigator.of(context).pushReplacementNamed(HomeScreen.id);
+            : Navigator.of(context).pushReplacementNamed(MainScreen.id);
       },
     );
   }
