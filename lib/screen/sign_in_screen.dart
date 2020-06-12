@@ -190,8 +190,8 @@ class _SignInScreenState extends State<SignInScreen> {
               _auth.signInWithCredential(phoneAuthCredential);
               setState(() {
                 _message = "success";
-                Navigator.of(context).pop();
-                Navigator.of(context).pushReplacementNamed(HomeScreen.id);
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(HomeScreen.id, (route) => false);
               });
             };
 
@@ -304,8 +304,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 setState(() {
                   if (user != null) {
                     _message = "success";
-                    Navigator.of(context).pushReplacementNamed(HomeScreen.id);
-                    _verificationCodeInputController.clear();
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        HomeScreen.id, (route) => false);
                   } else {
                     _message = "Sign in failed";
                     Navigator.of(context).pop();
