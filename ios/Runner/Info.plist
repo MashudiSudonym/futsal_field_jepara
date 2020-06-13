@@ -41,5 +41,15 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>io.flutter.embedded_views_preview</key>
+    <true/>
+    <key>MGLMapboxAccessToken</key>
+    <string>pk.eyJ1IjoibWFzaHVkaSIsImEiOiJja2JidzJzcDUwNDU0MnlxcTVmdTN0ZTVjIn0.5WlTJRqknNNPhjefwg3XFQ</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Shows your location on the map and helps improve the map</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>This app needs access to location when in the background.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>This app needs access to location when open and in the background.</string>
 </dict>
 </plist>
