@@ -1,9 +1,16 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:futsal_field_jepara/model/futsal_field.dart';
+import 'package:futsal_field_jepara/screen/sign_in_screen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final Firestore _fireStore = Firestore.instance;
 
 class LocationScreen extends StatefulWidget {
   @override
@@ -11,27 +18,36 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  final mainRoot = _fireStore.collection("futsalFields");
   final Geolocator geoLocator = Geolocator()..forceAndroidLocationManager;
-  Position _currentPosition;
-  Completer<GoogleMapController> _controller = Completer();
-  static final _defaultPosition = CameraPosition(
+  final _defaultPosition = CameraPosition(
     target: LatLng(-6.649179, 110.707172),
     zoom: 18.0,
   );
+  Position _currentPosition;
+  GoogleMapController googleMapController;
   Set<Marker> _markers = Set();
-  Marker _marker = Marker(
-    markerId: MarkerId("my location"),
-    position: LatLng(-6.649179, 110.707172),
-  );
+  Marker _marker;
 
   @override
   void initState() {
-    _getCurrentLocation();
-    _markers.add(_marker);
+    if (_auth.currentUser() == null) {
+      Navigator.of(context).pushReplacementNamed(SignInScreen.id);
+    } else {
+      _getCurrentLocation();
+      _futsalFieldMarker();
+    }
     super.initState();
   }
 
-  void _getCurrentLocation() async {
+  void _onMapCreated(GoogleMapController controller) {
+    setState(() {
+      googleMapController = controller;
+    });
+  }
+
+  Future<void> _getCurrentLocation() async {
+    // get current device location
     await geoLocator
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation)
         .then((Position position) {
@@ -42,23 +58,46 @@ class _LocationScreenState extends State<LocationScreen> {
       print(e);
     });
 
+    // set center map to device location
     _goToMyLocation();
   }
 
   Future<void> _goToMyLocation() async {
-    final GoogleMapController controller = await _controller.future;
-
     setState(() {
-      controller.animateCamera(
+      googleMapController.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
             target: (_currentPosition != null)
                 ? LatLng(_currentPosition.latitude, _currentPosition.longitude)
                 : LatLng(-6.649179, 110.707172),
-            zoom: 18.0,
+            zoom: 15.0,
           ),
         ),
       );
+    });
+  }
+
+  Future<void> _futsalFieldMarker() async {
+    setState(() {
+      mainRoot.snapshots().forEach((snapshot) {
+        snapshot.documents.map((data) {
+          final futsalFields = FutsalFields.fromSnapshot(data);
+
+          print(futsalFields.name);
+
+          _marker = Marker(
+            markerId: MarkerId("${futsalFields.uid}"),
+            position: LatLng(futsalFields.location.latitude,
+                futsalFields.location.longitude),
+            icon: BitmapDescriptor.defaultMarker,
+            infoWindow: InfoWindow(
+                title: "${futsalFields.name.toUpperCase()}",
+                snippet: "${futsalFields.address.toUpperCase()}"),
+          );
+
+          _markers.add(_marker);
+        }).toList();
+      });
     });
   }
 
@@ -79,9 +118,7 @@ class _LocationScreenState extends State<LocationScreen> {
         compassEnabled: true,
         padding: EdgeInsets.all(MediaQuery.of(context).size.width / 100 * 6),
         markers: _markers,
-        onMapCreated: (GoogleMapController controller) async {
-          _controller.complete(controller);
-        },
+        onMapCreated: _onMapCreated,
       ),
     );
   }
