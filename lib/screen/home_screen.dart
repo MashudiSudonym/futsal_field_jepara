@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:futsal_field_jepara/model/futsal_field.dart';
 import 'package:futsal_field_jepara/screen/sign_in_screen.dart';
@@ -37,8 +36,9 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0.0,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.call_missed_outgoing),
+            icon: Icon(Icons.person),
             onPressed: () async {
+              // if have profile page remove this code
               await _auth.signOut();
               Navigator.of(context).pushReplacementNamed(SignInScreen.id);
             },
@@ -68,23 +68,41 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () {
                       print(futsalFields.uid);
                     },
-                    leading: Container(
-                      width: MediaQuery.of(context).size.width / 100 * 13,
-                      height: MediaQuery.of(context).size.height / 100 * 10,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5.0),
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(futsalFields.image),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Container(
+                          height: MediaQuery.of(context).size.height / 100 * 20,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: kShadowBlueColor,
+                                spreadRadius: 1,
+                                blurRadius: 7,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(futsalFields.image),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    title: Text(
-                      futsalFields.name.toUpperCase(),
-                      style: TextStyle(
-                          color: kTitleTextColor,
-                          fontSize:
-                              MediaQuery.of(context).size.width / 100 * 5),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height / 100 * 1,
+                          ),
+                          child: Text(
+                            futsalFields.name.toUpperCase(),
+                            style: TextStyle(
+                                color: kTitleTextColor,
+                                fontSize: MediaQuery.of(context).size.width /
+                                    100 *
+                                    5),
+                          ),
+                        ),
+                      ],
                     ),
                     subtitle: Text(
                       futsalFields.address.toUpperCase(),
@@ -92,15 +110,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: kBodyTextColor,
                           fontSize:
                               MediaQuery.of(context).size.width / 100 * 3),
-                    ),
-                    trailing: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          color: Colors.black54,
-                        ),
-                      ],
                     ),
                   ),
                 );
