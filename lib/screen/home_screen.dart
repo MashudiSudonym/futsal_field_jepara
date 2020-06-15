@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:futsal_field_jepara/model/futsal_field.dart';
+import 'package:futsal_field_jepara/screen/profile_screen.dart';
 import 'package:futsal_field_jepara/screen/sign_in_screen.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
 
@@ -38,9 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: Icon(Icons.person),
             onPressed: () async {
-              // if have profile page remove this code
-              await _auth.signOut();
-              Navigator.of(context).pushReplacementNamed(SignInScreen.id);
+              Navigator.of(context).pushNamed(ProfileScreen.id);
+//              await _auth.signOut();
+//              Navigator.of(context).pushReplacementNamed(SignInScreen.id);
             },
           ), // set app bar icon and added action
         ],
@@ -51,17 +52,23 @@ class _HomeScreenState extends State<HomeScreen> {
           if (!snapshot.hasData)
             return Center(
               child: CircularProgressIndicator(),
-            ); // show loading progress indicator;
+            ); // show loa// ding progress indicator;
           return ListView(
             padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height / 100 * 2),
+                top: MediaQuery
+                    .of(context)
+                    .size
+                    .height / 100 * 2),
             children: snapshot.data.documents.map(
-              (data) {
+                  (data) {
                 final futsalFields = FutsalFields.fromSnapshot(data);
 
                 return Padding(
                   padding: EdgeInsets.symmetric(
-                    vertical: MediaQuery.of(context).size.width / 100 * 2,
+                    vertical: MediaQuery
+                        .of(context)
+                        .size
+                        .width / 100 * 2,
                     horizontal: MediaQuery.of(context).size.width / 100 * 2,
                   ),
                   child: ListTile(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:futsal_field_jepara/screen/main_screen.dart';
+import 'package:futsal_field_jepara/screen/profile_screen.dart';
 import 'package:futsal_field_jepara/screen/sign_in_screen.dart';
 import 'package:futsal_field_jepara/screen/splash_screen.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
     FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primaryColor: kPrimaryColor,
@@ -39,6 +41,7 @@ class MyApp extends StatelessWidget {
         SplashScreen.id: (context) => SplashScreen(),
         SignInScreen.id: (context) => SignInScreen(),
         MainScreen.id: (context) => MainScreen(),
+        ProfileScreen.id: (context) => ProfileScreen(),
       },
     );
   }
