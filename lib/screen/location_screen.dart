@@ -40,6 +40,11 @@ class _LocationScreenState extends State<LocationScreen> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void _onMapCreated(GoogleMapController controller) {
     setState(() {
       googleMapController = controller;
@@ -84,13 +89,18 @@ class _LocationScreenState extends State<LocationScreen> {
           final futsalFields = FutsalFields.fromSnapshot(data);
 
           _marker = Marker(
+            flat: true,
             markerId: MarkerId("${futsalFields.uid}"),
             position: LatLng(futsalFields.location.latitude,
                 futsalFields.location.longitude),
             icon: BitmapDescriptor.defaultMarker,
             infoWindow: InfoWindow(
-                title: "${futsalFields.name.toUpperCase()}",
-                snippet: "${futsalFields.address.toUpperCase()}"),
+              title: "${futsalFields.name.toUpperCase()}",
+              snippet: "${futsalFields.address.toUpperCase()}",
+              onTap: () {
+                print(futsalFields.uid);
+              },
+            ),
           );
 
           _markers.add(_marker);

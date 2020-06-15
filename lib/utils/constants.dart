@@ -12,3 +12,5 @@ const kPrimaryColor = Color(0xFFFFFFFF);
 const kAccentColor = Color(0xFF34C80A);
 final kShadowColor = Color(0xFFB7B7B7).withOpacity(.16);
 final kShadowBlueColor = Color(0xFF4056C6).withOpacity(.15);
+final kLogoLightGreenColor = Color(0xFF34C80A);
+final kLogoDarkLightGreenColor = Color(0xFF005133);

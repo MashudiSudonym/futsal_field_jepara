@@ -5,6 +5,7 @@ class FutsalFields {
   final String closingHours;
   final String fieldTypeFlooring;
   final String fieldTypeSynthesis;
+  final String image;
   final GeoPoint location;
   final String name;
   final int numberOfField;
@@ -18,6 +19,7 @@ class FutsalFields {
         assert(map['closingHours'] != null),
         assert(map['fieldTypeFlooring'] != null),
         assert(map['fieldTypeSynthesis'] != null),
+        assert(map['image'] != null),
         assert(map['location'] != null),
         assert(map['name'] != null),
         assert(map['numberOfField'] != null),
@@ -28,6 +30,7 @@ class FutsalFields {
         closingHours = map['closingHours'],
         fieldTypeFlooring = map['fieldTypeFlooring'],
         fieldTypeSynthesis = map['fieldTypeSynthesis'],
+        image = map['image'],
         location = map['location'],
         name = map['name'],
         numberOfField = map['numberOfField'],
