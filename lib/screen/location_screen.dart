@@ -83,8 +83,6 @@ class _LocationScreenState extends State<LocationScreen> {
         snapshot.documents.map((data) {
           final futsalFields = FutsalFields.fromSnapshot(data);
 
-          print(futsalFields.name);
-
           _marker = Marker(
             markerId: MarkerId("${futsalFields.uid}"),
             position: LatLng(futsalFields.location.latitude,
