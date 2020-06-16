@@ -40,8 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.person),
             onPressed: () async {
               Navigator.of(context).pushNamed(ProfileScreen.id);
-//              await _auth.signOut();
-//              Navigator.of(context).pushReplacementNamed(SignInScreen.id);
             },
           ), // set app bar icon and added action
         ],
@@ -55,20 +53,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ); // show loa// ding progress indicator;
           return ListView(
             padding: EdgeInsets.only(
-                top: MediaQuery
-                    .of(context)
-                    .size
-                    .height / 100 * 2),
+                top: MediaQuery.of(context).size.height / 100 * 2),
             children: snapshot.data.documents.map(
-                  (data) {
+              (data) {
                 final futsalFields = FutsalFields.fromSnapshot(data);
 
                 return Padding(
                   padding: EdgeInsets.symmetric(
-                    vertical: MediaQuery
-                        .of(context)
-                        .size
-                        .width / 100 * 2,
+                    vertical: MediaQuery.of(context).size.width / 100 * 2,
                     horizontal: MediaQuery.of(context).size.width / 100 * 2,
                   ),
                   child: ListTile(
