@@ -143,7 +143,8 @@ class _SignInScreenState extends State<SignInScreen> {
               cursorColor: kTitleTextColor,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: "Phone Number",
+                counterText: "", // hide word counter
+                hintText: "85xxxxxx123",
                 hintStyle: TextStyle(
                   fontSize: MediaQuery.of(context).size.width / 100 * 5,
                   color: kTextLightColor,
@@ -155,6 +156,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 color: kTitleTextColor,
               ),
               keyboardType: TextInputType.number,
+              maxLength: 13,
+              autofocus: true,
               controller: _phoneInputController,
             ),
           ),
@@ -251,15 +254,23 @@ class _SignInScreenState extends State<SignInScreen> {
                 border: InputBorder.none,
                 hintText: "Your Code",
                 hintStyle: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width / 100 * 5,
+                  fontSize: MediaQuery
+                      .of(context)
+                      .size
+                      .width / 100 * 5,
                   color: kTextLightColor,
                 ),
               ),
               style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width / 100 * 5,
+                fontSize: MediaQuery
+                    .of(context)
+                    .size
+                    .width / 100 * 5,
                 fontWeight: FontWeight.bold,
                 color: kTitleTextColor,
               ),
+              maxLength: 6,
+              autofocus: true,
               keyboardType: TextInputType.number,
               controller: _verificationCodeInputController,
             ),
