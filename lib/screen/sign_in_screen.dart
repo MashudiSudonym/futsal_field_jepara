@@ -254,10 +254,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 border: InputBorder.none,
                 hintText: "Your Code",
                 hintStyle: TextStyle(
-                  fontSize: MediaQuery
-                      .of(context)
-                      .size
-                      .width / 100 * 5,
+                  fontSize: MediaQuery.of(context).size.width / 100 * 5,
                   color: kTextLightColor,
                 ),
               ),
