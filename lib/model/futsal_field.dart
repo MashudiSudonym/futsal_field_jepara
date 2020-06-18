@@ -12,9 +12,8 @@ class FutsalFields {
   final String openingHours;
   final String phone;
   final String uid;
-  final DocumentReference reference;
 
-  FutsalFields.fromMap(Map<String, dynamic> map, {this.reference})
+  FutsalFields.fromMap(Map<String, dynamic> map)
       : assert(map['address'] != null),
         assert(map['closingHours'] != null),
         assert(map['fieldTypeFlooring'] != null),
@@ -39,5 +38,5 @@ class FutsalFields {
         uid = map['uid'];
 
   FutsalFields.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.data, reference: snapshot.reference);
+      : this.fromMap(snapshot.data);
 }

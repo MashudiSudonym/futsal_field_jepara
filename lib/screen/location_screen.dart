@@ -84,7 +84,7 @@ class _LocationScreenState extends State<LocationScreen> {
 
   Future<void> _futsalFieldMarker() async {
     setState(() {
-      mainRoot.snapshots().forEach((snapshot) {
+      mainRoot.snapshots().listen((snapshot) {
         snapshot.documents.map((data) {
           final futsalFields = FutsalFields.fromSnapshot(data);
 

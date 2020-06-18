@@ -1,12 +1,13 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:futsal_field_jepara/screen/main_screen.dart';
 import 'package:futsal_field_jepara/screen/sign_in_screen.dart';
 
-import 'main_screen.dart';
-
 final FirebaseAuth _auth = FirebaseAuth.instance;
+final Firestore _fireStore = Firestore.instance;
 
 class SplashScreen extends StatefulWidget {
   static const String id = "splash_screen";
@@ -22,10 +23,23 @@ class _SplashScreenState extends State<SplashScreen> {
     return _timer = Timer(
       Duration(seconds: 2),
       () async {
-        final FirebaseUser user = await _auth.currentUser();
-        user == null
-            ? Navigator.of(context).pushReplacementNamed(SignInScreen.id)
-            : Navigator.of(context).pushReplacementNamed(MainScreen.id);
+        final user = await _auth.currentUser();
+        if (user == null) {
+          Navigator.of(context).pushReplacementNamed(SignInScreen.id);
+        } else {
+          final usersRootSnapshot = _fireStore
+              .collection("users")
+              .where("uid", isEqualTo: user.uid)
+              .snapshots();
+
+          usersRootSnapshot.listen((data) {
+            if (data.documents.isEmpty) {
+              Navigator.of(context).pushReplacementNamed(MainScreen.id);
+            } else {
+              Navigator.of(context).pushReplacementNamed(MainScreen.id);
+            }
+          });
+        }
       },
     );
   }

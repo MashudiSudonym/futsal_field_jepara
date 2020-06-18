@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:futsal_field_jepara/screen/create_user_screen.dart';
 import 'package:futsal_field_jepara/screen/main_screen.dart';
 import 'package:futsal_field_jepara/screen/profile_screen.dart';
 import 'package:futsal_field_jepara/screen/sign_in_screen.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         SignInScreen.id: (context) => SignInScreen(),
+        CreateUserScreen.id: (context) => CreateUserScreen(),
         MainScreen.id: (context) => MainScreen(),
         ProfileScreen.id: (context) => ProfileScreen(),
       },
