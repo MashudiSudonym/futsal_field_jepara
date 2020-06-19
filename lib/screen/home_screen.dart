@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
             itemCount: snapshot.data.documents.length,
             itemBuilder: (BuildContext context, int index) {
               final futsalFields =
-              FutsalFields.fromMap(snapshot.data.documents[index].data);
+                  FutsalFields.fromMap(snapshot.data.documents[index].data);
               return AnimationConfiguration.staggeredList(
                 position: index,
                 duration: Duration(milliseconds: 375),
@@ -67,7 +67,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: <Widget>[
                             Container(
                               height:
-                              MediaQuery.of(context).size.height / 100 * 20,
+                              MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height / 100 * 20,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5.0),
                                 boxShadow: [
@@ -95,7 +98,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 style: TextStyle(
                                     color: kTitleTextColor,
                                     fontSize:
-                                    MediaQuery.of(context).size.width /
+                                    MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width /
                                         100 *
                                         5),
                               ),
@@ -107,7 +113,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: TextStyle(
                               color: kBodyTextColor,
                               fontSize:
-                              MediaQuery.of(context).size.width / 100 * 3),
+                              MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width / 100 * 3),
                         ),
                       ),
                     ),

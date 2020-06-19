@@ -37,7 +37,8 @@ class _SignInScreenState extends State<SignInScreen> {
     return _buildSignInContentLayout(context, _isKeyboardShowing);
   }
 
-  GestureDetector _buildSignInContentLayout(BuildContext context, bool _isKeyboardShowing) {
+  GestureDetector _buildSignInContentLayout(
+      BuildContext context, bool _isKeyboardShowing) {
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -48,7 +49,8 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  ListView _buildSignInContentBodyLayout(BuildContext context, bool _isKeyboardShowing) {
+  ListView _buildSignInContentBodyLayout(
+      BuildContext context, bool _isKeyboardShowing) {
     return ListView(
       children: <Widget>[
         Column(
@@ -105,7 +107,10 @@ class _SignInScreenState extends State<SignInScreen> {
   Padding _buildCountryCodePhoneNumberFieldLayout(BuildContext context) {
     return Padding(
       padding:
-      EdgeInsets.only(left: MediaQuery.of(context).size.width / 100 * 15),
+      EdgeInsets.only(left: MediaQuery
+          .of(context)
+          .size
+          .width / 100 * 15),
       child: Row(
         children: <Widget>[
           // country code
