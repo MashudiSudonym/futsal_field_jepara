@@ -1,9 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
-
-import 'main_screen.dart';
+import 'package:futsal_field_jepara/utils/router.gr.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -37,8 +37,7 @@ class _SignInScreenState extends State<SignInScreen> {
     return _buildSignInContentLayout(context, _isKeyboardShowing);
   }
 
-  GestureDetector _buildSignInContentLayout(
-      BuildContext context, bool _isKeyboardShowing) {
+  GestureDetector _buildSignInContentLayout(BuildContext context, bool _isKeyboardShowing) {
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -49,8 +48,7 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  ListView _buildSignInContentBodyLayout(
-      BuildContext context, bool _isKeyboardShowing) {
+  ListView _buildSignInContentBodyLayout(BuildContext context, bool _isKeyboardShowing) {
     return ListView(
       children: <Widget>[
         Column(
@@ -107,7 +105,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Padding _buildCountryCodePhoneNumberFieldLayout(BuildContext context) {
     return Padding(
       padding:
-          EdgeInsets.only(left: MediaQuery.of(context).size.width / 100 * 15),
+      EdgeInsets.only(left: MediaQuery.of(context).size.width / 100 * 15),
       child: Row(
         children: <Widget>[
           // country code
@@ -186,15 +184,15 @@ class _SignInScreenState extends State<SignInScreen> {
         onPressed: () async {
           if (_phoneInputController.text != "") {
             _completePhoneNumber =
-                "$_countryCodeInput${_phoneInputController.text}";
+            "$_countryCodeInput${_phoneInputController.text}";
 
             final PhoneVerificationCompleted verificationCompleted =
                 (AuthCredential phoneAuthCredential) {
               _auth.signInWithCredential(phoneAuthCredential);
               setState(() {
                 _message = "success";
-                Navigator.of(context)
-                    .pushNamedAndRemoveUntil(MainScreen.id, (route) => false);
+                ExtendedNavigator.ofRouter<Router>().pushNamedAndRemoveUntil(
+                    Routes.mainScreen, (Route<dynamic> route) => false);
               });
             };
 
@@ -259,10 +257,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
               style: TextStyle(
-                fontSize: MediaQuery
-                    .of(context)
-                    .size
-                    .width / 100 * 5,
+                fontSize: MediaQuery.of(context).size.width / 100 * 5,
                 fontWeight: FontWeight.bold,
                 color: kTitleTextColor,
               ),
@@ -286,7 +281,7 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               onPressed: () async {
                 final AuthCredential credential =
-                    PhoneAuthProvider.getCredential(
+                PhoneAuthProvider.getCredential(
                   verificationId: _verificationId,
                   smsCode: _verificationCodeInputController.text,
                 );
@@ -295,10 +290,10 @@ class _SignInScreenState extends State<SignInScreen> {
                     .signInWithCredential(credential)
                     .then((value) => value.user)
                     .catchError(
-                  (e) {
+                      (e) {
                     setState(() {
                       _message =
-                          "Wrong Code Verification, Please resend the otp sms code.";
+                      "Wrong Code Verification, Please resend the otp sms code.";
                     });
                     Navigator.of(context).pop();
                     _verificationCodeInputController.clear();
@@ -312,8 +307,9 @@ class _SignInScreenState extends State<SignInScreen> {
                 setState(() {
                   if (user != null) {
                     _message = "success";
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        MainScreen.id, (route) => false);
+                    ExtendedNavigator.ofRouter<Router>()
+                        .pushNamedAndRemoveUntil(
+                        Routes.mainScreen, (Route<dynamic> route) => false);
                   } else {
                     _message = "Sign in failed";
                     Navigator.of(context).pop();

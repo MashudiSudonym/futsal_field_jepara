@@ -1,31 +1,18 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:futsal_field_jepara/screen/sign_in_screen.dart';
-import 'package:futsal_field_jepara/screen/splash_screen.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
+import 'package:futsal_field_jepara/utils/router.gr.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class ProfileScreen extends StatefulWidget {
-  static const String id = "profile_screen";
-
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  @override
-  void initState() {
-    if (_auth.currentUser() == null)
-      Navigator.of(context).pushReplacementNamed(SignInScreen.id);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         elevation: 0.0,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.exit_to_app),
+            icon: FaIcon(FontAwesomeIcons.signOutAlt),
             onPressed: () async {
               await _signOutDialog(context);
             },
@@ -95,8 +82,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               onPressed: () async {
                 await _auth.signOut();
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    SplashScreen.id, (Route<dynamic> route) => false);
+                ExtendedNavigator.ofRouter<Router>().pushNamedAndRemoveUntil(
+                    Routes.splashScreen, (Route<dynamic> route) => false);
               },
             ),
           ],

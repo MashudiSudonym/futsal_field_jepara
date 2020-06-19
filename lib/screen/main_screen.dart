@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:futsal_field_jepara/screen/about_screen.dart';
 import 'package:futsal_field_jepara/screen/booking_screen.dart';
 import 'package:futsal_field_jepara/screen/home_screen.dart';
@@ -7,8 +8,6 @@ import 'package:futsal_field_jepara/screen/search_screen.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
 
 class MainScreen extends StatefulWidget {
-  static const String id = "home_screen";
-
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -52,30 +51,30 @@ class _MainScreenState extends State<MainScreen> {
       type: BottomNavigationBarType.shifting,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+          icon: FaIcon(FontAwesomeIcons.home),
           title: Text("Home"),
           backgroundColor: kPrimaryColor,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.search),
+          icon: FaIcon(FontAwesomeIcons.search),
           title: Text("Search"),
           backgroundColor: kPrimaryColor,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.location_on),
+          icon: FaIcon(FontAwesomeIcons.compass),
           title: Text("Location"),
           backgroundColor: kPrimaryColor,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.book),
+          icon: FaIcon(FontAwesomeIcons.trello),
           title: Text("Booking"),
           backgroundColor: kPrimaryColor,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.info_outline),
+          icon: FaIcon(FontAwesomeIcons.info),
           title: Text("About"),
           backgroundColor: kPrimaryColor,
-          activeIcon: Icon(Icons.info),
+          activeIcon: FaIcon(FontAwesomeIcons.infoCircle),
         ),
       ],
       currentIndex: _selectedIndex,

@@ -1,11 +1,12 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:futsal_field_jepara/model/futsal_field.dart';
-import 'package:futsal_field_jepara/screen/profile_screen.dart';
-import 'package:futsal_field_jepara/screen/sign_in_screen.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
+import 'package:futsal_field_jepara/utils/router.gr.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final Firestore _fireStore = Firestore.instance;
@@ -19,18 +20,6 @@ class _HomeScreenState extends State<HomeScreen> {
   static final mainRoot = _fireStore.collection("futsalFields");
 
   @override
-  void initState() {
-    if (_auth.currentUser() == null)
-      Navigator.of(context).pushReplacementNamed(SignInScreen.id);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -38,9 +27,10 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0.0,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.person),
+            icon: FaIcon(FontAwesomeIcons.userCircle),
             onPressed: () async {
-              Navigator.of(context).pushNamed(ProfileScreen.id);
+              ExtendedNavigator.ofRouter<Router>()
+                  .pushNamed(Routes.profileScreen);
             },
           ), // set app bar icon and added action
         ],
@@ -56,12 +46,12 @@ class _HomeScreenState extends State<HomeScreen> {
             itemCount: snapshot.data.documents.length,
             itemBuilder: (BuildContext context, int index) {
               final futsalFields =
-                  FutsalFields.fromMap(snapshot.data.documents[index].data);
+              FutsalFields.fromMap(snapshot.data.documents[index].data);
               return AnimationConfiguration.staggeredList(
                 position: index,
                 duration: Duration(milliseconds: 375),
                 child: SlideAnimation(
-                  verticalOffset: 50.0,
+                  horizontalOffset: 50.0,
                   child: FadeInAnimation(
                     child: Padding(
                       padding: EdgeInsets.symmetric(
@@ -77,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: <Widget>[
                             Container(
                               height:
-                                  MediaQuery.of(context).size.height / 100 * 20,
+                              MediaQuery.of(context).size.height / 100 * 20,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5.0),
                                 boxShadow: [
@@ -105,9 +95,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 style: TextStyle(
                                     color: kTitleTextColor,
                                     fontSize:
-                                        MediaQuery.of(context).size.width /
-                                            100 *
-                                            5),
+                                    MediaQuery.of(context).size.width /
+                                        100 *
+                                        5),
                               ),
                             ),
                           ],
@@ -117,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: TextStyle(
                               color: kBodyTextColor,
                               fontSize:
-                                  MediaQuery.of(context).size.width / 100 * 3),
+                              MediaQuery.of(context).size.width / 100 * 3),
                         ),
                       ),
                     ),

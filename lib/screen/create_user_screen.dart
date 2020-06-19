@@ -6,8 +6,6 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 final Firestore _fireStore = Firestore.instance;
 
 class CreateUserScreen extends StatefulWidget {
-  static const String id = "create_user_screen";
-
   @override
   _CreateUserScreenState createState() => _CreateUserScreenState();
 }

@@ -1,12 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import 'package:futsal_field_jepara/screen/create_user_screen.dart';
-import 'package:futsal_field_jepara/screen/main_screen.dart';
-import 'package:futsal_field_jepara/screen/profile_screen.dart';
-import 'package:futsal_field_jepara/screen/sign_in_screen.dart';
-import 'package:futsal_field_jepara/screen/splash_screen.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
+import 'package:futsal_field_jepara/utils/route_guards.dart';
+import 'package:futsal_field_jepara/utils/router.gr.dart';
 
 void main() => runApp(MyApp());
 
@@ -37,14 +35,10 @@ class MyApp extends StatelessWidget {
           bodyText1: TextStyle(color: kBodyTextColor),
         ),
       ),
-      initialRoute: SplashScreen.id,
-      routes: {
-        SplashScreen.id: (context) => SplashScreen(),
-        SignInScreen.id: (context) => SignInScreen(),
-        CreateUserScreen.id: (context) => CreateUserScreen(),
-        MainScreen.id: (context) => MainScreen(),
-        ProfileScreen.id: (context) => ProfileScreen(),
-      },
+      builder: (ctx, __) => ExtendedNavigator<Router>(
+        router: Router(),
+        guards: [AuthGuard()],
+      ),
     );
   }
 }
