@@ -67,10 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: <Widget>[
                             Container(
                               height:
-                              MediaQuery
-                                  .of(context)
-                                  .size
-                                  .height / 100 * 20,
+                                  MediaQuery.of(context).size.height / 100 * 20,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5.0),
                                 boxShadow: [
