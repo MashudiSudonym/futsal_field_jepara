@@ -30,16 +30,10 @@ class _SplashScreenState extends State<SplashScreen> {
         usersRootSnapshot.listen((data) {
           if (data.documents.isEmpty) {
             ExtendedNavigator.ofRouter<Router>()
-                .pushReplacementNamed(Routes.mainScreen, onReject: (guard) {
-              ExtendedNavigator.ofRouter<Router>()
-                  .pushReplacementNamed(Routes.signInScreen);
-            });
+                .pushReplacementNamed(Routes.createUserScreen);
           } else {
             ExtendedNavigator.ofRouter<Router>()
-                .pushReplacementNamed(Routes.mainScreen, onReject: (guard) {
-              ExtendedNavigator.ofRouter<Router>()
-                  .pushReplacementNamed(Routes.signInScreen);
-            });
+                .pushReplacementNamed(Routes.mainScreen);
           }
         });
       },

@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,7 +7,6 @@ import 'package:futsal_field_jepara/model/futsal_field.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
 import 'package:futsal_field_jepara/utils/router.gr.dart';
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
 final Firestore _fireStore = Firestore.instance;
 
 class HomeScreen extends StatefulWidget {
@@ -95,12 +93,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 style: TextStyle(
                                     color: kTitleTextColor,
                                     fontSize:
-                                    MediaQuery
-                                        .of(context)
-                                        .size
-                                        .width /
-                                        100 *
-                                        5),
+                                        MediaQuery.of(context).size.width /
+                                            100 *
+                                            5),
                               ),
                             ),
                           ],
@@ -110,10 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: TextStyle(
                               color: kBodyTextColor,
                               fontSize:
-                              MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width / 100 * 3),
+                                  MediaQuery.of(context).size.width / 100 * 3),
                         ),
                       ),
                     ),

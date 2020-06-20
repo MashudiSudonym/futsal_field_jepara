@@ -8,8 +8,6 @@ import 'package:futsal_field_jepara/utils/router.gr.dart';
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class SignInScreen extends StatefulWidget {
-  static const String id = "sign_in";
-
   @override
   _SignInScreenState createState() => _SignInScreenState();
 }
@@ -186,7 +184,7 @@ class _SignInScreenState extends State<SignInScreen> {
         onPressed: () async {
           if (_phoneInputController.text != "") {
             _completePhoneNumber =
-            "$_countryCodeInput${_phoneInputController.text}";
+                "$_countryCodeInput${_phoneInputController.text}";
 
             final PhoneVerificationCompleted verificationCompleted =
                 (AuthCredential phoneAuthCredential) {
@@ -283,7 +281,7 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               onPressed: () async {
                 final AuthCredential credential =
-                PhoneAuthProvider.getCredential(
+                    PhoneAuthProvider.getCredential(
                   verificationId: _verificationId,
                   smsCode: _verificationCodeInputController.text,
                 );
@@ -292,10 +290,10 @@ class _SignInScreenState extends State<SignInScreen> {
                     .signInWithCredential(credential)
                     .then((value) => value.user)
                     .catchError(
-                      (e) {
+                  (e) {
                     setState(() {
                       _message =
-                      "Wrong Code Verification, Please resend the otp sms code.";
+                          "Wrong Code Verification, Please resend the otp sms code.";
                     });
                     Navigator.of(context).pop();
                     _verificationCodeInputController.clear();
@@ -311,7 +309,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     _message = "success";
                     ExtendedNavigator.ofRouter<Router>()
                         .pushNamedAndRemoveUntil(
-                        Routes.mainScreen, (Route<dynamic> route) => false);
+                            Routes.mainScreen, (Route<dynamic> route) => false);
                   } else {
                     _message = "Sign in failed";
                     Navigator.of(context).pop();

@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:futsal_field_jepara/model/futsal_field.dart';
-import 'package:futsal_field_jepara/screen/sign_in_screen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -31,12 +30,8 @@ class _LocationScreenState extends State<LocationScreen> {
 
   @override
   void initState() {
-    if (_auth.currentUser() == null) {
-      Navigator.of(context).pushReplacementNamed(SignInScreen.id);
-    } else {
-      _getCurrentLocation();
-      _futsalFieldMarker();
-    }
+    _getCurrentLocation();
+    _futsalFieldMarker();
     super.initState();
   }
 
