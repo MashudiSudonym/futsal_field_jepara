@@ -1,3 +1,6 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:futsal_field_jepara/screen/about_screen.dart';
@@ -6,6 +9,10 @@ import 'package:futsal_field_jepara/screen/home_screen.dart';
 import 'package:futsal_field_jepara/screen/location_screen.dart';
 import 'package:futsal_field_jepara/screen/search_screen.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
+import 'package:futsal_field_jepara/utils/router.gr.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final Firestore _fireStore = Firestore.instance;
 
 class MainScreen extends StatefulWidget {
   @override
@@ -16,9 +23,9 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   final _layoutPage = [
-    HomeScreen(),
-    SearchScreen(),
     LocationScreen(),
+    SearchScreen(),
+    HomeScreen(),
     BookingScreen(),
     AboutScreen()
   ];
@@ -32,7 +39,23 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     _selectedIndex = 2;
+    _checkUserProfile();
     super.initState();
+  }
+
+  Future<void> _checkUserProfile() async {
+    final user = await _auth.currentUser();
+    final usersRootSnapshot = _fireStore
+        .collection("users")
+        .where("uid", isEqualTo: user.uid)
+        .snapshots();
+
+    usersRootSnapshot.listen((data) {
+      if (data.documents.isEmpty) {
+        ExtendedNavigator.ofRouter<Router>()
+            .pushReplacementNamed(Routes.createUserScreen);
+      }
+    });
   }
 
   @override

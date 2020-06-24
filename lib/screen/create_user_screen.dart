@@ -1,13 +1,25 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
+import 'package:futsal_field_jepara/utils/router.gr.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:futsal_field_jepara/widget/text_field_custom.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final Firestore _fireStore = Firestore.instance;
 final FirebaseStorage _fireStorage = FirebaseStorage.instance;
+
+enum TypeOperation {
+  upload,
+  download,
+}
 
 class CreateUserScreen extends StatefulWidget {
   @override
@@ -15,8 +27,16 @@ class CreateUserScreen extends StatefulWidget {
 }
 
 class _CreateUserScreenState extends State<CreateUserScreen> {
+  bool _isLoading = true;
+  bool _isSuccess = true;
   String _userPhone = "";
-  String _userUid = "";
+  String _userUid;
+  File _image;
+  TypeOperation _typeOperation = TypeOperation.download;
+  final _picker = ImagePicker();
+  final _fullNameInputController = TextEditingController();
+  final _emailInputController = TextEditingController();
+  final _addressInputController = TextEditingController();
 
   @override
   void initState() {
@@ -26,6 +46,9 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
 
   @override
   void dispose() {
+    _fullNameInputController.dispose();
+    _emailInputController.dispose();
+    _addressInputController.dispose();
     super.dispose();
   }
 
@@ -36,15 +59,34 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
       _userUid = user.uid;
       _userPhone = user.phoneNumber;
     });
+  }
 
-    print(_userPhone);
+  Future<void> _getImageFromCamera() async {
+    try {
+      final pickedFile = await _picker.getImage(source: ImageSource.camera);
+
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> _getImageFromGallery() async {
+    try {
+      final pickedFile = await _picker.getImage(source: ImageSource.gallery);
+
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // check keyboard status for conditional layout
-    bool _isKeyboardShowing = MediaQuery.of(context).viewInsets.bottom > 0;
-
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -56,242 +98,469 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
           actions: <Widget>[
             IconButton(
               icon: FaIcon(FontAwesomeIcons.save),
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text(
+                        "Save Data ?",
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.width / 100 * 5,
+                          color: kTitleTextColor,
+                        ),
+                      ),
+                      content: Container(
+                        child: Text("Pastikan data yang anda masukkan benar."),
+                      ),
+                      actions: <Widget>[
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              vertical:
+                                  MediaQuery.of(context).size.width / 100 * 3),
+                          child: FlatButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              "cancel",
+                              style: TextStyle(
+                                fontSize:
+                                    MediaQuery.of(context).size.width / 100 * 5,
+                                fontWeight: FontWeight.w600,
+                                color: kRedColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              vertical:
+                                  MediaQuery.of(context).size.width / 100 * 3),
+                          child: FlatButton(
+                            onPressed: () async {
+                              return await _uploadData(context);
+                            },
+                            child: Text(
+                              "save",
+                              style: TextStyle(
+                                fontSize:
+                                    MediaQuery.of(context).size.width / 100 * 5,
+                                fontWeight: FontWeight.w600,
+                                color: kBodyTextColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
             ),
           ],
         ),
-        body: ListView(
+        body: Stack(
           children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            ListView(
               children: <Widget>[
-                Stack(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.all(
-                          MediaQuery.of(context).size.width / 100 * 5),
-                      width: MediaQuery.of(context).size.width / 100 * 40,
-                      height: MediaQuery.of(context).size.width / 100 * 40,
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        image: DecorationImage(
-                          image: AssetImage(
-                              "assets/ben-sweet-2LowviVHZ-E-unsplash.jpg"),
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(90),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 7,
-                            color: Colors.black45,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      left: MediaQuery.of(context).size.width / 100 * 2,
-                      bottom: MediaQuery.of(context).size.width / 100 * 5,
-                      child: FlatButton(
-                        onPressed: () {},
-                        child: Container(
-                          width: MediaQuery.of(context).size.width / 100 * 12,
-                          height: MediaQuery.of(context).size.width / 100 * 12,
-                          decoration: BoxDecoration(
-                            color: Colors.grey,
-                            image: DecorationImage(
-                              image: AssetImage("assets/camera-icon-55.jpg"),
-                              fit: BoxFit.cover,
-                            ),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(90),
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 7,
-                                color: Colors.black45,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
                 Container(
-                  margin: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width / 100 * 5,
-                    right: MediaQuery.of(context).size.width / 100 * 5,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      Flexible(
-                        child: Text(
-                          "Full Name : ",
-                          style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width / 100 * 5,
-                            fontWeight: FontWeight.bold,
-                            color: kTitleTextColor,
-                          ),
-                        ),
+                      _buildImageProfile(context),
+                      TextFieldCustom(
+                        title: "Full Name",
+                        textEditingController: _fullNameInputController,
                       ),
-                      Flexible(
-                        flex: 2,
-                        child: TextField(
-                          cursorColor: kTitleTextColor,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "Nama Lengkap",
-                            hintStyle: TextStyle(
-                              fontSize:
-                                  MediaQuery.of(context).size.width / 100 * 5,
-                              color: kTextLightColor,
-                            ),
-                          ),
-                          style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width / 100 * 5,
-                            fontWeight: FontWeight.bold,
-                            color: kTitleTextColor,
-                          ),
-                          keyboardType: TextInputType.text,
-                        ),
+                      TextFieldCustom(
+                        title: "E-mail",
+                        textEditingController: _emailInputController,
                       ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width / 100 * 5,
-                    right: MediaQuery.of(context).size.width / 100 * 5,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      Flexible(
-                        child: Text(
-                          "E-mail : ",
-                          style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width / 100 * 5,
-                            fontWeight: FontWeight.bold,
-                            color: kTitleTextColor,
-                          ),
-                        ),
+                      TextFieldCustom(
+                        title: "Address",
+                        textEditingController: _addressInputController,
                       ),
-                      Flexible(
-                        flex: 2,
-                        child: TextField(
-                          cursorColor: kTitleTextColor,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "E-mail",
-                            hintStyle: TextStyle(
-                              fontSize:
-                                  MediaQuery.of(context).size.width / 100 * 5,
-                              color: kTextLightColor,
-                            ),
-                          ),
-                          style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width / 100 * 5,
-                            fontWeight: FontWeight.bold,
-                            color: kTitleTextColor,
-                          ),
-                          keyboardType: TextInputType.emailAddress,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width / 100 * 5,
-                    right: MediaQuery.of(context).size.width / 100 * 5,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      Flexible(
-                        child: Text(
-                          "Address : ",
-                          style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width / 100 * 5,
-                            fontWeight: FontWeight.bold,
-                            color: kTitleTextColor,
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                        flex: 2,
-                        child: TextField(
-                          cursorColor: kTitleTextColor,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "Address",
-                            hintStyle: TextStyle(
-                              fontSize:
-                                  MediaQuery.of(context).size.width / 100 * 5,
-                              color: kTextLightColor,
-                            ),
-                          ),
-                          style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width / 100 * 5,
-                            fontWeight: FontWeight.bold,
-                            color: kTitleTextColor,
-                          ),
-                          keyboardType: TextInputType.text,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.width / 100 * 3,
-                    left: MediaQuery.of(context).size.width / 100 * 5,
-                    right: MediaQuery.of(context).size.width / 100 * 5,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      Flexible(
-                        child: Text(
-                          "Phone : ",
-                          style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width / 100 * 5,
-                            fontWeight: FontWeight.bold,
-                            color: kTitleTextColor,
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                        flex: 2,
-                        child: Text(
-                          _userPhone,
-                          style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width / 100 * 5,
-                            fontWeight: FontWeight.bold,
-                            color: kTitleTextColor,
-                          ),
-                        ),
-                      ),
+                      _buildPhoneNumberUser(context),
                     ],
                   ),
                 ),
               ],
             ),
+            (_isLoading && _typeOperation == TypeOperation.upload)
+                ? Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    color: Colors.grey[900].withOpacity(0.8),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : Container(),
           ],
         ),
       ),
     );
+  }
+
+  Container _buildPhoneNumberUser(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 100 * 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            "Phone Number",
+            style: TextStyle(
+              fontSize: MediaQuery.of(context).size.width / 100 * 5,
+              fontWeight: FontWeight.bold,
+              color: kTitleTextColor,
+            ),
+          ),
+          Text(
+            _userPhone,
+            style: TextStyle(
+              fontSize: MediaQuery.of(context).size.width / 100 * 5,
+              fontWeight: FontWeight.bold,
+              color: kTitleTextColor,
+            ),
+          ),
+          Text(
+            "*phone number cannot be change.",
+            style: TextStyle(
+              fontSize: MediaQuery.of(context).size.width / 100 * 3,
+              fontWeight: FontWeight.bold,
+              color: kRedColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Stack _buildImageProfile(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.all(MediaQuery.of(context).size.width / 100 * 5),
+          width: MediaQuery.of(context).size.width / 100 * 40,
+          height: MediaQuery.of(context).size.width / 100 * 40,
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            image: DecorationImage(
+              image: _image == null
+                  ? AssetImage("assets/ben-sweet-2LowviVHZ-E-unsplash.jpg")
+                  : FileImage(_image),
+              fit: BoxFit.cover,
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(90),
+            ),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 7,
+                color: Colors.black45,
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          left: MediaQuery.of(context).size.width / 100 * 25,
+          bottom: MediaQuery.of(context).size.width / 100 * 5,
+          child: FlatButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text(
+                      "Ambil Gambar ?",
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width / 100 * 5,
+                        color: kTitleTextColor,
+                      ),
+                    ),
+                    content: Container(
+                      child: Text("Pilih gambar dari galeri atau kamera."),
+                    ),
+                    actions: <Widget>[
+                      Container(
+                        margin: EdgeInsets.symmetric(
+                            vertical:
+                                MediaQuery.of(context).size.width / 100 * 3),
+                        child: FlatButton(
+                          onPressed: () {
+                            _getImageFromCamera();
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            "Pilih dari Kamera",
+                            style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).size.width / 100 * 5,
+                              fontWeight: FontWeight.w600,
+                              color: kBodyTextColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(
+                            vertical:
+                                MediaQuery.of(context).size.width / 100 * 3),
+                        child: FlatButton(
+                          onPressed: () {
+                            _getImageFromGallery();
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            "Pilih dari Galeri",
+                            style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).size.width / 100 * 5,
+                              fontWeight: FontWeight.w600,
+                              color: kBodyTextColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width / 100 * 12,
+              height: MediaQuery.of(context).size.width / 100 * 12,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                image: DecorationImage(
+                  image: AssetImage("assets/camera-icon-55.jpg"),
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(90),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 7,
+                    color: Colors.black45,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  _uploadData(BuildContext context) async {
+    if (_image == null) {
+      Navigator.of(context).pop();
+      return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "Peringatan",
+              style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width / 100 * 5,
+                color: kTitleTextColor,
+              ),
+            ),
+            content: Container(
+              child: Text("Anda belum mengambil gambar profil."),
+            ),
+            actions: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.width / 100 * 3),
+                child: FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "ok",
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width / 100 * 5,
+                      fontWeight: FontWeight.w600,
+                      color: kRedColor,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    } else if (_fullNameInputController.text.isEmpty) {
+      Navigator.of(context).pop();
+      return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "Peringatan",
+              style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width / 100 * 5,
+                color: kTitleTextColor,
+              ),
+            ),
+            content: Container(
+              child: Text("Anda belum mengisi nama lengkap."),
+            ),
+            actions: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.width / 100 * 3),
+                child: FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "ok",
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width / 100 * 5,
+                      fontWeight: FontWeight.w600,
+                      color: kRedColor,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    } else if (_emailInputController.text.isEmpty) {
+      Navigator.of(context).pop();
+      return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "Peringatan",
+              style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width / 100 * 5,
+                color: kTitleTextColor,
+              ),
+            ),
+            content: Container(
+              child: Text("Anda belum mengisi alamat email."),
+            ),
+            actions: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.width / 100 * 3),
+                child: FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "ok",
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width / 100 * 5,
+                      fontWeight: FontWeight.w600,
+                      color: kRedColor,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    } else if (_addressInputController.text.isEmpty) {
+      Navigator.of(context).pop();
+      return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "Peringatan",
+              style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width / 100 * 5,
+                color: kTitleTextColor,
+              ),
+            ),
+            content: Container(
+              child: Text("Anda belum mengisi alamat lengkap."),
+            ),
+            actions: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.width / 100 * 3),
+                child: FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "ok",
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width / 100 * 5,
+                      fontWeight: FontWeight.w600,
+                      color: kRedColor,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+    Navigator.of(context).pop();
+    StorageReference _ref = _fireStorage
+        .ref()
+        .child("user-profile-$_userUid")
+        .child("user-photo-$_userUid");
+    StorageUploadTask _uploadTask = _ref.putFile(_image);
+    StreamSubscription _streamSubscription =
+        _uploadTask.events.listen((event) async {
+      var eventType = event.type;
+      if (eventType == StorageTaskEventType.progress) {
+        setState(() {
+          _typeOperation = TypeOperation.upload;
+          _isLoading = true;
+        });
+      } else if (eventType == StorageTaskEventType.failure) {
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Photo failed to upload"),
+          ),
+        );
+        setState(() {
+          _isLoading = false;
+          _isSuccess = false;
+          _typeOperation = null;
+        });
+      } else if (eventType == StorageTaskEventType.success) {
+        try {
+          var downloadUrl = await event.snapshot.ref.getDownloadURL();
+          var userData =
+              await _fireStore.collection("users").document(_userUid).setData({
+            'uid': _userUid,
+            'name': _fullNameInputController.text,
+            'email': _emailInputController.text,
+            'phone': _userPhone,
+            'address': _addressInputController.text,
+            'imageProfile': downloadUrl.toString(),
+          });
+          ExtendedNavigator.ofRouter<Router>()
+              .pushReplacementNamed(Routes.mainScreen);
+          setState(() {
+            _isLoading = false;
+            _isSuccess = true;
+            _typeOperation = null;
+          });
+        } catch (e) {
+          print(e);
+        }
+      }
+    });
+    await _uploadTask.onComplete;
+    _streamSubscription.cancel();
   }
 }
