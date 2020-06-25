@@ -74,8 +74,8 @@ class _MainScreenState extends State<MainScreen> {
       type: BottomNavigationBarType.shifting,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: FaIcon(FontAwesomeIcons.home),
-          title: Text("Home"),
+          icon: FaIcon(FontAwesomeIcons.compass),
+          title: Text("Location"),
           backgroundColor: kPrimaryColor,
         ),
         BottomNavigationBarItem(
@@ -84,8 +84,8 @@ class _MainScreenState extends State<MainScreen> {
           backgroundColor: kPrimaryColor,
         ),
         BottomNavigationBarItem(
-          icon: FaIcon(FontAwesomeIcons.compass),
-          title: Text("Location"),
+          icon: FaIcon(FontAwesomeIcons.home),
+          title: Text("Home"),
           backgroundColor: kPrimaryColor,
         ),
         BottomNavigationBarItem(
