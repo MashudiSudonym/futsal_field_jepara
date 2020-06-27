@@ -58,27 +58,35 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: ListTile(
                         onTap: () {
-                          print(futsalFields.uid);
+                          ExtendedNavigator.ofRouter<Router>().pushNamed(
+                            Routes.futsalFieldInformation,
+                            arguments: FutsalFieldInformationArguments(
+                                uid: futsalFields.uid),
+                          );
                         },
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
-                            Container(
-                              height:
-                                  MediaQuery.of(context).size.height / 100 * 20,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: kShadowBlueColor,
-                                    spreadRadius: 1,
-                                    blurRadius: 7,
-                                    offset: Offset(0, 3),
+                            Hero(
+                              tag: futsalFields.uid,
+                              child: Container(
+                                height: MediaQuery.of(context).size.height /
+                                    100 *
+                                    20,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: kShadowBlueColor,
+                                      spreadRadius: 1,
+                                      blurRadius: 7,
+                                      offset: Offset(0, 3),
+                                    ),
+                                  ],
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(futsalFields.image),
                                   ),
-                                ],
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(futsalFields.image),
                                 ),
                               ),
                             ),

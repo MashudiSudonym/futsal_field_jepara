@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route_annotations.dart';
 import 'package:futsal_field_jepara/screen/create_user_screen.dart';
+import 'package:futsal_field_jepara/screen/futsal_field_information.dart';
 import 'package:futsal_field_jepara/screen/main_screen.dart';
 import 'package:futsal_field_jepara/screen/profile_screen.dart';
 import 'package:futsal_field_jepara/screen/sign_in_screen.dart';
@@ -26,4 +27,7 @@ class $Router {
 
   @GuardedBy([AuthGuard])
   ProfileScreen profileScreen;
+
+  @GuardedBy([AuthGuard])
+  FutsalFieldInformation futsalFieldInformation;
 }

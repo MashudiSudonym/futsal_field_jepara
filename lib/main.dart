@@ -17,12 +17,6 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
 
-    // status bar and navigation bar colors
-    FlutterStatusbarcolor.setStatusBarColor(kPrimaryColor);
-    FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
-    FlutterStatusbarcolor.setNavigationBarColor(kPrimaryColor);
-    FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
