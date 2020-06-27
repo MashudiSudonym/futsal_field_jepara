@@ -28,6 +28,7 @@ class $Router {
   @GuardedBy([AuthGuard])
   ProfileScreen profileScreen;
 
+  @MaterialRoute()
   @GuardedBy([AuthGuard])
   FutsalFieldInformation futsalFieldInformation;
 }
