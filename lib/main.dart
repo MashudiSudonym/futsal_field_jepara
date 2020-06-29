@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
 import 'package:futsal_field_jepara/utils/route_guards.dart';
 import 'package:futsal_field_jepara/utils/router.gr.dart';

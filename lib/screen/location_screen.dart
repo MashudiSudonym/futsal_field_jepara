@@ -1,14 +1,12 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:futsal_field_jepara/model/futsal_field.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
 final Firestore _fireStore = Firestore.instance;
 
 class LocationScreen extends StatefulWidget {

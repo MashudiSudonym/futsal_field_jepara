@@ -65,7 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   return Center(
                     child: Padding(
                       padding: EdgeInsets.all(
-                          MediaQuery.of(context).size.width / 100 * 4),
+                          MediaQuery.of(context).size.width / 100 * 2),
                       child: Column(
                         children: <Widget>[
                           CircleAvatar(

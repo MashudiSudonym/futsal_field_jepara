@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -69,24 +70,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: <Widget>[
                             Hero(
                               tag: futsalFields.uid,
-                              child: Container(
-                                height: MediaQuery.of(context).size.height /
-                                    100 *
-                                    20,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: kShadowBlueColor,
-                                      spreadRadius: 1,
-                                      blurRadius: 7,
-                                      offset: Offset(0, 3),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: CachedNetworkImage(
+                                  height: MediaQuery.of(context).size.height /
+                                      100 *
+                                      25,
+                                  imageUrl: futsalFields.image,
+                                  placeholder: (context, url) => Center(
+                                      child: CircularProgressIndicator()),
+                                  errorWidget: (context, url, error) => Center(
+                                    child: FaIcon(
+                                      FontAwesomeIcons.exclamationTriangle,
                                     ),
-                                  ],
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(futsalFields.image),
                                   ),
+                                  fit: BoxFit.cover,
                                 ),
                               ),
                             ),

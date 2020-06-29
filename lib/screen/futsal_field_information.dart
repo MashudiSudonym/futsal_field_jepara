@@ -1,7 +1,13 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:futsal_field_jepara/utils/constants.dart';
 import 'package:futsal_field_jepara/widget/sliver_app_bar_custom.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:map_launcher/map_launcher.dart';
 
 final Firestore _fireStore = Firestore.instance;
 
@@ -20,6 +26,10 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
   String _imageUrl = "-";
   String _name = "-";
   GeoPoint _location = GeoPoint(0.0, 0.0);
+  String _address = "-";
+  String _phone = "-";
+  String _closingHour = "-";
+  String _openingHour = "-";
 
   @override
   void initState() {
@@ -36,6 +46,10 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
       _imageUrl = _data.data['image'];
       _name = _data.data['name'];
       _location = _data.data['location'];
+      _address = _data.data["address"];
+      _phone = _data.data["phone"];
+      _closingHour = _data.data["closingHours"];
+      _openingHour = _data.data["openingHours"];
     });
   }
 
@@ -54,28 +68,440 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
 
   @override
   Widget build(BuildContext context) {
+    FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
     return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScroll) {
-          return <Widget>[
-            SliverPersistentHeader(
-              delegate: SliverAppBarCustom(
-                maxExtend: MediaQuery.of(context).size.height / 100 * 35,
-                minExtend: MediaQuery.of(context).size.height / 100 * 10,
-                imageUrl: (_imageUrl != "-")
-                    ? _imageUrl
-                    : "https://firebasestorage.googleapis.com/v0/b/futsal-field-jepara.appspot.com/o/other%2FSpinner-1s-200px.gif?alt=media&token=6b9ffe59-a10c-48fd-b420-17a102a0f4de",
-                title: _name,
-                uid: widget.uid,
-                location: _location,
+      body: SingleChildScrollView(
+        child: Stack(
+          children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height / 100 * 35,
+              child: Hero(
+                tag: widget.uid,
+                child: CachedNetworkImage(
+                  imageUrl: _imageUrl,
+                  placeholder: (context, url) =>
+                      Center(child: CircularProgressIndicator()),
+                  errorWidget: (context, url, error) => Center(
+                    child: FaIcon(
+                      FontAwesomeIcons.exclamationTriangle,
+                    ),
+                  ),
+                  fit: BoxFit.cover,
+                ),
               ),
-              pinned: true,
-              floating: false,
             ),
-          ];
-        },
-        body: Center(
-          child: Text("${_location.latitude}, ${_location.longitude}, my location ${_currentPosition.latitude}, ${_currentPosition.longitude}"),
+            Container(
+              margin: EdgeInsets.fromLTRB(
+                MediaQuery.of(context).size.width / 100 * 4,
+                MediaQuery.of(context).size.width / 100,
+                MediaQuery.of(context).size.width / 100 * 4,
+                MediaQuery.of(context).size.height / 100 * 4,
+              ),
+              child: Column(
+                children: <Widget>[
+                  Stack(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.all(
+                          MediaQuery.of(context).size.width / 100 * 4,
+                        ),
+                        margin: EdgeInsets.fromLTRB(
+                          MediaQuery.of(context).size.width / 100 * 4,
+                          MediaQuery.of(context).size.height / 100 * 25,
+                          MediaQuery.of(context).size.width / 100 * 4,
+                          MediaQuery.of(context).size.height / 100 * 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 5,
+                              color: Colors.black26,
+                            )
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(
+                                left:
+                                    MediaQuery.of(context).size.width / 100 * 4,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                      top: MediaQuery.of(context).size.height /
+                                          100 *
+                                          1,
+                                    ),
+                                    child: Text(
+                                      _name,
+                                      style: TextStyle(
+                                        fontSize:
+                                            MediaQuery.of(context).size.width /
+                                                100 *
+                                                6,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                      top: MediaQuery.of(context).size.height /
+                                          100 *
+                                          1,
+                                      bottom:
+                                          MediaQuery.of(context).size.height /
+                                              100 *
+                                              1,
+                                    ),
+                                    child: Text(
+                                      _address,
+                                      style: TextStyle(
+                                        fontSize:
+                                            MediaQuery.of(context).size.width /
+                                                100 *
+                                                3,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                      bottom:
+                                          MediaQuery.of(context).size.height /
+                                              100 *
+                                              1,
+                                    ),
+                                    child: SelectableText(
+                                      _phone,
+                                      style: TextStyle(
+                                        fontSize:
+                                            MediaQuery.of(context).size.width /
+                                                100 *
+                                                3,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height /
+                                        100 *
+                                        3,
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Column(
+                                          children: <Widget>[
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    100 *
+                                                    1,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  "2 KM",
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    100 *
+                                                    1,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  "Jarak dari Lokasi Anda",
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          children: <Widget>[
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    100 *
+                                                    1,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  "1",
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    100 *
+                                                    1,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  "Lapangan Flooring",
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          children: <Widget>[
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    100 *
+                                                    1,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  "2",
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    100 *
+                                                    1,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  "Lapangan Flooring",
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 100 * 1,
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal:
+                            MediaQuery.of(context).size.height / 100 * 2),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5),
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 5,
+                          color: Colors.black26,
+                        )
+                      ],
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        ListTile(
+                          title: Text("Jam Operasional"),
+                        ),
+                        Divider(),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width /
+                                    100 *
+                                    2,
+                                    bottom: MediaQuery.of(context).size.height /
+                                    100 *
+                                    1,
+                              ),
+                              child: Text("Senin : $_openingHour - $_closingHour"),
+                            )
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width /
+                                    100 *
+                                    2,
+                                    bottom: MediaQuery.of(context).size.height /
+                                    100 *
+                                    1,
+                              ),
+                              child: Text("Selasa : $_openingHour - $_closingHour"),
+                            )
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width /
+                                    100 *
+                                    2,
+                                    bottom: MediaQuery.of(context).size.height /
+                                    100 *
+                                    1,
+                              ),
+                              child: Text("Rabu : $_openingHour - $_closingHour"),
+                            )
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width /
+                                    100 *
+                                    2,
+                                    bottom: MediaQuery.of(context).size.height /
+                                    100 *
+                                    1,
+                              ),
+                              child: Text("Kamis : $_openingHour - $_closingHour"),
+                            )
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width /
+                                    100 *
+                                    2,
+                                    bottom: MediaQuery.of(context).size.height /
+                                    100 *
+                                    1,
+                              ),
+                              child: Text("Jumat : $_openingHour - $_closingHour"),
+                            )
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width /
+                                    100 *
+                                    2,
+                                    bottom: MediaQuery.of(context).size.height /
+                                    100 *
+                                    1,
+                              ),
+                              child: Text("Sabtu : $_openingHour - $_closingHour"),
+                            )
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width /
+                                    100 *
+                                    2,
+                                    bottom: MediaQuery.of(context).size.height /
+                                    100 *
+                                    1,
+                              ),
+                              child: Text("Minggu : $_openingHour - $_closingHour"),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            AppBar(
+              backgroundColor: Colors.transparent,
+              leading: Padding(
+                padding:
+                    EdgeInsets.all(MediaQuery.of(context).size.width / 100 * 2),
+                child: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
+                      size: MediaQuery.of(context).size.width / 100 * 5,
+                    ),
+                    onPressed: () {
+                      ExtendedNavigator.of(context).pop();
+                    },
+                  ),
+                ),
+              ),
+              actions: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(
+                      MediaQuery.of(context).size.width / 100 * 2),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: IconButton(
+                      icon: Center(
+                        child: FaIcon(
+                          FontAwesomeIcons.mapMarkedAlt,
+                          size: MediaQuery.of(context).size.width / 100 * 4,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      onPressed: () async {
+                        final availableMap = await MapLauncher.installedMaps;
+                        await availableMap.first.showMarker(
+                          coords:
+                              Coords(_location.latitude, _location.longitude),
+                          title: _name,
+                          description: "Location of $_name",
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+              elevation: 0,
+            ),
+          ],
         ),
       ),
     );
