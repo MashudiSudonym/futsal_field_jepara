@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
-import 'package:futsal_field_jepara/widget/sliver_app_bar_custom.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 import 'package:map_launcher/map_launcher.dart';
 
 final Firestore _fireStore = Firestore.instance;
@@ -22,7 +22,9 @@ class FutsalFieldInformation extends StatefulWidget {
 
 class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
   final Geolocator geoLocator = Geolocator()..forceAndroidLocationManager;
+  
   Position _currentPosition = Position(latitude: 0.0, longitude: 0.0);
+  String _uid = "-";
   String _imageUrl = "-";
   String _name = "-";
   GeoPoint _location = GeoPoint(0.0, 0.0);
@@ -38,11 +40,17 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Future<void> _getFutsalFieldData() async {
     final _data =
         await _fireStore.collection("futsalFields").document(widget.uid).get();
 
     setState(() {
+      _uid = _data.data['uid'];
       _imageUrl = _data.data['image'];
       _name = _data.data['name'];
       _location = _data.data['location'];
@@ -342,12 +350,13 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                               padding: EdgeInsets.only(
                                 left: MediaQuery.of(context).size.width /
                                     100 *
-                                    2,
-                                    bottom: MediaQuery.of(context).size.height /
+                                    4.5,
+                                bottom: MediaQuery.of(context).size.height /
                                     100 *
                                     1,
                               ),
-                              child: Text("Senin : $_openingHour - $_closingHour"),
+                              child:
+                                  Text("Senin : $_openingHour - $_closingHour"),
                             )
                           ],
                         ),
@@ -358,12 +367,13 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                               padding: EdgeInsets.only(
                                 left: MediaQuery.of(context).size.width /
                                     100 *
-                                    2,
-                                    bottom: MediaQuery.of(context).size.height /
+                                    4.5,
+                                bottom: MediaQuery.of(context).size.height /
                                     100 *
                                     1,
                               ),
-                              child: Text("Selasa : $_openingHour - $_closingHour"),
+                              child: Text(
+                                  "Selasa : $_openingHour - $_closingHour"),
                             )
                           ],
                         ),
@@ -374,12 +384,13 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                               padding: EdgeInsets.only(
                                 left: MediaQuery.of(context).size.width /
                                     100 *
-                                    2,
-                                    bottom: MediaQuery.of(context).size.height /
+                                    4.5,
+                                bottom: MediaQuery.of(context).size.height /
                                     100 *
                                     1,
                               ),
-                              child: Text("Rabu : $_openingHour - $_closingHour"),
+                              child:
+                                  Text("Rabu : $_openingHour - $_closingHour"),
                             )
                           ],
                         ),
@@ -390,12 +401,13 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                               padding: EdgeInsets.only(
                                 left: MediaQuery.of(context).size.width /
                                     100 *
-                                    2,
-                                    bottom: MediaQuery.of(context).size.height /
+                                    4.5,
+                                bottom: MediaQuery.of(context).size.height /
                                     100 *
                                     1,
                               ),
-                              child: Text("Kamis : $_openingHour - $_closingHour"),
+                              child:
+                                  Text("Kamis : $_openingHour - $_closingHour"),
                             )
                           ],
                         ),
@@ -406,12 +418,13 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                               padding: EdgeInsets.only(
                                 left: MediaQuery.of(context).size.width /
                                     100 *
-                                    2,
-                                    bottom: MediaQuery.of(context).size.height /
+                                    4.5,
+                                bottom: MediaQuery.of(context).size.height /
                                     100 *
                                     1,
                               ),
-                              child: Text("Jumat : $_openingHour - $_closingHour"),
+                              child:
+                                  Text("Jumat : $_openingHour - $_closingHour"),
                             )
                           ],
                         ),
@@ -422,12 +435,13 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                               padding: EdgeInsets.only(
                                 left: MediaQuery.of(context).size.width /
                                     100 *
-                                    2,
-                                    bottom: MediaQuery.of(context).size.height /
+                                    4.5,
+                                bottom: MediaQuery.of(context).size.height /
                                     100 *
                                     1,
                               ),
-                              child: Text("Sabtu : $_openingHour - $_closingHour"),
+                              child:
+                                  Text("Sabtu : $_openingHour - $_closingHour"),
                             )
                           ],
                         ),
@@ -438,16 +452,39 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                               padding: EdgeInsets.only(
                                 left: MediaQuery.of(context).size.width /
                                     100 *
-                                    2,
-                                    bottom: MediaQuery.of(context).size.height /
+                                    4.5,
+                                bottom: MediaQuery.of(context).size.height /
                                     100 *
                                     1,
                               ),
-                              child: Text("Minggu : $_openingHour - $_closingHour"),
+                              child: Text(
+                                  "Minggu : $_openingHour - $_closingHour"),
                             )
                           ],
                         ),
                       ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 100 * 2,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height / 100 * 7,
+                    padding: EdgeInsets.all(
+                        MediaQuery.of(context).size.height / 100 * 1),
+                    child: RaisedButton(
+                      child: Text(
+                        "Pesan Lapangan",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      color: kLogoLightGreenColor,
+                      onPressed: () {},
                     ),
                   ),
                 ],

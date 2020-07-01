@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:futsal_field_jepara/model/futsal_field.dart';
+import 'package:futsal_field_jepara/utils/router.gr.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -91,7 +93,11 @@ class _LocationScreenState extends State<LocationScreen> {
               title: "${futsalFields.name.toUpperCase()}",
               snippet: "${futsalFields.address.toUpperCase()}",
               onTap: () {
-                print(futsalFields.uid);
+                ExtendedNavigator.ofRouter<Router>().pushNamed(
+                  Routes.futsalFieldInformation,
+                  arguments:
+                      FutsalFieldInformationArguments(uid: futsalFields.uid),
+                );
               },
             ),
           );
