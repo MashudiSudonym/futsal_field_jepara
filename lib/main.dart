@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
           bodyText1: TextStyle(color: kBodyTextColor),
         ),
       ),
-      builder: (ctx, __) => ExtendedNavigator<Router>(
+      builder: (context, __) => ExtendedNavigator<Router>(
         router: Router(),
         guards: [AuthGuard()],
       ),

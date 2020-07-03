@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
+import 'package:futsal_field_jepara/utils/currency_formater.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 import 'package:map_launcher/map_launcher.dart';
 
 final Firestore _fireStore = Firestore.instance;
@@ -21,10 +23,11 @@ class FutsalFieldInformation extends StatefulWidget {
 }
 
 class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
-  final Geolocator geoLocator = Geolocator()..forceAndroidLocationManager;
-  
+  final Geolocator _geoLocator = Geolocator()..forceAndroidLocationManager;
+
   Position _currentPosition = Position(latitude: 0.0, longitude: 0.0);
-  String _uid = "-";
+  double _distance = 0.0;
+  String _resultDistance = "-";
   String _imageUrl = "-";
   String _name = "-";
   GeoPoint _location = GeoPoint(0.0, 0.0);
@@ -32,11 +35,19 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
   String _phone = "-";
   String _closingHour = "-";
   String _openingHour = "-";
+  String _fieldTypeFlooring = "-";
+  String _fieldTypeSynthesis = "-";
+  String _numberOfFlooring = "-";
+  String _numberOfSynthesis = "-";
+  int _priceDayFlooring = 0;
+  int _priceNightFlooring = 0;
+  int _priceDaySynthesis = 0;
+  int _priceNightSynthesis = 0;
 
   @override
   void initState() {
-    _getCurrentLocation();
     _getFutsalFieldData();
+    _getCurrentLocationAndDistance();
     super.initState();
   }
 
@@ -50,7 +61,6 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
         await _fireStore.collection("futsalFields").document(widget.uid).get();
 
     setState(() {
-      _uid = _data.data['uid'];
       _imageUrl = _data.data['image'];
       _name = _data.data['name'];
       _location = _data.data['location'];
@@ -58,19 +68,52 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
       _phone = _data.data["phone"];
       _closingHour = _data.data["closingHours"];
       _openingHour = _data.data["openingHours"];
+      _fieldTypeFlooring = _data.data["fieldTypeFlooring"];
+      _fieldTypeSynthesis = _data.data["fieldTypeSynthesis"];
+    });
+
+    final _dataFieldFlooring =
+        await _fireStore.document(_fieldTypeFlooring).get();
+    final _dataFieldSynthesis =
+        await _fireStore.document(_fieldTypeSynthesis).get();
+
+    setState(() {
+      _numberOfFlooring = _dataFieldFlooring['numberOfField'].toString();
+      _numberOfSynthesis = _dataFieldSynthesis['numberOfField'].toString();
+      _priceDayFlooring = _dataFieldFlooring['priceDay'];
+      _priceNightFlooring = _dataFieldFlooring['priceNight'];
+      _priceDaySynthesis = _dataFieldSynthesis['priceDay'];
+      _priceNightSynthesis = _dataFieldSynthesis['priceNight'];
     });
   }
 
-  Future<void> _getCurrentLocation() async {
-    // get current device location
-    await geoLocator
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation)
-        .then((Position position) {
-      setState(() {
-        _currentPosition = position;
+  Future<void> _getCurrentLocationAndDistance() async {
+    Timer(Duration(seconds: 1), () async {
+      await _geoLocator
+          .getCurrentPosition(
+              desiredAccuracy: LocationAccuracy.bestForNavigation)
+          .then((Position position) {
+        setState(() {
+          _currentPosition = position;
+        });
+      }).catchError((e) {
+        print(e);
       });
-    }).catchError((e) {
-      print(e);
+
+      await _geoLocator
+          .distanceBetween(
+              _currentPosition.latitude,
+              _currentPosition.longitude,
+              _location.latitude,
+              _location.longitude)
+          .then((value) {
+        setState(() {
+          _distance = value;
+          _resultDistance = (_distance / 1000).toStringAsFixed(1);
+        });
+      }).catchError((e) {
+        print(e);
+      });
     });
   }
 
@@ -215,7 +258,7 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                                               ),
                                               child: Center(
                                                 child: Text(
-                                                  "2 KM",
+                                                  "$_resultDistance KM",
                                                   textAlign: TextAlign.center,
                                                 ),
                                               ),
@@ -251,7 +294,7 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                                               ),
                                               child: Center(
                                                 child: Text(
-                                                  "1",
+                                                  _numberOfFlooring,
                                                   textAlign: TextAlign.center,
                                                 ),
                                               ),
@@ -287,7 +330,7 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                                               ),
                                               child: Center(
                                                 child: Text(
-                                                  "2",
+                                                  _numberOfSynthesis,
                                                   textAlign: TextAlign.center,
                                                 ),
                                               ),
@@ -460,6 +503,132 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                               child: Text(
                                   "Minggu : $_openingHour - $_closingHour"),
                             )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 100 * 2,
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal:
+                            MediaQuery.of(context).size.height / 100 * 2),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5),
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 5,
+                          color: Colors.black26,
+                        )
+                      ],
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        ListTile(
+                          title: Text("Daftar Harga"),
+                        ),
+                        Divider(),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.all(
+                                MediaQuery.of(context).size.width / 100 * 2,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    "Flooring",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Synthesis",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Divider(),
+                            Padding(
+                              padding: EdgeInsets.all(
+                                MediaQuery.of(context).size.width / 100 * 2,
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width /
+                                        100 *
+                                        2,
+                                  ),
+                                  Text(
+                                    "Pagi",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  Spacer(flex: 2),
+                                  Text(
+                                    (_priceDayFlooring == 0)
+                                        ? '-'
+                                        : currencyFormater(_priceDayFlooring),
+                                  ),
+                                  Spacer(flex: 4),
+                                  Text(
+                                    (_priceDaySynthesis == 0)
+                                        ? '-'
+                                        : currencyFormater(_priceDaySynthesis),
+                                  ),
+                                  Spacer(flex: 3),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(
+                                MediaQuery.of(context).size.width / 100 * 2,
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width /
+                                        100 *
+                                        2,
+                                  ),
+                                  Text(
+                                    "Malam",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  Spacer(flex: 1),
+                                  Text(
+                                    (_priceNightFlooring == 0)
+                                        ? '-'
+                                        : currencyFormater(_priceNightFlooring),
+                                  ),
+                                  Spacer(flex: 4),
+                                  Text(
+                                    (_priceNightSynthesis == 0)
+                                        ? '-'
+                                        : currencyFormater(
+                                            _priceNightSynthesis),
+                                  ),
+                                  Spacer(flex: 3),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ],

@@ -95,70 +95,6 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
         appBar: AppBar(
           title: Text("Complete your profile"),
           elevation: 0.0,
-          actions: <Widget>[
-            IconButton(
-              icon: FaIcon(FontAwesomeIcons.save),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text(
-                        "Save Data ?",
-                        style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.width / 100 * 5,
-                          color: kTitleTextColor,
-                        ),
-                      ),
-                      content: Container(
-                        child: Text("Pastikan data yang anda masukkan benar."),
-                      ),
-                      actions: <Widget>[
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical:
-                                  MediaQuery.of(context).size.width / 100 * 3),
-                          child: FlatButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text(
-                              "cancel",
-                              style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).size.width / 100 * 5,
-                                fontWeight: FontWeight.w600,
-                                color: kRedColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical:
-                                  MediaQuery.of(context).size.width / 100 * 3),
-                          child: FlatButton(
-                            onPressed: () async {
-                              return await _uploadData(context);
-                            },
-                            child: Text(
-                              "save",
-                              style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).size.width / 100 * 5,
-                                fontWeight: FontWeight.w600,
-                                color: kBodyTextColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-            ),
-          ],
         ),
         body: Stack(
           children: <Widget>[
@@ -234,6 +170,28 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
               color: kRedColor,
             ),
           ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height / 100 * 3,
+          ),
+          Container(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height / 100 * 7,
+            padding:
+                EdgeInsets.all(MediaQuery.of(context).size.height / 100 * 1),
+            child: RaisedButton(
+              onPressed: () {},
+              color: kLogoLightGreenColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                "Simpan",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -243,27 +201,32 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
     return Stack(
       alignment: Alignment.center,
       children: <Widget>[
-        Container(
-          margin: EdgeInsets.all(MediaQuery.of(context).size.width / 100 * 5),
-          width: MediaQuery.of(context).size.width / 100 * 40,
-          height: MediaQuery.of(context).size.width / 100 * 40,
-          decoration: BoxDecoration(
-            color: Colors.grey,
-            image: DecorationImage(
-              image: _image == null
-                  ? AssetImage("assets/ben-sweet-2LowviVHZ-E-unsplash.jpg")
-                  : FileImage(_image),
-              fit: BoxFit.cover,
-            ),
-            borderRadius: BorderRadius.all(
-              Radius.circular(90),
-            ),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 7,
-                color: Colors.black45,
+        FlatButton(
+          onPressed: () {
+            _showDialogTakePicture(context);
+          },
+          child: Container(
+            margin: EdgeInsets.all(MediaQuery.of(context).size.width / 100 * 5),
+            width: MediaQuery.of(context).size.width / 100 * 40,
+            height: MediaQuery.of(context).size.width / 100 * 40,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              image: DecorationImage(
+                image: _image == null
+                    ? AssetImage("assets/ben-sweet-2LowviVHZ-E-unsplash.jpg")
+                    : FileImage(_image),
+                fit: BoxFit.cover,
               ),
-            ],
+              borderRadius: BorderRadius.all(
+                Radius.circular(90),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 7,
+                  color: Colors.black45,
+                ),
+              ],
+            ),
           ),
         ),
         Positioned(
@@ -271,65 +234,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
           bottom: MediaQuery.of(context).size.width / 100 * 5,
           child: FlatButton(
             onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text(
-                      "Ambil Gambar ?",
-                      style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.width / 100 * 5,
-                        color: kTitleTextColor,
-                      ),
-                    ),
-                    content: Container(
-                      child: Text("Pilih gambar dari galeri atau kamera."),
-                    ),
-                    actions: <Widget>[
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                            vertical:
-                                MediaQuery.of(context).size.width / 100 * 3),
-                        child: FlatButton(
-                          onPressed: () {
-                            _getImageFromCamera();
-                            Navigator.of(context).pop();
-                          },
-                          child: Text(
-                            "Pilih dari Kamera",
-                            style: TextStyle(
-                              fontSize:
-                                  MediaQuery.of(context).size.width / 100 * 5,
-                              fontWeight: FontWeight.w600,
-                              color: kBodyTextColor,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                            vertical:
-                                MediaQuery.of(context).size.width / 100 * 3),
-                        child: FlatButton(
-                          onPressed: () {
-                            _getImageFromGallery();
-                            Navigator.of(context).pop();
-                          },
-                          child: Text(
-                            "Pilih dari Galeri",
-                            style: TextStyle(
-                              fontSize:
-                                  MediaQuery.of(context).size.width / 100 * 5,
-                              fontWeight: FontWeight.w600,
-                              color: kBodyTextColor,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              );
+              _showDialogTakePicture(context);
             },
             child: Container(
               width: MediaQuery.of(context).size.width / 100 * 12,
@@ -354,6 +259,64 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  Future _showDialogTakePicture(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            "Ambil Gambar ?",
+            style: TextStyle(
+              fontSize: MediaQuery.of(context).size.width / 100 * 5,
+              color: kTitleTextColor,
+            ),
+          ),
+          content: Container(
+            child: Text("Pilih gambar dari galeri atau kamera."),
+          ),
+          actions: <Widget>[
+            Container(
+              margin: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.width / 100 * 3),
+              child: FlatButton(
+                onPressed: () {
+                  _getImageFromCamera();
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  "Pilih dari Kamera",
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width / 100 * 5,
+                    fontWeight: FontWeight.w600,
+                    color: kBodyTextColor,
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.width / 100 * 3),
+              child: FlatButton(
+                onPressed: () {
+                  _getImageFromGallery();
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  "Pilih dari Galeri",
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width / 100 * 5,
+                    fontWeight: FontWeight.w600,
+                    color: kBodyTextColor,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
