@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:futsal_field_jepara/model/futsal_field.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
 import 'package:futsal_field_jepara/utils/router.gr.dart';
+import 'package:lottie/lottie.dart';
 
 final Firestore _fireStore = Firestore.instance;
 
@@ -37,19 +38,31 @@ class _HomeScreenState extends State<HomeScreen> {
       body: StreamBuilder<QuerySnapshot>(
         stream: mainRoot.snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.hasError)
+          if (!snapshot.hasData)
             return Center(
               child: Image(
                 image: AssetImage("assets/nodata.png"),
+                height: MediaQuery.of(context).size.height / 100 * 25,
+              ),
+            );
+          if (snapshot.hasError)
+            return Center(
+              child: Image(
+                image: AssetImage("assets/notfound.png"),
+                height: MediaQuery.of(context).size.height / 100 * 25,
               ),
             );
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
               return Center(
-                child: CircularProgressIndicator(),
+                child: Lottie.asset(
+                  "assets/loading.json",
+                  height: MediaQuery.of(context).size.height / 100 * 25,
+                ),
               );
             default:
               return ListView.builder(
+                physics: BouncingScrollPhysics(),
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (BuildContext context, int index) {
                   final futsalFields =

@@ -11,6 +11,7 @@ import 'package:futsal_field_jepara/utils/constants.dart';
 import 'package:futsal_field_jepara/utils/router.gr.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:futsal_field_jepara/widget/text_field_custom.dart';
+import 'package:lottie/lottie.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final Firestore _fireStore = Firestore.instance;
@@ -127,9 +128,12 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                 ? Container(
                     width: double.infinity,
                     height: double.infinity,
-                    color: Colors.grey[900].withOpacity(0.8),
+                    color: Colors.white,
                     child: Center(
-                      child: CircularProgressIndicator(),
+                      child: Lottie.asset(
+                        "assets/loading.json",
+                        height: MediaQuery.of(context).size.height / 100 * 25,
+                      ),
                     ),
                   )
                 : Container(),
@@ -179,7 +183,9 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
             padding:
                 EdgeInsets.all(MediaQuery.of(context).size.height / 100 * 1),
             child: RaisedButton(
-              onPressed: () {},
+              onPressed: () {
+                _uploadData(context);
+              },
               color: kLogoLightGreenColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),

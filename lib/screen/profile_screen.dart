@@ -6,6 +6,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
 import 'package:futsal_field_jepara/utils/router.gr.dart';
 import 'package:futsal_field_jepara/widget/text_user_data_custom.dart';
+import 'package:lottie/lottie.dart';
+import 'package:somedialog/somedialog.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final Firestore _fireStore = Firestore.instance;
@@ -73,8 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 MediaQuery.of(context).size.width / 100 * 20,
                             backgroundImage: (_data['imageProfile'] != null)
                                 ? NetworkImage(_data['imageProfile'])
-                                : AssetImage(
-                                    "assets/ben-sweet-2LowviVHZ-E-unsplash.jpg"),
+                                : Lottie.asset("assets/loading.json"),
                           ),
                           SizedBox(
                             height:
@@ -125,58 +126,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future _signOutDialog(BuildContext context) async {
-    showDialog(
+    SomeDialog(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(
-            "sign out of your account ?",
-            style: TextStyle(
-              fontSize: MediaQuery.of(context).size.width / 100 * 5,
-              fontWeight: FontWeight.w600,
-              color: kBodyTextColor,
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    "Cancel",
-                    style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width / 100 * 5,
-                      fontWeight: FontWeight.w500,
-                      color: kBodyTextColor,
-                    ),
-                  ),
-                ],
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            FlatButton(
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    "Oke",
-                    style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width / 100 * 5,
-                      fontWeight: FontWeight.w500,
-                      color: kRedColor,
-                    ),
-                  ),
-                ],
-              ),
-              onPressed: () async {
-                await _auth.signOut();
-                ExtendedNavigator.ofRouter<Router>().pushNamedAndRemoveUntil(
-                    Routes.splashScreen, (Route<dynamic> route) => false);
-              },
-            ),
-          ],
-        );
+      path: "assets/report.json",
+      title: "are you sure ?",
+      content: "sign out of your account ?",
+      submit: () async {
+        await _auth.signOut();
+        ExtendedNavigator.ofRouter<Router>().pushNamedAndRemoveUntil(
+            Routes.splashScreen, (Route<dynamic> route) => false);
       },
+      mode: SomeMode.Lottie,
+      appName: "Futsal Field Jepara",
+      buttonConfig: ButtonConfig(
+        buttonDoneColor: kRedColor,
+        dialogDone: "Sign out",
+      ),
     );
   }
 }

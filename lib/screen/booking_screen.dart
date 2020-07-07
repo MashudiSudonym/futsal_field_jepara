@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class BookingScreen extends StatefulWidget {
   @override
@@ -14,7 +15,10 @@ class _BookingScreenState extends State<BookingScreen> {
         elevation: 0.0,
       ),
       body: Center(
-        child: Text("Booking"),
+        child: Lottie.asset(
+          "assets/error.json",
+          height: MediaQuery.of(context).size.height / 100 * 25,
+        ),
       ),
     );
   }

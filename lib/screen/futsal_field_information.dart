@@ -9,6 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
 import 'package:futsal_field_jepara/utils/currency_formater.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:lottie/lottie.dart';
 import 'package:map_launcher/map_launcher.dart';
 
 final Firestore _fireStore = Firestore.instance;
@@ -131,11 +132,16 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                 tag: widget.uid,
                 child: CachedNetworkImage(
                   imageUrl: _imageUrl,
-                  placeholder: (context, url) =>
-                      Center(child: CircularProgressIndicator()),
+                  placeholder: (context, url) => Center(
+                    child: Lottie.asset(
+                      "assets/loading.json",
+                      height: MediaQuery.of(context).size.height / 100 * 10,
+                    ),
+                  ),
                   errorWidget: (context, url, error) => Center(
-                    child: FaIcon(
-                      FontAwesomeIcons.exclamationTriangle,
+                    child: Lottie.asset(
+                      "assets/error.json",
+                      height: MediaQuery.of(context).size.height / 100 * 10,
                     ),
                   ),
                   fit: BoxFit.cover,

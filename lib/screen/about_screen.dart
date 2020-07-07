@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class AboutScreen extends StatefulWidget {
   @override
@@ -14,7 +15,10 @@ class _AboutScreenState extends State<AboutScreen> {
         elevation: 0.0,
       ),
       body: Center(
-        child: Text("About"),
+        child: Lottie.asset(
+          "assets/error.json",
+          height: MediaQuery.of(context).size.height / 100 * 25,
+        ),
       ),
     );
   }

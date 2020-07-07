@@ -14,20 +14,13 @@ class _SearchScreenState extends State<SearchScreen> {
       appBar: AppBar(
         title: Text("Search Location"),
         elevation: 0.0,
-        actions: <Widget>[
-          IconButton(
-            icon: FaIcon(FontAwesomeIcons.search),
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: FutsalFieldSearchDelegate(),
-              );
-            },
-          )
-        ],
       ),
       body: Center(
-        child: Text("Searching"),
+        child: SingleChildScrollView(
+          child: Stack(
+            children: <Widget>[],
+          ),
+        ),
       ),
     );
   }
