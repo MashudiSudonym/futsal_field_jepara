@@ -12,6 +12,7 @@ import 'package:futsal_field_jepara/utils/router.gr.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:futsal_field_jepara/widget/text_field_custom.dart';
 import 'package:lottie/lottie.dart';
+import 'package:somedialog/somedialog.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final Firestore _fireStore = Firestore.instance;
@@ -328,159 +329,71 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
 
   _uploadData(BuildContext context) async {
     if (_image == null) {
-      Navigator.of(context).pop();
-      return showDialog(
+      return SomeDialog(
         context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(
-              "Peringatan",
-              style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width / 100 * 5,
-                color: kTitleTextColor,
-              ),
-            ),
-            content: Container(
-              child: Text("Anda belum mengambil gambar profil."),
-            ),
-            actions: <Widget>[
-              Container(
-                margin: EdgeInsets.symmetric(
-                    vertical: MediaQuery.of(context).size.width / 100 * 3),
-                child: FlatButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    "ok",
-                    style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width / 100 * 5,
-                      fontWeight: FontWeight.w600,
-                      color: kRedColor,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
+        path: "assets/report.json",
+        title: "Peringatan",
+        content: "Anda belum mengambil gambar profil.",
+        submit: () {},
+        mode: SomeMode.Lottie,
+        appName: "Futsal Field Jepara",
+        buttonConfig: ButtonConfig(
+          buttonDoneColor: kLogoLightGreenColor,
+          dialogDone: "Oke",
+          dialogCancel: "",
+          buttonCancelColor: kPrimaryColor,
+        ),
       );
     } else if (_fullNameInputController.text.isEmpty) {
-      Navigator.of(context).pop();
-      return showDialog(
+      return SomeDialog(
         context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(
-              "Peringatan",
-              style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width / 100 * 5,
-                color: kTitleTextColor,
-              ),
-            ),
-            content: Container(
-              child: Text("Anda belum mengisi nama lengkap."),
-            ),
-            actions: <Widget>[
-              Container(
-                margin: EdgeInsets.symmetric(
-                    vertical: MediaQuery.of(context).size.width / 100 * 3),
-                child: FlatButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    "ok",
-                    style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width / 100 * 5,
-                      fontWeight: FontWeight.w600,
-                      color: kRedColor,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
+        path: "assets/report.json",
+        title: "Peringatan",
+        content: "Anda belum mengisi nama lengkap.",
+        submit: () {},
+        mode: SomeMode.Lottie,
+        appName: "Futsal Field Jepara",
+        buttonConfig: ButtonConfig(
+          buttonDoneColor: kLogoLightGreenColor,
+          dialogDone: "Oke",
+          dialogCancel: "",
+          buttonCancelColor: kPrimaryColor,
+        ),
       );
     } else if (_emailInputController.text.isEmpty) {
-      Navigator.of(context).pop();
-      return showDialog(
+      return SomeDialog(
         context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(
-              "Peringatan",
-              style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width / 100 * 5,
-                color: kTitleTextColor,
-              ),
-            ),
-            content: Container(
-              child: Text("Anda belum mengisi alamat email."),
-            ),
-            actions: <Widget>[
-              Container(
-                margin: EdgeInsets.symmetric(
-                    vertical: MediaQuery.of(context).size.width / 100 * 3),
-                child: FlatButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    "ok",
-                    style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width / 100 * 5,
-                      fontWeight: FontWeight.w600,
-                      color: kRedColor,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
+        path: "assets/report.json",
+        title: "Peringatan",
+        content: "Anda belum mengisi alamat email.",
+        submit: () {},
+        mode: SomeMode.Lottie,
+        appName: "Futsal Field Jepara",
+        buttonConfig: ButtonConfig(
+          buttonDoneColor: kLogoLightGreenColor,
+          dialogDone: "Oke",
+          dialogCancel: "",
+          buttonCancelColor: kPrimaryColor,
+        ),
       );
     } else if (_addressInputController.text.isEmpty) {
-      Navigator.of(context).pop();
-      return showDialog(
+      return SomeDialog(
         context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(
-              "Peringatan",
-              style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width / 100 * 5,
-                color: kTitleTextColor,
-              ),
-            ),
-            content: Container(
-              child: Text("Anda belum mengisi alamat lengkap."),
-            ),
-            actions: <Widget>[
-              Container(
-                margin: EdgeInsets.symmetric(
-                    vertical: MediaQuery.of(context).size.width / 100 * 3),
-                child: FlatButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    "ok",
-                    style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width / 100 * 5,
-                      fontWeight: FontWeight.w600,
-                      color: kRedColor,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
+        path: "assets/report.json",
+        title: "Peringatan",
+        content: "Anda belum mengisi alamat lengkap.",
+        submit: () {},
+        mode: SomeMode.Lottie,
+        appName: "Futsal Field Jepara",
+        buttonConfig: ButtonConfig(
+          buttonDoneColor: kLogoLightGreenColor,
+          dialogDone: "Oke",
+          dialogCancel: "",
+          buttonCancelColor: kPrimaryColor,
+        ),
       );
     }
-    Navigator.of(context).pop();
+
     StorageReference _ref = _fireStorage
         .ref()
         .child("user-profile-$_userUid")
@@ -517,8 +430,8 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
             'address': _addressInputController.text,
             'imageProfile': downloadUrl.toString(),
           });
-          ExtendedNavigator.ofRouter<Router>()
-              .pushReplacementNamed(Routes.mainScreen);
+          ExtendedNavigator.ofRouter<Router>().pushNamedAndRemoveUntil(
+              Routes.mainScreen, (Route<dynamic> route) => false);
           setState(() {
             _isLoading = false;
             _isSuccess = true;

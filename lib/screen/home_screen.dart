@@ -40,15 +40,15 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, snapshot) {
           if (!snapshot.hasData)
             return Center(
-              child: Image(
-                image: AssetImage("assets/nodata.png"),
+              child: Lottie.asset(
+                "assets/loading.json",
                 height: MediaQuery.of(context).size.height / 100 * 25,
               ),
             );
           if (snapshot.hasError)
             return Center(
-              child: Image(
-                image: AssetImage("assets/notfound.png"),
+              child: Lottie.asset(
+                "assets/error.json",
                 height: MediaQuery.of(context).size.height / 100 * 25,
               ),
             );
@@ -61,92 +61,100 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
             default:
-              return ListView.builder(
-                physics: BouncingScrollPhysics(),
-                itemCount: snapshot.data.documents.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final futsalFields =
-                      FutsalFields.fromMap(snapshot.data.documents[index].data);
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    duration: Duration(milliseconds: 375),
-                    child: SlideAnimation(
-                      horizontalOffset: 50.0,
-                      child: FadeInAnimation(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical:
-                                MediaQuery.of(context).size.width / 100 * 2,
-                            horizontal:
-                                MediaQuery.of(context).size.width / 100 * 2,
-                          ),
-                          child: ListTile(
-                            onTap: () {
-                              ExtendedNavigator.ofRouter<Router>().pushNamed(
-                                Routes.futsalFieldInformation,
-                                arguments: FutsalFieldInformationArguments(
-                                    uid: futsalFields.uid),
-                              );
-                            },
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: <Widget>[
-                                Hero(
-                                  tag: futsalFields.uid,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(5),
-                                    child: CachedNetworkImage(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              100 *
-                                              25,
-                                      imageUrl: futsalFields.image,
-                                      placeholder: (context, url) => Center(
-                                          child: CircularProgressIndicator()),
-                                      errorWidget: (context, url, error) =>
-                                          Center(
-                                        child: FaIcon(
-                                          FontAwesomeIcons.exclamationTriangle,
+              return Container(
+                margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).size.width / 100 * 16.6,
+                ),
+                child: ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  itemCount: snapshot.data.documents.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final futsalFields = FutsalFields.fromMap(
+                        snapshot.data.documents[index].data);
+                    return AnimationConfiguration.staggeredList(
+                      position: index,
+                      duration: Duration(milliseconds: 375),
+                      child: SlideAnimation(
+                        horizontalOffset: 50.0,
+                        child: FadeInAnimation(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical:
+                                  MediaQuery.of(context).size.width / 100 * 2,
+                              horizontal:
+                                  MediaQuery.of(context).size.width / 100 * 2,
+                            ),
+                            child: ListTile(
+                              onTap: () {
+                                ExtendedNavigator.ofRouter<Router>().pushNamed(
+                                  Routes.futsalFieldInformation,
+                                  arguments: FutsalFieldInformationArguments(
+                                      uid: futsalFields.uid),
+                                );
+                              },
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: <Widget>[
+                                  Hero(
+                                    tag: futsalFields.uid,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(5),
+                                      child: CachedNetworkImage(
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                100 *
+                                                25,
+                                        imageUrl: futsalFields.image,
+                                        placeholder: (context, url) => Center(
+                                            child: CircularProgressIndicator()),
+                                        errorWidget: (context, url, error) =>
+                                            Center(
+                                          child: FaIcon(
+                                            FontAwesomeIcons
+                                                .exclamationTriangle,
+                                          ),
                                         ),
+                                        fit: BoxFit.cover,
                                       ),
-                                      fit: BoxFit.cover,
                                     ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    top: MediaQuery.of(context).size.height /
-                                        100 *
-                                        1,
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      top: MediaQuery.of(context).size.height /
+                                          100 *
+                                          1,
+                                    ),
+                                    child: Text(
+                                      futsalFields.name.toUpperCase(),
+                                      style: TextStyle(
+                                          color: kTitleTextColor,
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              100 *
+                                              5),
+                                    ),
                                   ),
-                                  child: Text(
-                                    futsalFields.name.toUpperCase(),
-                                    style: TextStyle(
-                                        color: kTitleTextColor,
-                                        fontSize:
-                                            MediaQuery.of(context).size.width /
-                                                100 *
-                                                5),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            subtitle: Text(
-                              futsalFields.address.toUpperCase(),
-                              style: TextStyle(
-                                  color: kBodyTextColor,
-                                  fontSize: MediaQuery.of(context).size.width /
-                                      100 *
-                                      3),
+                                ],
+                              ),
+                              subtitle: Text(
+                                futsalFields.address.toUpperCase(),
+                                style: TextStyle(
+                                    color: kBodyTextColor,
+                                    fontSize:
+                                        MediaQuery.of(context).size.width /
+                                            100 *
+                                            3),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height / 100 * 2),
+                    );
+                  },
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height / 100 * 2),
+                ),
               );
           }
         },

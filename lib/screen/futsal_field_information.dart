@@ -658,7 +658,7 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      color: kLogoLightGreenColor,
+                      color: Colors.greenAccent[400],
                       onPressed: () {},
                     ),
                   ),
