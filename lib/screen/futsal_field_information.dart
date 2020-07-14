@@ -6,8 +6,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:futsal_field_jepara/screen/create_schedule.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
 import 'package:futsal_field_jepara/utils/currency_formater.dart';
+import 'package:futsal_field_jepara/utils/router.gr.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:lottie/lottie.dart';
 import 'package:map_launcher/map_launcher.dart';
@@ -351,7 +353,7 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                                               ),
                                               child: Center(
                                                 child: Text(
-                                                  "Lapangan Flooring",
+                                                  "Lapangan Sintetis",
                                                   textAlign: TextAlign.center,
                                                 ),
                                               ),
@@ -659,7 +661,10 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       color: Colors.greenAccent[400],
-                      onPressed: () {},
+                      onPressed: () {
+                        ExtendedNavigator.ofRouter<Router>()
+                            .pushNamed(Routes.createSchedule);
+                      },
                     ),
                   ),
                 ],

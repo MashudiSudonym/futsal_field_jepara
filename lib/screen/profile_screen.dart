@@ -56,7 +56,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(
-                child: CircularProgressIndicator(),
+                child: Lottie.asset(
+                  "assets/error.json",
+                  height: MediaQuery.of(context).size.height / 100 * 25,
+                ),
               );
             }
             return ListView.builder(
@@ -114,6 +117,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             faIcon: FaIcon(
                               FontAwesomeIcons.phoneAlt,
                               size: MediaQuery.of(context).size.width / 100 * 4,
+                            ),
+                          ),
+                          SizedBox(
+                            height:
+                                MediaQuery.of(context).size.height / 100 * 3,
+                          ),
+                          Container(
+                            width:
+                                MediaQuery.of(context).size.height / 100 * 35,
+                            height:
+                                MediaQuery.of(context).size.height / 100 * 7,
+                            padding: EdgeInsets.all(
+                                MediaQuery.of(context).size.height / 100 * 1),
+                            child: RaisedButton(
+                              child: Text(
+                                "Ubah Profil",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              color: Colors.redAccent,
+                              onPressed: () {
+                                ExtendedNavigator.ofRouter<Router>()
+                                    .pushNamed(Routes.editProfile);
+                              },
                             ),
                           ),
                         ],
