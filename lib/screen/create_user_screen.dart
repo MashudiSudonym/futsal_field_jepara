@@ -6,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
 import 'package:futsal_field_jepara/utils/router.gr.dart';
 import 'package:image_picker/image_picker.dart';
@@ -109,14 +108,17 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                       _buildImageProfile(context),
                       TextFieldCustom(
                         title: "Full Name",
+                        hintText: "Full Name",
                         textEditingController: _fullNameInputController,
                       ),
                       TextFieldCustom(
                         title: "E-mail",
+                        hintText: "E-mail",
                         textEditingController: _emailInputController,
                       ),
                       TextFieldCustom(
                         title: "Address",
+                        hintText: "Address",
                         textEditingController: _addressInputController,
                       ),
                       _buildPhoneNumberUser(context),

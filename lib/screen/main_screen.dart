@@ -68,7 +68,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
           Positioned(
             width: MediaQuery.of(context).size.width,
-            bottom: 0,
+            bottom: -15,
             child: CurvedNavigationBar(
               key: _bottomNavigationKey,
               backgroundColor: Colors.transparent,

@@ -188,11 +188,14 @@ class _SignInScreenState extends State<SignInScreen> {
 
             final PhoneVerificationCompleted verificationCompleted =
                 (AuthCredential phoneAuthCredential) {
-              _auth.signInWithCredential(phoneAuthCredential);
-              setState(() {
-                _message = "success";
-                ExtendedNavigator.ofRouter<Router>().pushNamedAndRemoveUntil(
-                    Routes.mainScreen, (Route<dynamic> route) => false);
+              _auth.signInWithCredential(phoneAuthCredential).then((value) {
+                setState(() {
+                  _message = "success";
+                  ExtendedNavigator.ofRouter<Router>().pushNamedAndRemoveUntil(
+                      Routes.mainScreen, (Route<dynamic> route) => false);
+                });
+              }).catchError((e) {
+                print(e);
               });
             };
 

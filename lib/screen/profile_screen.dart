@@ -142,8 +142,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               color: Colors.redAccent,
                               onPressed: () {
-                                ExtendedNavigator.ofRouter<Router>()
-                                    .pushNamed(Routes.editProfile);
+                                ExtendedNavigator.ofRouter<Router>().pushNamed(
+                                  Routes.editProfile,
+                                  arguments:
+                                      EditProfileArguments(uid: _userUID),
+                                );
                               },
                             ),
                           ),
@@ -163,9 +166,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       title: "are you sure ?",
       content: "sign out of your account ?",
       submit: () async {
-        await _auth.signOut();
-        ExtendedNavigator.ofRouter<Router>().pushNamedAndRemoveUntil(
-            Routes.splashScreen, (Route<dynamic> route) => false);
+        await _auth.signOut().then((value) {
+          ExtendedNavigator.ofRouter<Router>().pushNamedAndRemoveUntil(
+              Routes.splashScreen, (Route<dynamic> route) => false);
+        }).catchError((e) {
+          print(e);
+        });
       },
       mode: SomeMode.Lottie,
       appName: "Futsal Field Jepara",

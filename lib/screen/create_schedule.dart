@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
+
+final Firestore _fireStore = Firestore.instance;
 
 class CreateSchedule extends StatefulWidget {
   @override

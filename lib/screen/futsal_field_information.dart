@@ -6,8 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:futsal_field_jepara/screen/create_schedule.dart';
-import 'package:futsal_field_jepara/utils/constants.dart';
 import 'package:futsal_field_jepara/utils/currency_formater.dart';
 import 'package:futsal_field_jepara/utils/router.gr.dart';
 import 'package:geolocator/geolocator.dart';
