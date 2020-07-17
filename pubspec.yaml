@@ -42,7 +42,6 @@ dependencies:
   somedialog: ^1.0.1
   lottie: ^0.4.0+1
   curved_navigation_bar: ^0.3.3
-  datetime_picker_formfield: ^1.0.0
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:futsal_field_jepara/utils/constants.dart';
 
 final Firestore _fireStore = Firestore.instance;
 
@@ -11,54 +10,79 @@ class CreateSchedule extends StatefulWidget {
 }
 
 class _CreateScheduleState extends State<CreateSchedule> {
-  final format = DateFormat("dd-MM-yyyy");
-  String dateValue = "";
+  TextEditingController _datePickerController = TextEditingController();
+  String _dateValue = "";
+  DateTime _date = DateTime.now();
+
+  @override
+  void dispose() {
+    _datePickerController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime _datePicker = await showDatePicker(
+      context: context,
+      initialDate: _date,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2222),
+    );
+
+    if (_datePicker != null && _datePicker != _date) {
+      setState(() {
+        _date = _datePicker;
+        _dateValue = _date.toString().split(' ')[0];
+        _datePickerController = TextEditingController(text: _dateValue);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Buat Jadwal"),
-        elevation: 0.0,
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(MediaQuery.of(context).size.width / 100 * 3),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            DateTimeField(
-                format: format,
-                onChanged: (value) {
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Buat Jadwal"),
+          elevation: 0.0,
+        ),
+        body: Padding(
+          padding: EdgeInsets.all(MediaQuery.of(context).size.width / 100 * 4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TextField(
+                onTap: () {
                   setState(() {
-                    dateValue = "${value.toString().split(' ')[0]}";
+                    _selectDate(context);
                   });
                 },
+                controller: _datePickerController,
+                readOnly: true,
                 decoration: InputDecoration(
+                  hintText: "$_dateValue",
                   labelText: "Pilih Tanggal",
                   labelStyle: TextStyle(
-                    fontSize: MediaQuery.of(context).size.width / 100 * 3,
+                    fontSize: MediaQuery.of(context).size.width / 100 * 4,
+                    color: kTitleTextColor,
                   ),
-                  border: OutlineInputBorder(
+                  enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      width: 2.0,
+                      color: kLogoLightGreenColor,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      width: 2.0,
+                      color: kLogoLightGreenColor,
                     ),
                   ),
                 ),
-                onShowPicker: (context, currentValue) {
-                  return showDatePicker(
-                    context: context,
-                    initialDate: currentValue ?? DateTime.now(),
-                    firstDate: DateTime(1900),
-                    lastDate: DateTime(2222),
-                  );
-                }),
-            Text(dateValue),
-          ],
+              ),
+              Text(_datePickerController.text),
+            ],
+          ),
         ),
       ),
     );
