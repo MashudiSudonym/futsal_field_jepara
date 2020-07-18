@@ -35,13 +35,11 @@ class _CreateScheduleState extends State<CreateSchedule> {
   ];
   int _fieldTypeSelectedIndex = 0;
   int _timeOrderStartSelectedIndex = 0;
-  int _timeOrderFinishSelectedIndex = 0;
 
   @override
   void initState() {
     _onFieldTypeSelected(0);
     _onTimeOrderStartSelected(0);
-    _onTimeOrderFinishSelected(0);
     super.initState();
   }
 
@@ -56,13 +54,6 @@ class _CreateScheduleState extends State<CreateSchedule> {
     setState(() {
       _timeOrderStartSelectedIndex = index;
       print("${_timeOrderList[index]} $_timeOrderStartSelectedIndex");
-    });
-  }
-
-  void _onTimeOrderFinishSelected(int index) {
-    setState(() {
-      _timeOrderFinishSelectedIndex = index;
-      print("${_timeOrderList[index]} $_timeOrderFinishSelectedIndex");
     });
   }
 
@@ -150,6 +141,7 @@ class _CreateScheduleState extends State<CreateSchedule> {
                         MediaQuery.of(context).size.width / 100 * 2,
                     mainAxisSpacing: 2,
                   ),
+                  physics: NeverScrollableScrollPhysics(),
                   itemCount: _fieldTypeList.length,
                   itemBuilder: (context, index) {
                     return Card(
@@ -195,6 +187,7 @@ class _CreateScheduleState extends State<CreateSchedule> {
                     childAspectRatio: 16 / 9,
                     mainAxisSpacing: 2,
                   ),
+                  physics: NeverScrollableScrollPhysics(),
                   itemCount: _timeOrderList.length,
                   itemBuilder: (context, index) {
                     return Card(
@@ -226,54 +219,7 @@ class _CreateScheduleState extends State<CreateSchedule> {
                   },
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height / 100 * 2),
-              Text(
-                "Waktu Selesai",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height / 100 * 1),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 100 * 28,
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    childAspectRatio: 16 / 9,
-                    mainAxisSpacing: 2,
-                  ),
-                  itemCount: _timeOrderList.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      color: (_timeOrderFinishSelectedIndex != null &&
-                              _timeOrderFinishSelectedIndex == index)
-                          ? Colors.greenAccent[400]
-                          : kPrimaryColor,
-                      child: Center(
-                        child: ListTile(
-                          title: Text(
-                            _timeOrderList[index],
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: (_timeOrderFinishSelectedIndex != null &&
-                                      _timeOrderFinishSelectedIndex == index)
-                                  ? kPrimaryColor
-                                  : Colors.black,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          onTap: () {
-                            setState(() {
-                              _onTimeOrderFinishSelected(index);
-                            });
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height / 100 * 5),
+              SizedBox(height: MediaQuery.of(context).size.height / 100 * 25),
               Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height / 100 * 7,
