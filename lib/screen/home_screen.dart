@@ -60,10 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
             default:
               return Container(
                 margin: EdgeInsets.only(
-                  bottom: MediaQuery
-                      .of(context)
-                      .size
-                      .width / 100 * 14,
+                  bottom: MediaQuery.of(context).size.width / 100 * 14,
                 ),
                 child: ListView.builder(
                   physics: BouncingScrollPhysics(),
