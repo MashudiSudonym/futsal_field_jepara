@@ -5,6 +5,10 @@ import 'package:futsal_field_jepara/utils/constants.dart';
 final Firestore _fireStore = Firestore.instance;
 
 class CreateSchedule extends StatefulWidget {
+  final String uid;
+
+  const CreateSchedule({@required this.uid});
+
   @override
   _CreateScheduleState createState() => _CreateScheduleState();
 }
@@ -34,33 +38,35 @@ class _CreateScheduleState extends State<CreateSchedule> {
     "23.00",
   ];
   int _fieldTypeSelectedIndex = 0;
-  int _timeOrderStartSelectedIndex = 0;
+  int _timeOrderSelectedIndex = 0;
+  String _fieldTypeSelected = "";
+  String _timeOrderSelected = "";
 
   @override
   void initState() {
     _onFieldTypeSelected(0);
-    _onTimeOrderStartSelected(0);
+    _onTimeOrderSelected(0);
     super.initState();
-  }
-
-  void _onFieldTypeSelected(int index) {
-    setState(() {
-      _fieldTypeSelectedIndex = index;
-      print("${_fieldTypeList[index]} $_fieldTypeSelectedIndex");
-    });
-  }
-
-  void _onTimeOrderStartSelected(int index) {
-    setState(() {
-      _timeOrderStartSelectedIndex = index;
-      print("${_timeOrderList[index]} $_timeOrderStartSelectedIndex");
-    });
   }
 
   @override
   void dispose() {
     _datePickerController.dispose();
     super.dispose();
+  }
+
+  void _onFieldTypeSelected(int index) {
+    setState(() {
+      _fieldTypeSelectedIndex = index;
+      _fieldTypeSelected = _fieldTypeList[index];
+    });
+  }
+
+  void _onTimeOrderSelected(int index) {
+    setState(() {
+      _timeOrderSelectedIndex = index;
+      _timeOrderSelected = _timeOrderList[index];
+    });
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -173,7 +179,7 @@ class _CreateScheduleState extends State<CreateSchedule> {
               ),
               SizedBox(height: MediaQuery.of(context).size.height / 100 * 2),
               Text(
-                "Waktu Mulai",
+                "Pesan Jam",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
@@ -191,8 +197,8 @@ class _CreateScheduleState extends State<CreateSchedule> {
                   itemCount: _timeOrderList.length,
                   itemBuilder: (context, index) {
                     return Card(
-                      color: (_timeOrderStartSelectedIndex != null &&
-                              _timeOrderStartSelectedIndex == index)
+                      color: (_timeOrderSelectedIndex != null &&
+                              _timeOrderSelectedIndex == index)
                           ? Colors.greenAccent[400]
                           : kPrimaryColor,
                       child: Center(
@@ -201,8 +207,8 @@ class _CreateScheduleState extends State<CreateSchedule> {
                             _timeOrderList[index],
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: (_timeOrderStartSelectedIndex != null &&
-                                      _timeOrderStartSelectedIndex == index)
+                              color: (_timeOrderSelectedIndex != null &&
+                                      _timeOrderSelectedIndex == index)
                                   ? kPrimaryColor
                                   : Colors.black,
                               fontWeight: FontWeight.w600,
@@ -210,7 +216,7 @@ class _CreateScheduleState extends State<CreateSchedule> {
                           ),
                           onTap: () {
                             setState(() {
-                              _onTimeOrderStartSelected(index);
+                              _onTimeOrderSelected(index);
                             });
                           },
                         ),
@@ -227,7 +233,7 @@ class _CreateScheduleState extends State<CreateSchedule> {
                     MediaQuery.of(context).size.height / 100 * 1),
                 child: RaisedButton(
                   child: Text(
-                    "Pesan Lapangan",
+                    "Selanjutnya",
                     style: TextStyle(
                       color: Colors.white,
                     ),
@@ -237,7 +243,11 @@ class _CreateScheduleState extends State<CreateSchedule> {
                   ),
                   color: Colors.greenAccent[400],
                   onPressed: () {
-                    print("Buat pesanan");
+                    print("Berikutnya");
+                    print(_fieldTypeSelected);
+                    print(_timeOrderSelected);
+                    print(_datePickerController.text);
+                    print(widget.uid);
                   },
                 ),
               ),

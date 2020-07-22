@@ -6,13 +6,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:futsal_field_jepara/utils/currency_formater.dart';
+import 'package:futsal_field_jepara/model/data.dart';
+import 'package:futsal_field_jepara/model/field_type.dart';
+import 'package:futsal_field_jepara/model/futsal_field.dart';
+import 'package:futsal_field_jepara/utils/currency_formatter.dart';
 import 'package:futsal_field_jepara/utils/router.gr.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:lottie/lottie.dart';
 import 'package:map_launcher/map_launcher.dart';
-
-final Firestore _fireStore = Firestore.instance;
 
 class FutsalFieldInformation extends StatefulWidget {
   final String uid;
@@ -25,7 +26,6 @@ class FutsalFieldInformation extends StatefulWidget {
 
 class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
   final Geolocator _geoLocator = Geolocator()..forceAndroidLocationManager;
-
   Position _currentPosition = Position(latitude: 0.0, longitude: 0.0);
   double _distance = 0.0;
   String _resultDistance = "-";
@@ -48,6 +48,7 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
   @override
   void initState() {
     _getFutsalFieldData();
+    _getFieldTypeData();
     _getCurrentLocationAndDistance();
     super.initState();
   }
@@ -58,33 +59,45 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
   }
 
   Future<void> _getFutsalFieldData() async {
-    final _data =
-        await _fireStore.collection("futsalFields").document(widget.uid).get();
-
-    setState(() {
-      _imageUrl = _data.data['image'];
-      _name = _data.data['name'];
-      _location = _data.data['location'];
-      _address = _data.data["address"];
-      _phone = _data.data["phone"];
-      _closingHour = _data.data["closingHours"];
-      _openingHour = _data.data["openingHours"];
-      _fieldTypeFlooring = _data.data["fieldTypeFlooring"];
-      _fieldTypeSynthesis = _data.data["fieldTypeSynthesis"];
+    await getFutsalFieldById(widget.uid).then((FutsalFields futsalField) {
+      setState(() {
+        _imageUrl = futsalField.image;
+        _name = futsalField.name;
+        _location = futsalField.location;
+        _address = futsalField.address;
+        _phone = futsalField.phone;
+        _closingHour = futsalField.closingHours;
+        _openingHour = futsalField.openingHours;
+        _fieldTypeFlooring = futsalField.fieldTypeFlooring;
+        _fieldTypeSynthesis = futsalField.fieldTypeSynthesis;
+      });
+    }).catchError((e) {
+      print(e);
     });
+  }
 
-    final _dataFieldFlooring =
-        await _fireStore.document(_fieldTypeFlooring).get();
-    final _dataFieldSynthesis =
-        await _fireStore.document(_fieldTypeSynthesis).get();
-
-    setState(() {
-      _numberOfFlooring = _dataFieldFlooring['numberOfField'].toString();
-      _numberOfSynthesis = _dataFieldSynthesis['numberOfField'].toString();
-      _priceDayFlooring = _dataFieldFlooring['priceDay'];
-      _priceNightFlooring = _dataFieldFlooring['priceNight'];
-      _priceDaySynthesis = _dataFieldSynthesis['priceDay'];
-      _priceNightSynthesis = _dataFieldSynthesis['priceNight'];
+  Future<void> _getFieldTypeData() async {
+    Timer(Duration(seconds: 1), () async {
+      // flooring field data
+      await getFieldTypeData(_fieldTypeFlooring).then((FieldType fieldType) {
+        setState(() {
+          _numberOfFlooring = fieldType.numberOfField.toString();
+          _priceDayFlooring = fieldType.priceDay;
+          _priceNightFlooring = fieldType.priceNight;
+        });
+      }).catchError((e) {
+        print(e);
+      });
+      // synthesis field data
+      await getFieldTypeData(_fieldTypeSynthesis).then((FieldType fieldType) {
+        setState(() {
+          _numberOfSynthesis = fieldType.numberOfField.toString();
+          _priceDaySynthesis = fieldType.priceDay;
+          _priceNightSynthesis = fieldType.priceNight;
+        });
+      }).catchError((e) {
+        print(e);
+      });
     });
   }
 
@@ -588,13 +601,13 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                                   Text(
                                     (_priceDayFlooring == 0)
                                         ? '-'
-                                        : currencyFormater(_priceDayFlooring),
+                                        : currencyFormatter(_priceDayFlooring),
                                   ),
                                   Spacer(flex: 4),
                                   Text(
                                     (_priceDaySynthesis == 0)
                                         ? '-'
-                                        : currencyFormater(_priceDaySynthesis),
+                                        : currencyFormatter(_priceDaySynthesis),
                                   ),
                                   Spacer(flex: 3),
                                 ],
@@ -622,14 +635,15 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                                   Text(
                                     (_priceNightFlooring == 0)
                                         ? '-'
-                                        : currencyFormater(_priceNightFlooring),
+                                        : currencyFormatter(
+                                        _priceNightFlooring),
                                   ),
                                   Spacer(flex: 4),
                                   Text(
                                     (_priceNightSynthesis == 0)
                                         ? '-'
-                                        : currencyFormater(
-                                            _priceNightSynthesis),
+                                        : currencyFormatter(
+                                        _priceNightSynthesis),
                                   ),
                                   Spacer(flex: 3),
                                 ],
@@ -660,8 +674,10 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                       ),
                       color: Colors.greenAccent[400],
                       onPressed: () {
-                        ExtendedNavigator.ofRouter<Router>()
-                            .pushNamed(Routes.createSchedule);
+                        ExtendedNavigator.ofRouter<Router>().pushNamed(
+                          Routes.createSchedule,
+                          arguments: CreateScheduleArguments(uid: widget.uid),
+                        );
                       },
                     ),
                   ),

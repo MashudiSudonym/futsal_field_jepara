@@ -4,12 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:futsal_field_jepara/model/data.dart' as data;
 import 'package:futsal_field_jepara/model/futsal_field.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
 import 'package:futsal_field_jepara/utils/router.gr.dart';
 import 'package:lottie/lottie.dart';
-
-final Firestore _fireStore = Firestore.instance;
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -17,8 +16,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  static final mainRoot = _fireStore.collection("futsalFields");
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: mainRoot.snapshots(),
+        stream: data.loadAllFutsalFields(),
         builder: (context, snapshot) {
           if (!snapshot.hasData)
             return Center(
@@ -63,13 +60,16 @@ class _HomeScreenState extends State<HomeScreen> {
             default:
               return Container(
                 margin: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).size.width / 100 * 16.6,
+                  bottom: MediaQuery
+                      .of(context)
+                      .size
+                      .width / 100 * 14,
                 ),
                 child: ListView.builder(
                   physics: BouncingScrollPhysics(),
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final futsalFields = FutsalFields.fromMap(
+                    final futsalField = FutsalFields.fromMap(
                         snapshot.data.documents[index].data);
                     return AnimationConfiguration.staggeredList(
                       position: index,
@@ -89,31 +89,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ExtendedNavigator.ofRouter<Router>().pushNamed(
                                   Routes.futsalFieldInformation,
                                   arguments: FutsalFieldInformationArguments(
-                                      uid: futsalFields.uid),
+                                      uid: futsalField.uid),
                                 );
                               },
                               title: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: <Widget>[
                                   Hero(
-                                    tag: futsalFields.uid,
+                                    tag: futsalField.uid,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(5),
                                       child: CachedNetworkImage(
                                         height:
-                                            MediaQuery.of(context).size.height /
-                                                100 *
-                                                25,
-                                        imageUrl: futsalFields.image,
-                                        placeholder: (context, url) => Center(
-                                            child: CircularProgressIndicator()),
+                                        MediaQuery
+                                            .of(context)
+                                            .size
+                                            .height /
+                                            100 *
+                                            25,
+                                        imageUrl: futsalField.image,
+                                        placeholder: (context, url) =>
+                                            Center(
+                                                child: CircularProgressIndicator()),
                                         errorWidget: (context, url, error) =>
                                             Center(
-                                          child: FaIcon(
-                                            FontAwesomeIcons
-                                                .exclamationTriangle,
-                                          ),
-                                        ),
+                                              child: FaIcon(
+                                                FontAwesomeIcons
+                                                    .exclamationTriangle,
+                                              ),
+                                            ),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -125,12 +129,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                           1,
                                     ),
                                     child: Text(
-                                      futsalFields.name.toUpperCase(),
+                                      futsalField.name.toUpperCase(),
                                       style: TextStyle(
                                           color: kTitleTextColor,
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
+                                          fontSize: MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width /
                                               100 *
                                               5),
                                     ),
@@ -138,13 +143,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ],
                               ),
                               subtitle: Text(
-                                futsalFields.address.toUpperCase(),
+                                futsalField.address.toUpperCase(),
                                 style: TextStyle(
                                     color: kBodyTextColor,
                                     fontSize:
-                                        MediaQuery.of(context).size.width /
-                                            100 *
-                                            3),
+                                    MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width /
+                                        100 *
+                                        3),
                               ),
                             ),
                           ),

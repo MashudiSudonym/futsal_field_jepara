@@ -4,12 +4,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:futsal_field_jepara/model/data.dart';
 import 'package:futsal_field_jepara/model/futsal_field.dart';
 import 'package:futsal_field_jepara/utils/router.gr.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-final Firestore _fireStore = Firestore.instance;
 
 class LocationScreen extends StatefulWidget {
   @override
@@ -17,7 +16,6 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
-  final mainRoot = _fireStore.collection("futsalFields");
   final Geolocator geoLocator = Geolocator()..forceAndroidLocationManager;
   final _defaultPosition = CameraPosition(
     target: LatLng(-6.649179, 110.707172),
@@ -27,17 +25,47 @@ class _LocationScreenState extends State<LocationScreen> {
   GoogleMapController googleMapController;
   Set<Marker> _markers = Set();
   Marker _marker;
+  StreamSubscription<QuerySnapshot> _currentSubscription;
+  List<FutsalFields> _futsalFields = <FutsalFields>[];
 
   @override
   void initState() {
+    _currentSubscription = loadAllFutsalFields().listen(_getFutsalFields);
     _getCurrentLocation();
-    _futsalFieldMarker();
     super.initState();
   }
 
   @override
   void dispose() {
+    _currentSubscription.cancel();
     super.dispose();
+  }
+
+  void _getFutsalFields(QuerySnapshot snapshot) {
+    setState(() {
+      _futsalFields = getAllFutsalFields(snapshot);
+      _futsalFields.forEach((element) {
+        _marker = Marker(
+          flat: true,
+          markerId: MarkerId("${element.uid}"),
+          position:
+              LatLng(element.location.latitude, element.location.longitude),
+          icon: BitmapDescriptor.defaultMarker,
+          infoWindow: InfoWindow(
+            title: "${element.name.toUpperCase()}",
+            snippet: "${element.address.toUpperCase()}",
+            onTap: () {
+              ExtendedNavigator.ofRouter<Router>().pushNamed(
+                Routes.futsalFieldInformation,
+                arguments: FutsalFieldInformationArguments(uid: element.uid),
+              );
+            },
+          ),
+        );
+
+        _markers.add(_marker);
+      });
+    });
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -74,37 +102,6 @@ class _LocationScreenState extends State<LocationScreen> {
           ),
         ),
       );
-    });
-  }
-
-  Future<void> _futsalFieldMarker() async {
-    setState(() {
-      mainRoot.snapshots().listen((snapshot) {
-        snapshot.documents.map((data) {
-          final futsalFields = FutsalFields.fromSnapshot(data);
-
-          _marker = Marker(
-            flat: true,
-            markerId: MarkerId("${futsalFields.uid}"),
-            position: LatLng(futsalFields.location.latitude,
-                futsalFields.location.longitude),
-            icon: BitmapDescriptor.defaultMarker,
-            infoWindow: InfoWindow(
-              title: "${futsalFields.name.toUpperCase()}",
-              snippet: "${futsalFields.address.toUpperCase()}",
-              onTap: () {
-                ExtendedNavigator.ofRouter<Router>().pushNamed(
-                  Routes.futsalFieldInformation,
-                  arguments:
-                      FutsalFieldInformationArguments(uid: futsalFields.uid),
-                );
-              },
-            ),
-          );
-
-          _markers.add(_marker);
-        }).toList();
-      });
     });
   }
 

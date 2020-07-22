@@ -42,6 +42,7 @@ dependencies:
   somedialog: ^1.0.1
   lottie: ^0.4.0+1
   curved_navigation_bar: ^0.3.3
+  supercharged: ^1.7.0
 
 dev_dependencies:
   flutter_test:

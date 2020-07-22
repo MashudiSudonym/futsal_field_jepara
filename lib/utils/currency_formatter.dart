@@ -1,8 +1,6 @@
-import 'dart:wasm';
-
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 
-String currencyFormater(int value) {
+String currencyFormatter(int value) {
   FlutterMoneyFormatter fmf = FlutterMoneyFormatter(
     amount: value.toDouble(),
     settings: MoneyFormatterSettings(
