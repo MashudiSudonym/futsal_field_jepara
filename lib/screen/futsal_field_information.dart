@@ -636,14 +636,14 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                                     (_priceNightFlooring == 0)
                                         ? '-'
                                         : currencyFormatter(
-                                        _priceNightFlooring),
+                                            _priceNightFlooring),
                                   ),
                                   Spacer(flex: 4),
                                   Text(
                                     (_priceNightSynthesis == 0)
                                         ? '-'
                                         : currencyFormatter(
-                                        _priceNightSynthesis),
+                                            _priceNightSynthesis),
                                   ),
                                   Spacer(flex: 3),
                                 ],

@@ -98,23 +98,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                       borderRadius: BorderRadius.circular(5),
                                       child: CachedNetworkImage(
                                         height:
-                                        MediaQuery
-                                            .of(context)
-                                            .size
-                                            .height /
-                                            100 *
-                                            25,
+                                            MediaQuery.of(context).size.height /
+                                                100 *
+                                                25,
                                         imageUrl: futsalField.image,
-                                        placeholder: (context, url) =>
-                                            Center(
-                                                child: CircularProgressIndicator()),
+                                        placeholder: (context, url) => Center(
+                                            child: CircularProgressIndicator()),
                                         errorWidget: (context, url, error) =>
                                             Center(
-                                              child: FaIcon(
-                                                FontAwesomeIcons
-                                                    .exclamationTriangle,
-                                              ),
-                                            ),
+                                          child: FaIcon(
+                                            FontAwesomeIcons
+                                                .exclamationTriangle,
+                                          ),
+                                        ),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -129,10 +125,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       futsalField.name.toUpperCase(),
                                       style: TextStyle(
                                           color: kTitleTextColor,
-                                          fontSize: MediaQuery
-                                              .of(context)
-                                              .size
-                                              .width /
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
                                               100 *
                                               5),
                                     ),
@@ -144,12 +139,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 style: TextStyle(
                                     color: kBodyTextColor,
                                     fontSize:
-                                    MediaQuery
-                                        .of(context)
-                                        .size
-                                        .width /
-                                        100 *
-                                        3),
+                                        MediaQuery.of(context).size.width /
+                                            100 *
+                                            3),
                               ),
                             ),
                           ),
