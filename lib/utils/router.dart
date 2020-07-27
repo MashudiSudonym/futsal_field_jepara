@@ -4,6 +4,7 @@ import 'package:futsal_field_jepara/screen/create_user_screen.dart';
 import 'package:futsal_field_jepara/screen/edit_profile.dart';
 import 'package:futsal_field_jepara/screen/futsal_field_information.dart';
 import 'package:futsal_field_jepara/screen/main_screen.dart';
+import 'package:futsal_field_jepara/screen/order_result.dart';
 import 'package:futsal_field_jepara/screen/profile_screen.dart';
 import 'package:futsal_field_jepara/screen/sign_in_screen.dart';
 import 'package:futsal_field_jepara/screen/splash_screen.dart';
@@ -39,4 +40,7 @@ class $Router {
 
   @GuardedBy([AuthGuard])
   EditProfile editProfile;
+
+  @GuardedBy([AuthGuard])
+  OrderResult orderResult;
 }

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:futsal_field_jepara/model/field_type.dart';
 import 'package:futsal_field_jepara/model/futsal_field.dart';
+import 'package:futsal_field_jepara/model/user.dart';
 
 final Firestore _fireStore = Firestore.instance;
 
@@ -27,4 +28,41 @@ Future<FieldType> getFieldTypeData(String fieldType) {
       .document(fieldType)
       .get()
       .then((DocumentSnapshot doc) => FieldType.fromSnapshot(doc));
+}
+
+Stream<QuerySnapshot> loadUserById(String uid) {
+  return _fireStore
+      .collection("users")
+      .where("uid", isEqualTo: uid)
+      .snapshots();
+}
+
+Future<User> getUserById(String uid) {
+  return _fireStore
+      .collection('users')
+      .document(uid)
+      .get()
+      .then((DocumentSnapshot doc) => User.fromSnapshot(doc));
+}
+
+Future<void> createUserOrder(
+  String userUID,
+  String futsalFieldUID,
+  String futsalFieldName,
+  String orderDate,
+  String fieldType,
+  String orderTime,
+  int price,
+) {
+  var uid = _fireStore.collection("userOrders").document().documentID;
+  return _fireStore.collection("userOrders").document(uid).setData({
+    'uid': uid,
+    'userUID': userUID,
+    'futsalFieldUID': futsalFieldUID,
+    'futsalFieldName': futsalFieldName,
+    'orderDate': orderDate,
+    'fieldType': fieldType,
+    'orderTime': orderTime,
+    'price': price,
+  });
 }

@@ -676,7 +676,14 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                       onPressed: () {
                         ExtendedNavigator.ofRouter<Router>().pushNamed(
                           Routes.createSchedule,
-                          arguments: CreateScheduleArguments(uid: widget.uid),
+                          arguments: CreateScheduleArguments(
+                            uid: widget.uid,
+                            name: _name,
+                            priceDayFlooring: _priceDayFlooring,
+                            priceNightFlooring: _priceNightFlooring,
+                            priceDaySynthesis: _priceDaySynthesis,
+                            priceNightSynthesis: _priceNightSynthesis,
+                          ),
                         );
                       },
                     ),

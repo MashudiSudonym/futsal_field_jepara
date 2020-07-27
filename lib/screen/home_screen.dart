@@ -86,7 +86,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ExtendedNavigator.ofRouter<Router>().pushNamed(
                                   Routes.futsalFieldInformation,
                                   arguments: FutsalFieldInformationArguments(
-                                      uid: futsalField.uid),
+                                    uid: futsalField.uid,
+                                  ),
                                 );
                               },
                               title: Column(
@@ -103,7 +104,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 25,
                                         imageUrl: futsalField.image,
                                         placeholder: (context, url) => Center(
-                                            child: CircularProgressIndicator()),
+                                          child: CircularProgressIndicator(),
+                                        ),
                                         errorWidget: (context, url, error) =>
                                             Center(
                                           child: FaIcon(

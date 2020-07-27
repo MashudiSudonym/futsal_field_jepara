@@ -8,9 +8,10 @@ import 'package:futsal_field_jepara/utils/router.gr.dart';
 import 'package:futsal_field_jepara/widget/text_user_data_custom.dart';
 import 'package:lottie/lottie.dart';
 import 'package:somedialog/somedialog.dart';
+import 'package:futsal_field_jepara/model/data.dart';
+import 'package:futsal_field_jepara/model/user.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
-final Firestore _fireStore = Firestore.instance;
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -49,10 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       ),
       body: StreamBuilder<QuerySnapshot>(
-          stream: _fireStore
-              .collection("users")
-              .where("uid", isEqualTo: _userUID)
-              .snapshots(),
+          stream: loadUserById(_userUID),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(
@@ -65,7 +63,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             return ListView.builder(
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final _data = snapshot.data.documents[index];
+                  final user =
+                      User.fromMap(snapshot.data.documents[index].data);
 
                   return Center(
                     child: Padding(
@@ -76,8 +75,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           CircleAvatar(
                             radius:
                                 MediaQuery.of(context).size.width / 100 * 20,
-                            backgroundImage: (_data['imageProfile'] != null)
-                                ? NetworkImage(_data['imageProfile'])
+                            backgroundImage: (user.imageProfile != null)
+                                ? NetworkImage(user.imageProfile)
                                 : Lottie.asset("assets/loading.json"),
                           ),
                           SizedBox(
@@ -85,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 MediaQuery.of(context).size.height / 100 * 5,
                           ),
                           Text(
-                            _data['name'],
+                            user.name,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
@@ -99,21 +98,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 MediaQuery.of(context).size.height / 100 * 5,
                           ),
                           TextUserDataCustom(
-                            contentText: _data['email'],
+                            contentText: user.email,
                             faIcon: FaIcon(
                               FontAwesomeIcons.solidEnvelope,
                               size: MediaQuery.of(context).size.width / 100 * 4,
                             ),
                           ),
                           TextUserDataCustom(
-                            contentText: _data['address'],
+                            contentText: user.address,
                             faIcon: FaIcon(
                               FontAwesomeIcons.mapMarked,
                               size: MediaQuery.of(context).size.width / 100 * 4,
                             ),
                           ),
                           TextUserDataCustom(
-                            contentText: _data['phone'],
+                            contentText: user.phone,
                             faIcon: FaIcon(
                               FontAwesomeIcons.phoneAlt,
                               size: MediaQuery.of(context).size.width / 100 * 4,
