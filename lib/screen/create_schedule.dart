@@ -31,6 +31,7 @@ class CreateSchedule extends StatefulWidget {
 }
 
 class _CreateScheduleState extends State<CreateSchedule> {
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _datePickerController = TextEditingController();
   String _dateValue = "";
   DateTime _date = DateTime.now();
@@ -126,116 +127,77 @@ class _CreateScheduleState extends State<CreateSchedule> {
         ),
         body: SingleChildScrollView(
           padding: EdgeInsets.all(MediaQuery.of(context).size.width / 100 * 4),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              TextField(
-                onTap: () {
-                  setState(() {
-                    _selectDate(context);
-                  });
-                },
-                controller: _datePickerController,
-                readOnly: true,
-                decoration: InputDecoration(
-                  hintText: "$_dateValue",
-                  labelText: "Pilih Tanggal",
-                  labelStyle: TextStyle(
-                    fontSize: MediaQuery.of(context).size.width / 100 * 4,
-                    color: kTitleTextColor,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.greenAccent[400],
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.greenAccent[400],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height / 100 * 2),
-              Text(
-                "Jenis Lapangan",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height / 100 * 1),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 100 * 8,
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 3,
-                    crossAxisSpacing:
-                        MediaQuery.of(context).size.width / 100 * 2,
-                    mainAxisSpacing: 2,
-                  ),
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: _fieldTypeList.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      color: (_fieldTypeSelectedIndex != null &&
-                              _fieldTypeSelectedIndex == index)
-                          ? Colors.greenAccent[400]
-                          : kPrimaryColor,
-                      child: ListTile(
-                        title: Text(
-                          _fieldTypeList[index],
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: (_fieldTypeSelectedIndex != null &&
-                                    _fieldTypeSelectedIndex == index)
-                                ? kPrimaryColor
-                                : Colors.black,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        onTap: () {
-                          setState(() {
-                            _onFieldTypeSelected(index);
-                          });
-                        },
-                      ),
-                    );
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                TextFormField(
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return "tentukan tanggal pesan lapangan";
+                    }
+                    return null;
                   },
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height / 100 * 2),
-              Text(
-                "Pesan Jam",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height / 100 * 1),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 100 * 28,
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    childAspectRatio: 16 / 9,
-                    mainAxisSpacing: 2,
+                  onTap: () {
+                    setState(() {
+                      _selectDate(context);
+                    });
+                  },
+                  controller: _datePickerController,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    hintText: "$_dateValue",
+                    labelText: "Pilih Tanggal",
+                    labelStyle: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width / 100 * 4,
+                      color: kTitleTextColor,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.greenAccent[400],
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.greenAccent[400],
+                      ),
+                    ),
                   ),
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: _timeOrderList.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      color: (_timeOrderSelectedIndex != null &&
-                              _timeOrderSelectedIndex == index)
-                          ? Colors.greenAccent[400]
-                          : kPrimaryColor,
-                      child: Center(
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 100 * 2),
+                Text(
+                  "Jenis Lapangan",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 100 * 1),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 100 * 8,
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 3,
+                      crossAxisSpacing:
+                          MediaQuery.of(context).size.width / 100 * 2,
+                      mainAxisSpacing: 2,
+                    ),
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: _fieldTypeList.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        color: (_fieldTypeSelectedIndex != null &&
+                                _fieldTypeSelectedIndex == index)
+                            ? Colors.greenAccent[400]
+                            : kPrimaryColor,
                         child: ListTile(
                           title: Text(
-                            _timeOrderList[index],
+                            _fieldTypeList[index],
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: (_timeOrderSelectedIndex != null &&
-                                      _timeOrderSelectedIndex == index)
+                              color: (_fieldTypeSelectedIndex != null &&
+                                      _fieldTypeSelectedIndex == index)
                                   ? kPrimaryColor
                                   : Colors.black,
                               fontWeight: FontWeight.w600,
@@ -243,182 +205,241 @@ class _CreateScheduleState extends State<CreateSchedule> {
                           ),
                           onTap: () {
                             setState(() {
-                              _onTimeOrderSelected(index);
+                              _onFieldTypeSelected(index);
                             });
                           },
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height / 100 * 25),
-              Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height / 100 * 7,
-                padding: EdgeInsets.all(
-                    MediaQuery.of(context).size.height / 100 * 1),
-                child: RaisedButton(
-                  child: Text(
-                    "Selanjutnya",
-                    style: TextStyle(
-                      color: Colors.white,
+                SizedBox(height: MediaQuery.of(context).size.height / 100 * 2),
+                Text(
+                  "Pesan Jam",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 100 * 1),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 100 * 28,
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      childAspectRatio: 16 / 9,
+                      mainAxisSpacing: 2,
                     ),
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: _timeOrderList.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        color: (_timeOrderSelectedIndex != null &&
+                                _timeOrderSelectedIndex == index)
+                            ? Colors.greenAccent[400]
+                            : kPrimaryColor,
+                        child: Center(
+                          child: ListTile(
+                            title: Text(
+                              _timeOrderList[index],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: (_timeOrderSelectedIndex != null &&
+                                        _timeOrderSelectedIndex == index)
+                                    ? kPrimaryColor
+                                    : Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            onTap: () {
+                              setState(() {
+                                _onTimeOrderSelected(index);
+                              });
+                            },
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  color: Colors.greenAccent[400],
-                  onPressed: () {
-                    print(_fieldTypeSelected);
-                    print(_timeOrderSelected);
-                    print(_datePickerController.text);
-                    print(widget.uid);
-                    print(_userUID);
-                    print(widget.name);
-
-                    if (_fieldTypeSelected == "Lapangan Flooring") {
-                      switch (_timeOrderSelectedIndex) {
-                        case 0:
-                          _priceSelected = widget.priceDayFlooring;
-                          print(_priceSelected);
-                          break;
-                        case 1:
-                          _priceSelected = widget.priceDayFlooring;
-                          print(_priceSelected);
-                          break;
-                        case 2:
-                          _priceSelected = widget.priceDayFlooring;
-                          print(_priceSelected);
-                          break;
-                        case 3:
-                          _priceSelected = widget.priceDayFlooring;
-                          print(_priceSelected);
-                          break;
-                        case 4:
-                          _priceSelected = widget.priceDayFlooring;
-                          print(_priceSelected);
-                          break;
-                        case 5:
-                          _priceSelected = widget.priceDayFlooring;
-                          print(_priceSelected);
-                          break;
-                        case 6:
-                          _priceSelected = widget.priceDayFlooring;
-                          print(_priceSelected);
-                          break;
-                        case 7:
-                          _priceSelected = widget.priceDayFlooring;
-                          print(_priceSelected);
-                          break;
-                        case 8:
-                          _priceSelected = widget.priceNightFlooring;
-                          print(_priceSelected);
-                          break;
-                        case 9:
-                          _priceSelected = widget.priceNightFlooring;
-                          print(_priceSelected);
-                          break;
-                        case 10:
-                          _priceSelected = widget.priceNightFlooring;
-                          print(_priceSelected);
-                          break;
-                        case 11:
-                          _priceSelected = widget.priceNightFlooring;
-                          print(_priceSelected);
-                          break;
-                        case 12:
-                          _priceSelected = widget.priceNightFlooring;
-                          print(_priceSelected);
-                          break;
-                        case 13:
-                          _priceSelected = widget.priceNightFlooring;
-                          print(_priceSelected);
-                          break;
-                        default:
-                          _priceSelected = widget.priceNightFlooring;
-                          print(_priceSelected);
-                      }
-                    } else {
-                      switch (_timeOrderSelectedIndex) {
-                        case 0:
-                          _priceSelected = widget.priceDaySynthesis;
-                          print(_priceSelected);
-                          break;
-                        case 1:
-                          _priceSelected = widget.priceDaySynthesis;
-                          print(_priceSelected);
-                          break;
-                        case 2:
-                          _priceSelected = widget.priceDaySynthesis;
-                          print(_priceSelected);
-                          break;
-                        case 3:
-                          _priceSelected = widget.priceDaySynthesis;
-                          print(_priceSelected);
-                          break;
-                        case 4:
-                          _priceSelected = widget.priceDaySynthesis;
-                          print(_priceSelected);
-                          break;
-                        case 5:
-                          _priceSelected = widget.priceDaySynthesis;
-                          print(_priceSelected);
-                          break;
-                        case 6:
-                          _priceSelected = widget.priceDaySynthesis;
-                          print(_priceSelected);
-                          break;
-                        case 7:
-                          _priceSelected = widget.priceDaySynthesis;
-                          print(_priceSelected);
-                          break;
-                        case 8:
-                          _priceSelected = widget.priceNightSynthesis;
-                          print(_priceSelected);
-                          break;
-                        case 9:
-                          _priceSelected = widget.priceNightSynthesis;
-                          print(_priceSelected);
-                          break;
-                        case 10:
-                          _priceSelected = widget.priceNightSynthesis;
-                          print(_priceSelected);
-                          break;
-                        case 11:
-                          _priceSelected = widget.priceNightSynthesis;
-                          print(_priceSelected);
-                          break;
-                        case 12:
-                          _priceSelected = widget.priceNightSynthesis;
-                          print(_priceSelected);
-                          break;
-                        case 13:
-                          _priceSelected = widget.priceNightSynthesis;
-                          print(_priceSelected);
-                          break;
-                        default:
-                          _priceSelected = widget.priceNightSynthesis;
-                          print(_priceSelected);
-                      }
-                    }
-
-                    ExtendedNavigator.ofRouter<Router>().pushNamed(
-                      Routes.orderResult,
-                      arguments: OrderResultArguments(
-                        uid: widget.uid,
-                        userUID: _userUID,
-                        timeOrderSelected: _timeOrderSelected,
-                        fieldTypeSelected: _fieldTypeSelected,
-                        fieldPrice: _priceSelected,
-                        fieldName: widget.name,
-                        dateOrderSelected: _datePickerController.text,
-                      ),
-                    );
-                  },
                 ),
-              ),
-            ],
+                SizedBox(height: MediaQuery.of(context).size.height / 100 * 25),
+                Container(
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height / 100 * 7,
+                  padding: EdgeInsets.all(
+                      MediaQuery.of(context).size.height / 100 * 1),
+                  child: RaisedButton(
+                    child: Text(
+                      "Selanjutnya",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    color: Colors.greenAccent[400],
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {
+                        print(_timeOrderSelected);
+                        print(_datePickerController.text);
+                        print(widget.uid);
+                        print(_userUID);
+                        print(widget.name);
+
+                        if (_fieldTypeSelected == "Lapangan Flooring") {
+                          switch (_timeOrderSelectedIndex) {
+                            case 0:
+                              _priceSelected = widget.priceDayFlooring;
+                              print(_priceSelected);
+                              break;
+                            case 1:
+                              _priceSelected = widget.priceDayFlooring;
+                              print(_priceSelected);
+                              break;
+                            case 2:
+                              _priceSelected = widget.priceDayFlooring;
+                              print(_priceSelected);
+                              break;
+                            case 3:
+                              _priceSelected = widget.priceDayFlooring;
+                              print(_priceSelected);
+                              break;
+                            case 4:
+                              _priceSelected = widget.priceDayFlooring;
+                              print(_priceSelected);
+                              break;
+                            case 5:
+                              _priceSelected = widget.priceDayFlooring;
+                              print(_priceSelected);
+                              break;
+                            case 6:
+                              _priceSelected = widget.priceDayFlooring;
+                              print(_priceSelected);
+                              break;
+                            case 7:
+                              _priceSelected = widget.priceDayFlooring;
+                              print(_priceSelected);
+                              break;
+                            case 8:
+                              _priceSelected = widget.priceNightFlooring;
+                              print(_priceSelected);
+                              break;
+                            case 9:
+                              _priceSelected = widget.priceNightFlooring;
+                              print(_priceSelected);
+                              break;
+                            case 10:
+                              _priceSelected = widget.priceNightFlooring;
+                              print(_priceSelected);
+                              break;
+                            case 11:
+                              _priceSelected = widget.priceNightFlooring;
+                              print(_priceSelected);
+                              break;
+                            case 12:
+                              _priceSelected = widget.priceNightFlooring;
+                              print(_priceSelected);
+                              break;
+                            case 13:
+                              _priceSelected = widget.priceNightFlooring;
+                              print(_priceSelected);
+                              break;
+                            default:
+                              _priceSelected = widget.priceNightFlooring;
+                              print(_priceSelected);
+                          }
+                        } else {
+                          switch (_timeOrderSelectedIndex) {
+                            case 0:
+                              _priceSelected = widget.priceDaySynthesis;
+                              print(_priceSelected);
+                              break;
+                            case 1:
+                              _priceSelected = widget.priceDaySynthesis;
+                              print(_priceSelected);
+                              break;
+                            case 2:
+                              _priceSelected = widget.priceDaySynthesis;
+                              print(_priceSelected);
+                              break;
+                            case 3:
+                              _priceSelected = widget.priceDaySynthesis;
+                              print(_priceSelected);
+                              break;
+                            case 4:
+                              _priceSelected = widget.priceDaySynthesis;
+                              print(_priceSelected);
+                              break;
+                            case 5:
+                              _priceSelected = widget.priceDaySynthesis;
+                              print(_priceSelected);
+                              break;
+                            case 6:
+                              _priceSelected = widget.priceDaySynthesis;
+                              print(_priceSelected);
+                              break;
+                            case 7:
+                              _priceSelected = widget.priceDaySynthesis;
+                              print(_priceSelected);
+                              break;
+                            case 8:
+                              _priceSelected = widget.priceNightSynthesis;
+                              print(_priceSelected);
+                              break;
+                            case 9:
+                              _priceSelected = widget.priceNightSynthesis;
+                              print(_priceSelected);
+                              break;
+                            case 10:
+                              _priceSelected = widget.priceNightSynthesis;
+                              print(_priceSelected);
+                              break;
+                            case 11:
+                              _priceSelected = widget.priceNightSynthesis;
+                              print(_priceSelected);
+                              break;
+                            case 12:
+                              _priceSelected = widget.priceNightSynthesis;
+                              print(_priceSelected);
+                              break;
+                            case 13:
+                              _priceSelected = widget.priceNightSynthesis;
+                              print(_priceSelected);
+                              break;
+                            default:
+                              _priceSelected = widget.priceNightSynthesis;
+                              print(_priceSelected);
+                          }
+                        }
+
+                        createUserOrder(
+                          _userUID,
+                          widget.uid,
+                          widget.name,
+                          _datePickerController.text,
+                          _fieldTypeSelected,
+                          _timeOrderSelected,
+                          _priceSelected,
+                        );
+
+                        ExtendedNavigator.ofRouter<Router>().pushNamed(
+                          Routes.orderResult,
+                          arguments: OrderResultArguments(
+                            uid: widget.uid,
+                            userUID: _userUID,
+                            timeOrderSelected: _timeOrderSelected,
+                            fieldTypeSelected: _fieldTypeSelected,
+                            fieldPrice: _priceSelected,
+                            fieldName: widget.name,
+                            dateOrderSelected: _datePickerController.text,
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
