@@ -4,7 +4,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
-import 'package:futsal_field_jepara/model/data.dart';
 import 'package:futsal_field_jepara/utils/router.gr.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -271,7 +270,7 @@ class _CreateScheduleState extends State<CreateSchedule> {
                     child: Text(
                       "Selanjutnya",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                     shape: RoundedRectangleBorder(

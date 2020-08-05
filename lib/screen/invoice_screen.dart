@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:futsal_field_jepara/model/user.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
 import 'package:futsal_field_jepara/utils/currency_formatter.dart';
 import 'package:futsal_field_jepara/utils/router.gr.dart';
+import 'package:futsal_field_jepara/model/data.dart';
 
 class InvoiceScreen extends StatefulWidget {
   final String uid;
@@ -28,6 +30,26 @@ class InvoiceScreen extends StatefulWidget {
 }
 
 class _InvoiceScreenState extends State<InvoiceScreen> {
+  String _name = "-";
+  String _address = "-";
+  String _phone = "-";
+
+  @override
+  void initState() {
+    _getUserData();
+    super.initState();
+  }
+
+  Future<void> _getUserData() async {
+    await getUserById(widget.userUID).then((User user) {
+      setState(() {
+        _name = user.name;
+        _address = user.address;
+        _phone = user.phone;
+      });
+    }).catchError((e) => print(e));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,7 +111,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               ),
                             ),
                             TableCell(
-                              child: Text(widget.uid),
+                              child: Text(_name),
                             ),
                           ],
                         ),
@@ -108,7 +130,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               ),
                             ),
                             TableCell(
-                              child: Text(widget.uid),
+                              child: Text(_address),
                             ),
                           ],
                         ),
@@ -127,7 +149,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               ),
                             ),
                             TableCell(
-                              child: Text(widget.uid),
+                              child: Text(_phone),
                             ),
                           ],
                         ),

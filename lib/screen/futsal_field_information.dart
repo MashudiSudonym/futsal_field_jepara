@@ -77,7 +77,7 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
   }
 
   Future<void> _getFieldTypeData() async {
-    Timer(Duration(seconds: 1), () async {
+    Timer(Duration(seconds: 2), () async {
       // flooring field data
       await getFieldTypeData(_fieldTypeFlooring).then((FieldType fieldType) {
         setState(() {
@@ -705,26 +705,28 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                       child: Text(
                         "Pesan Lapangan",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                       ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
                       color: Colors.greenAccent[400],
-                      onPressed: () {
-                        ExtendedNavigator.ofRouter<Router>().pushNamed(
-                          Routes.createSchedule,
-                          arguments: CreateScheduleArguments(
-                            uid: widget.uid,
-                            name: _name,
-                            priceDayFlooring: _priceDayFlooring,
-                            priceNightFlooring: _priceNightFlooring,
-                            priceDaySynthesis: _priceDaySynthesis,
-                            priceNightSynthesis: _priceNightSynthesis,
-                          ),
-                        );
-                      },
+                      onPressed: (_numberOfFlooring == "-")
+                          ? null
+                          : () {
+                              ExtendedNavigator.ofRouter<Router>().pushNamed(
+                                Routes.createSchedule,
+                                arguments: CreateScheduleArguments(
+                                  uid: widget.uid,
+                                  name: _name,
+                                  priceDayFlooring: _priceDayFlooring,
+                                  priceNightFlooring: _priceNightFlooring,
+                                  priceDaySynthesis: _priceDaySynthesis,
+                                  priceNightSynthesis: _priceNightSynthesis,
+                                ),
+                              );
+                            },
                     ),
                   ),
                 ],
