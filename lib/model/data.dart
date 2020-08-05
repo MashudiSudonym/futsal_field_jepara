@@ -27,7 +27,8 @@ Future<FieldType> getFieldTypeData(String fieldType) {
   return _fireStore
       .document(fieldType)
       .get()
-      .then((DocumentSnapshot doc) => FieldType.fromSnapshot(doc));
+      .then((DocumentSnapshot doc) => FieldType.fromSnapshot(doc))
+      .catchError((e) => print(e));
 }
 
 Stream<QuerySnapshot> loadUserById(String uid) {
@@ -53,6 +54,7 @@ Future<void> createUserOrder(
   String fieldType,
   String orderTime,
   int price,
+  int orderStatus,
 ) {
   var uid = _fireStore.collection("userOrders").document().documentID;
   return _fireStore.collection("userOrders").document(uid).setData({
@@ -64,5 +66,6 @@ Future<void> createUserOrder(
     'fieldType': fieldType,
     'orderTime': orderTime,
     'price': price,
+    'orderStatus': orderStatus,
   });
 }

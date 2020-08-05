@@ -402,127 +402,128 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                     child: Column(
                       children: <Widget>[
                         ListTile(
-                          title: Text("Jam Operasional"),
+                          title: Text(
+                            "Jam Operasional",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                         Divider(),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width /
-                                    100 *
-                                    4.5,
-                                bottom: MediaQuery.of(context).size.height /
-                                    100 *
-                                    1,
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(
+                            MediaQuery.of(context).size.width / 100 * 4,
+                            0,
+                            MediaQuery.of(context).size.width / 100 * 4,
+                            MediaQuery.of(context).size.width / 100 * 4,
+                          ),
+                          child: Table(
+                            columnWidths: {
+                              0: FractionColumnWidth(.2),
+                              1: FractionColumnWidth(.1),
+                              2: FractionColumnWidth(.8)
+                            },
+                            children: [
+                              TableRow(
+                                children: [
+                                  TableCell(
+                                    child: Text("Senin"),
+                                  ),
+                                  TableCell(
+                                    child: Text(":"),
+                                  ),
+                                  TableCell(
+                                    child:
+                                        Text("$_openingHour - $_closingHour"),
+                                  ),
+                                ],
                               ),
-                              child:
-                                  Text("Senin : $_openingHour - $_closingHour"),
-                            )
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width /
-                                    100 *
-                                    4.5,
-                                bottom: MediaQuery.of(context).size.height /
-                                    100 *
-                                    1,
+                              TableRow(
+                                children: [
+                                  TableCell(
+                                    child: Text("Selasa"),
+                                  ),
+                                  TableCell(
+                                    child: Text(":"),
+                                  ),
+                                  TableCell(
+                                    child:
+                                        Text("$_openingHour - $_closingHour"),
+                                  ),
+                                ],
                               ),
-                              child: Text(
-                                  "Selasa : $_openingHour - $_closingHour"),
-                            )
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width /
-                                    100 *
-                                    4.5,
-                                bottom: MediaQuery.of(context).size.height /
-                                    100 *
-                                    1,
+                              TableRow(
+                                children: [
+                                  TableCell(
+                                    child: Text("Rabu"),
+                                  ),
+                                  TableCell(
+                                    child: Text(":"),
+                                  ),
+                                  TableCell(
+                                    child:
+                                        Text("$_openingHour - $_closingHour"),
+                                  ),
+                                ],
                               ),
-                              child:
-                                  Text("Rabu : $_openingHour - $_closingHour"),
-                            )
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width /
-                                    100 *
-                                    4.5,
-                                bottom: MediaQuery.of(context).size.height /
-                                    100 *
-                                    1,
+                              TableRow(
+                                children: [
+                                  TableCell(
+                                    child: Text("Kamis"),
+                                  ),
+                                  TableCell(
+                                    child: Text(":"),
+                                  ),
+                                  TableCell(
+                                    child:
+                                        Text("$_openingHour - $_closingHour"),
+                                  ),
+                                ],
                               ),
-                              child:
-                                  Text("Kamis : $_openingHour - $_closingHour"),
-                            )
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width /
-                                    100 *
-                                    4.5,
-                                bottom: MediaQuery.of(context).size.height /
-                                    100 *
-                                    1,
+                              TableRow(
+                                children: [
+                                  TableCell(
+                                    child: Text("Jumat"),
+                                  ),
+                                  TableCell(
+                                    child: Text(":"),
+                                  ),
+                                  TableCell(
+                                    child:
+                                        Text("$_openingHour - $_closingHour"),
+                                  ),
+                                ],
                               ),
-                              child:
-                                  Text("Jumat : $_openingHour - $_closingHour"),
-                            )
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width /
-                                    100 *
-                                    4.5,
-                                bottom: MediaQuery.of(context).size.height /
-                                    100 *
-                                    1,
+                              TableRow(
+                                children: [
+                                  TableCell(
+                                    child: Text("Sabtu"),
+                                  ),
+                                  TableCell(
+                                    child: Text(":"),
+                                  ),
+                                  TableCell(
+                                    child:
+                                        Text("$_openingHour - $_closingHour"),
+                                  ),
+                                ],
                               ),
-                              child:
-                                  Text("Sabtu : $_openingHour - $_closingHour"),
-                            )
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width /
-                                    100 *
-                                    4.5,
-                                bottom: MediaQuery.of(context).size.height /
-                                    100 *
-                                    1,
+                              TableRow(
+                                children: [
+                                  TableCell(
+                                    child: Text("Minggu"),
+                                  ),
+                                  TableCell(
+                                    child: Text(":"),
+                                  ),
+                                  TableCell(
+                                    child:
+                                        Text("$_openingHour - $_closingHour"),
+                                  ),
+                                ],
                               ),
-                              child: Text(
-                                  "Minggu : $_openingHour - $_closingHour"),
-                            )
-                          ],
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -547,107 +548,145 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                     child: Column(
                       children: <Widget>[
                         ListTile(
-                          title: Text("Daftar Harga"),
+                          title: Text(
+                            "Daftar Harga",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                         Divider(),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.all(
-                                MediaQuery.of(context).size.width / 100 * 2,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    "Flooring",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Synthesis",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ],
+                        DataTable(
+                          columns: <DataColumn>[
+                            DataColumn(
+                              label: Text(
+                                "",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: MediaQuery.of(context).size.width /
+                                      100 *
+                                      3.5,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                            Divider(),
-                            Padding(
-                              padding: EdgeInsets.all(
-                                MediaQuery.of(context).size.width / 100 * 2,
+                            DataColumn(
+                              label: Text(
+                                "Flooring",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: MediaQuery.of(context).size.width /
+                                      100 *
+                                      3.5,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width /
-                                        100 *
-                                        2,
-                                  ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                "Synthesis",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: MediaQuery.of(context).size.width /
+                                      100 *
+                                      3.5,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                          rows: <DataRow>[
+                            DataRow(
+                              cells: <DataCell>[
+                                DataCell(
                                   Text(
                                     "Pagi",
                                     style: TextStyle(
-                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  Spacer(flex: 2),
+                                ),
+                                DataCell(
                                   Text(
                                     (_priceDayFlooring == 0)
                                         ? '-'
                                         : currencyFormatter(_priceDayFlooring),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
                                   ),
-                                  Spacer(flex: 4),
+                                ),
+                                DataCell(
                                   Text(
                                     (_priceDaySynthesis == 0)
                                         ? '-'
                                         : currencyFormatter(_priceDaySynthesis),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
                                   ),
-                                  Spacer(flex: 3),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                            Padding(
-                              padding: EdgeInsets.all(
-                                MediaQuery.of(context).size.width / 100 * 2,
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width /
-                                        100 *
-                                        2,
-                                  ),
+                            DataRow(
+                              cells: <DataCell>[
+                                DataCell(
                                   Text(
                                     "Malam",
                                     style: TextStyle(
-                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  Spacer(flex: 1),
+                                ),
+                                DataCell(
                                   Text(
                                     (_priceNightFlooring == 0)
                                         ? '-'
                                         : currencyFormatter(
                                             _priceNightFlooring),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
                                   ),
-                                  Spacer(flex: 4),
+                                ),
+                                DataCell(
                                   Text(
                                     (_priceNightSynthesis == 0)
                                         ? '-'
                                         : currencyFormatter(
                                             _priceNightSynthesis),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
                                   ),
-                                  Spacer(flex: 3),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ],
                         ),

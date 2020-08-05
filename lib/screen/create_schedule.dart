@@ -412,19 +412,9 @@ class _CreateScheduleState extends State<CreateSchedule> {
                           }
                         }
 
-                        createUserOrder(
-                          _userUID,
-                          widget.uid,
-                          widget.name,
-                          _datePickerController.text,
-                          _fieldTypeSelected,
-                          _timeOrderSelected,
-                          _priceSelected,
-                        );
-
                         ExtendedNavigator.ofRouter<Router>().pushNamed(
-                          Routes.orderResult,
-                          arguments: OrderResultArguments(
+                          Routes.invoiceScreen,
+                          arguments: InvoiceScreenArguments(
                             uid: widget.uid,
                             userUID: _userUID,
                             timeOrderSelected: _timeOrderSelected,
