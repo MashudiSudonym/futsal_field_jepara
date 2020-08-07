@@ -712,7 +712,7 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       color: Colors.greenAccent[400],
-                      onPressed: (_numberOfFlooring == "-")
+                      onPressed: (_numberOfSynthesis == "-")
                           ? null
                           : () {
                               ExtendedNavigator.ofRouter<Router>().pushNamed(
@@ -720,6 +720,7 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                                 arguments: CreateScheduleArguments(
                                   uid: widget.uid,
                                   name: _name,
+                                  phone: _phone,
                                   priceDayFlooring: _priceDayFlooring,
                                   priceNightFlooring: _priceNightFlooring,
                                   priceDaySynthesis: _priceDaySynthesis,

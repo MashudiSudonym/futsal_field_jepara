@@ -8,7 +8,6 @@ import 'package:futsal_field_jepara/screen/about_screen.dart';
 import 'package:futsal_field_jepara/screen/booking_screen.dart';
 import 'package:futsal_field_jepara/screen/home_screen.dart';
 import 'package:futsal_field_jepara/screen/location_screen.dart';
-import 'package:futsal_field_jepara/utils/constants.dart';
 import 'package:futsal_field_jepara/utils/router.gr.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -104,75 +103,5 @@ class _MainScreenState extends State<MainScreen> {
       ),
       // bottomNavigationBar: _buildBottomNavigationBar(),
     );
-  }
-
-  CurvedNavigationBar _buildBottomNavigationBar() {
-    return CurvedNavigationBar(
-      key: _bottomNavigationKey,
-      color: Colors.greenAccent[400],
-      buttonBackgroundColor: Colors.greenAccent[400],
-      backgroundColor: Colors.transparent,
-      animationCurve: Curves.easeInOutSine,
-      animationDuration: Duration(milliseconds: 600),
-      items: <Widget>[
-        FaIcon(
-          FontAwesomeIcons.home,
-          color: kPrimaryColor,
-          size: 30,
-        ),
-        FaIcon(
-          FontAwesomeIcons.compass,
-          color: kPrimaryColor,
-          size: 30,
-        ),
-        FaIcon(
-          FontAwesomeIcons.trello,
-          color: kPrimaryColor,
-          size: 30,
-        ),
-        FaIcon(
-          FontAwesomeIcons.infoCircle,
-          color: kPrimaryColor,
-          size: 30,
-        ),
-      ],
-      index: _selectedIndex,
-      onTap: (index) {
-        setState(() {
-          _onTapItem(index);
-        });
-      },
-    );
-    // return BottomNavigationBar(
-    //   elevation: 0.0,
-    //   selectedItemColor: Colors.black87,
-    //   unselectedItemColor: Colors.black54,
-    //   type: BottomNavigationBarType.shifting,
-    //   items: <BottomNavigationBarItem>[
-    //     BottomNavigationBarItem(
-    //       icon: FaIcon(FontAwesomeIcons.home),
-    //       title: Text("Home"),
-    //       backgroundColor: kPrimaryColor,
-    //     ),
-    //     BottomNavigationBarItem(
-    //       icon: FaIcon(FontAwesomeIcons.compass),
-    //       title: Text("Location"),
-    //       backgroundColor: kPrimaryColor,
-    //     ),
-    //     BottomNavigationBarItem(
-    //       icon: FaIcon(FontAwesomeIcons.trello),
-    //       title: Text("Booking"),
-    //       backgroundColor: kPrimaryColor,
-    //     ),
-    //     BottomNavigationBarItem(
-    //       icon: FaIcon(FontAwesomeIcons.info),
-    //       title: Text("About"),
-    //       backgroundColor: kPrimaryColor,
-    //       activeIcon: FaIcon(FontAwesomeIcons.infoCircle),
-    //     ),
-    //   ],
-    //   currentIndex: _selectedIndex,
-    //   onTap: _onTapItem,
-    // );
   }
 }

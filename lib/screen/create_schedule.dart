@@ -11,6 +11,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 class CreateSchedule extends StatefulWidget {
   final String uid;
   final String name;
+  final String phone;
   final int priceDayFlooring;
   final int priceNightFlooring;
   final int priceDaySynthesis;
@@ -19,6 +20,7 @@ class CreateSchedule extends StatefulWidget {
   const CreateSchedule({
     @required this.uid,
     @required this.name,
+    @required this.phone,
     @required this.priceDayFlooring,
     @required this.priceNightFlooring,
     @required this.priceDaySynthesis,
@@ -195,10 +197,7 @@ class _CreateScheduleState extends State<CreateSchedule> {
                             _fieldTypeList[index],
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: (_fieldTypeSelectedIndex != null &&
-                                      _fieldTypeSelectedIndex == index)
-                                  ? kPrimaryColor
-                                  : Colors.black,
+                              color: Colors.black,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -242,10 +241,7 @@ class _CreateScheduleState extends State<CreateSchedule> {
                               _timeOrderList[index],
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: (_timeOrderSelectedIndex != null &&
-                                        _timeOrderSelectedIndex == index)
-                                    ? kPrimaryColor
-                                    : Colors.black,
+                                color: Colors.black,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -416,6 +412,7 @@ class _CreateScheduleState extends State<CreateSchedule> {
                           arguments: InvoiceScreenArguments(
                             uid: widget.uid,
                             userUID: _userUID,
+                            futsalFieldPhone: widget.phone,
                             timeOrderSelected: _timeOrderSelected,
                             fieldTypeSelected: _fieldTypeSelected,
                             fieldPrice: _priceSelected,

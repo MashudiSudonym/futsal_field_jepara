@@ -1,13 +1,17 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:futsal_field_jepara/model/user.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
 import 'package:futsal_field_jepara/utils/currency_formatter.dart';
 import 'package:futsal_field_jepara/utils/router.gr.dart';
 import 'package:futsal_field_jepara/model/data.dart';
+import 'package:sms_maintained/sms.dart';
+import 'package:somedialog/somedialog.dart';
 
 class InvoiceScreen extends StatefulWidget {
   final String uid;
+  final String futsalFieldPhone;
   final String userUID;
   final String fieldTypeSelected;
   final String timeOrderSelected;
@@ -18,6 +22,7 @@ class InvoiceScreen extends StatefulWidget {
   const InvoiceScreen({
     @required this.uid,
     @required this.userUID,
+    @required this.futsalFieldPhone,
     @required this.fieldTypeSelected,
     @required this.timeOrderSelected,
     @required this.dateOrderSelected,
@@ -30,6 +35,7 @@ class InvoiceScreen extends StatefulWidget {
 }
 
 class _InvoiceScreenState extends State<InvoiceScreen> {
+  SmsSender sender = SmsSender();
   String _name = "-";
   String _address = "-";
   String _phone = "-";
@@ -288,7 +294,48 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 color: Colors.greenAccent[400],
-                onPressed: () {},
+                onPressed: (_name == "-")
+                    ? null
+                    : () {
+                        SmsMessage message = SmsMessage(
+                          "085155121640",
+                          "Hai mau pesan lapangan\nNama:$_name\nAlamat:$_address\nTanggal Pesan:${widget.dateOrderSelected}\nJam Pesan:${widget.timeOrderSelected},\nJenis Lapangan:${widget.fieldTypeSelected}\nTerima Kasih",
+                        );
+                        message.onStateChanged.listen((state) {
+                          if (state == SmsMessageState.Sent) {
+                            print("SMS is sent!");
+                            AwesomeDialog(
+                              context: context,
+                              dialogType: DialogType.SUCCES,
+                              animType: AnimType.BOTTOMSLIDE,
+                              title: "Pesanan Terkirim",
+                              desc:
+                                  "Informasi pesanan lapangan futsal anda terkirim ke admin lapangan. Tunggu pemberitahuan selanjutnya dari admin.",
+                              dismissOnTouchOutside: false,
+                              dismissOnBackKeyPress: false,
+                              btnOkOnPress: () {
+                                createUserOrder(
+                                  widget.userUID,
+                                  widget.uid,
+                                  widget.fieldName,
+                                  widget.dateOrderSelected,
+                                  widget.fieldTypeSelected,
+                                  widget.timeOrderSelected,
+                                  widget.fieldPrice,
+                                  0,
+                                );
+
+                                ExtendedNavigator.ofRouter<Router>()
+                                    .pushNamedAndRemoveUntil(Routes.mainScreen,
+                                        (Route<dynamic> route) => false);
+                              },
+                            )..show();
+                          } else if (state == SmsMessageState.Delivered) {
+                            print("SMS is delivered!");
+                          }
+                        });
+                        sender.sendSms(message);
+                      },
               ),
             ),
             Container(
