@@ -52,14 +52,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: StreamBuilder<QuerySnapshot>(
           stream: loadUserById(_userUID),
           builder: (context, snapshot) {
-            if (!snapshot.hasData) {
+            if (!snapshot.hasData)
               return Center(
                 child: Lottie.asset(
                   "assets/error.json",
                   height: MediaQuery.of(context).size.height / 100 * 25,
                 ),
               );
-            }
             return ListView.builder(
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (BuildContext context, int index) {

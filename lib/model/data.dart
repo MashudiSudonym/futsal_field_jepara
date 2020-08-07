@@ -69,3 +69,10 @@ Future<void> createUserOrder(
     'orderStatus': orderStatus,
   });
 }
+
+Stream<QuerySnapshot> loadUserOrderByUserId(String userUID) {
+  return _fireStore
+      .collection('userOrders')
+      .where('userUID', isEqualTo: userUID)
+      .snapshots();
+}

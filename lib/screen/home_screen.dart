@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if (!snapshot.hasData)
             return Center(
               child: Lottie.asset(
-                "assets/loading.json",
+                "assets/nodata.json",
                 height: MediaQuery.of(context).size.height / 100 * 25,
               ),
             );
@@ -126,12 +126,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: Text(
                                       futsalField.name.toUpperCase(),
                                       style: TextStyle(
-                                          color: kTitleTextColor,
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              100 *
-                                              5),
+                                        color: kTitleTextColor,
+                                        fontSize:
+                                            MediaQuery.of(context).size.width /
+                                                100 *
+                                                5,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -152,7 +152,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   },
                   padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height / 100 * 2),
+                    top: MediaQuery.of(context).size.height / 100 * 2,
+                  ),
                 ),
               );
           }
