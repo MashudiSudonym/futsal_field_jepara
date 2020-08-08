@@ -721,6 +721,8 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                                   uid: widget.uid,
                                   name: _name,
                                   phone: _phone,
+                                  numberOfFlooring: _numberOfFlooring,
+                                  numberOfSynthesis: _numberOfSynthesis,
                                   priceDayFlooring: _priceDayFlooring,
                                   priceNightFlooring: _priceNightFlooring,
                                   priceDaySynthesis: _priceDaySynthesis,

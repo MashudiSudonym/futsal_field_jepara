@@ -12,6 +12,8 @@ class CreateSchedule extends StatefulWidget {
   final String uid;
   final String name;
   final String phone;
+  final String numberOfFlooring;
+  final String numberOfSynthesis;
   final int priceDayFlooring;
   final int priceNightFlooring;
   final int priceDaySynthesis;
@@ -21,6 +23,8 @@ class CreateSchedule extends StatefulWidget {
     @required this.uid,
     @required this.name,
     @required this.phone,
+    @required this.numberOfFlooring,
+    @required this.numberOfSynthesis,
     @required this.priceDayFlooring,
     @required this.priceNightFlooring,
     @required this.priceDaySynthesis,
@@ -36,10 +40,6 @@ class _CreateScheduleState extends State<CreateSchedule> {
   TextEditingController _datePickerController = TextEditingController();
   String _dateValue = "";
   DateTime _date = DateTime.now();
-  List<String> _fieldTypeList = [
-    "Lapangan Flooring",
-    "Lapangan Sintetis",
-  ];
   List<String> _timeOrderList = [
     "09.00",
     "10.00",
@@ -56,17 +56,18 @@ class _CreateScheduleState extends State<CreateSchedule> {
     "22.00",
     "23.00",
   ];
-  int _fieldTypeSelectedIndex = 0;
   int _timeOrderSelectedIndex = 0;
   String _fieldTypeSelected = "";
   String _timeOrderSelected = "";
   String _userUID = "";
   int _priceSelected = 0;
+  bool _isButtonFieldFlooringSelected = false;
+  bool _isButtonFieldSynthesisSelected = false;
 
   @override
   void initState() {
     _getUserData();
-    _onFieldTypeSelected(0);
+    _onFieldTypeSelected();
     _onTimeOrderSelected(0);
     super.initState();
   }
@@ -84,10 +85,17 @@ class _CreateScheduleState extends State<CreateSchedule> {
     });
   }
 
-  void _onFieldTypeSelected(int index) {
+  void _onFieldTypeSelected() {
     setState(() {
-      _fieldTypeSelectedIndex = index;
-      _fieldTypeSelected = _fieldTypeList[index];
+      if (widget.numberOfFlooring == "0") {
+        _isButtonFieldFlooringSelected = false;
+        _isButtonFieldSynthesisSelected = true;
+        _fieldTypeSelected = "Lapangan Sintesis";
+      } else if (widget.numberOfSynthesis == "0") {
+        _isButtonFieldFlooringSelected = true;
+        _isButtonFieldSynthesisSelected = false;
+        _fieldTypeSelected = "Lapangan Flooring";
+      }
     });
   }
 
@@ -174,41 +182,84 @@ class _CreateScheduleState extends State<CreateSchedule> {
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height / 100 * 1),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 100 * 8,
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 3,
-                      crossAxisSpacing:
-                          MediaQuery.of(context).size.width / 100 * 2,
-                      mainAxisSpacing: 2,
-                    ),
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: _fieldTypeList.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        color: (_fieldTypeSelectedIndex != null &&
-                                _fieldTypeSelectedIndex == index)
-                            ? Colors.greenAccent[400]
-                            : kPrimaryColor,
-                        child: ListTile(
-                          title: Text(
-                            _fieldTypeList[index],
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(
+                            MediaQuery.of(context).size.width / 100 * 2,
+                          ),
+                          child: Container(
+                            height:
+                                MediaQuery.of(context).size.height / 100 * 6,
+                            child: RaisedButton(
+                              child: Text(
+                                "Lapangan Flooring",
+                                style: TextStyle(
+                                  fontSize: MediaQuery.of(context).size.width /
+                                      100 *
+                                      3.5,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              color: (_isButtonFieldFlooringSelected)
+                                  ? Colors.greenAccent[400]
+                                  : Colors.white,
+                              onPressed: (widget.numberOfFlooring == "0")
+                                  ? null
+                                  : () {
+                                      setState(() {
+                                        _isButtonFieldFlooringSelected = true;
+                                        _isButtonFieldSynthesisSelected = false;
+                                        _fieldTypeSelected =
+                                            "Lapangan Flooring";
+                                      });
+                                    },
                             ),
                           ),
-                          onTap: () {
-                            setState(() {
-                              _onFieldTypeSelected(index);
-                            });
-                          },
                         ),
-                      );
-                    },
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(
+                            MediaQuery.of(context).size.width / 100 * 3,
+                          ),
+                          child: Container(
+                            height:
+                                MediaQuery.of(context).size.height / 100 * 6,
+                            child: RaisedButton(
+                              child: Text(
+                                "Lapangan Sintesis",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: MediaQuery.of(context).size.width /
+                                      100 *
+                                      3.5,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              color: (_isButtonFieldSynthesisSelected)
+                                  ? Colors.greenAccent[400]
+                                  : Colors.white,
+                              onPressed: (widget.numberOfSynthesis == "0")
+                                  ? null
+                                  : () {
+                                      setState(() {
+                                        _isButtonFieldFlooringSelected = false;
+                                        _isButtonFieldSynthesisSelected = true;
+                                        _fieldTypeSelected =
+                                            "Lapangan Sintesis";
+                                      });
+                                    },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height / 100 * 2),
