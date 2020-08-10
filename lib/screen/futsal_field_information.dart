@@ -697,6 +697,696 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                     height: MediaQuery.of(context).size.height / 100 * 2,
                   ),
                   Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal:
+                            MediaQuery.of(context).size.height / 100 * 2),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5),
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 5,
+                          color: Colors.black26,
+                        )
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          title: Text(
+                            "Jadwal Lapangan",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        Divider(),
+                        DataTable(
+                          columnSpacing:
+                              MediaQuery.of(context).size.height / 100 * 5,
+                          columns: <DataColumn>[
+                            DataColumn(
+                              label: Text(
+                                "Jam Sewa",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: MediaQuery.of(context).size.width /
+                                      100 *
+                                      3.5,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                "Flooring",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: MediaQuery.of(context).size.width /
+                                      100 *
+                                      3.5,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                "Synthesis",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: MediaQuery.of(context).size.width /
+                                      100 *
+                                      3.5,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                          rows: <DataRow>[
+                            DataRow(
+                              cells: <DataCell>[
+                                DataCell(
+                                  Text(
+                                    "09:00",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tidak Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            DataRow(
+                              cells: <DataCell>[
+                                DataCell(
+                                  Text(
+                                    "10:00",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tidak Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            DataRow(
+                              cells: <DataCell>[
+                                DataCell(
+                                  Text(
+                                    "11:00",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tidak Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            DataRow(
+                              cells: <DataCell>[
+                                DataCell(
+                                  Text(
+                                    "12:00",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tidak Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            DataRow(
+                              cells: <DataCell>[
+                                DataCell(
+                                  Text(
+                                    "13:00",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tidak Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            DataRow(
+                              cells: <DataCell>[
+                                DataCell(
+                                  Text(
+                                    "14:00",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tidak Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            DataRow(
+                              cells: <DataCell>[
+                                DataCell(
+                                  Text(
+                                    "15:00",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tidak Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            DataRow(
+                              cells: <DataCell>[
+                                DataCell(
+                                  Text(
+                                    "16:00",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tidak Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            DataRow(
+                              cells: <DataCell>[
+                                DataCell(
+                                  Text(
+                                    "17:00",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tidak Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            DataRow(
+                              cells: <DataCell>[
+                                DataCell(
+                                  Text(
+                                    "18:00",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tidak Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            DataRow(
+                              cells: <DataCell>[
+                                DataCell(
+                                  Text(
+                                    "19:00",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tidak Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            DataRow(
+                              cells: <DataCell>[
+                                DataCell(
+                                  Text(
+                                    "20:00",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tidak Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            DataRow(
+                              cells: <DataCell>[
+                                DataCell(
+                                  Text(
+                                    "21:00",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tidak Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            DataRow(
+                              cells: <DataCell>[
+                                DataCell(
+                                  Text(
+                                    "22:00",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tidak Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            DataRow(
+                              cells: <DataCell>[
+                                DataCell(
+                                  Text(
+                                    "23:00",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tidak Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    "Tersedia",
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              100 *
+                                              3,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 100 * 2,
+                  ),
+                  Container(
                     width: double.infinity,
                     height: MediaQuery.of(context).size.height / 100 * 7,
                     padding: EdgeInsets.all(
