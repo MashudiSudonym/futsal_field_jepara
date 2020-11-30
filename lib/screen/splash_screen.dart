@@ -4,7 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:futsal_field_jepara/utils/router.gr.dart';
+import 'package:futsal_field_jepara/utils/router.gr.dart' as router_gr;
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final Firestore _fireStore = Firestore.instance;
@@ -29,11 +29,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
         usersRootSnapshot.listen((data) {
           if (data.documents.isEmpty) {
-            ExtendedNavigator.ofRouter<Router>()
-                .pushReplacementNamed(Routes.createUserScreen);
+            ExtendedNavigator.ofRouter<router_gr.Router>()
+                .pushReplacementNamed(router_gr.Routes.createUserScreen);
           } else {
-            ExtendedNavigator.ofRouter<Router>()
-                .pushReplacementNamed(Routes.mainScreen);
+            ExtendedNavigator.ofRouter<router_gr.Router>()
+                .pushReplacementNamed(router_gr.Routes.mainScreen);
           }
         });
       },

@@ -8,7 +8,7 @@ import 'package:futsal_field_jepara/screen/about_screen.dart';
 import 'package:futsal_field_jepara/screen/booking_screen.dart';
 import 'package:futsal_field_jepara/screen/home_screen.dart';
 import 'package:futsal_field_jepara/screen/location_screen.dart';
-import 'package:futsal_field_jepara/utils/router.gr.dart';
+import 'package:futsal_field_jepara/utils/router.gr.dart' as router_gr;
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final Firestore _fireStore = Firestore.instance;
@@ -51,8 +51,8 @@ class _MainScreenState extends State<MainScreen> {
 
     usersRootSnapshot.listen((data) {
       if (data.documents.isEmpty) {
-        ExtendedNavigator.ofRouter<Router>()
-            .pushReplacementNamed(Routes.createUserScreen);
+        ExtendedNavigator.ofRouter<router_gr.Router>()
+            .pushReplacementNamed(router_gr.Routes.createUserScreen);
       }
     });
   }

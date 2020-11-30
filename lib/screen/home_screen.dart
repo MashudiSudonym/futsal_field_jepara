@@ -7,7 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:futsal_field_jepara/model/data.dart' as data;
 import 'package:futsal_field_jepara/model/futsal_field.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
-import 'package:futsal_field_jepara/utils/router.gr.dart';
+import 'package:futsal_field_jepara/utils/router.gr.dart' as router_gr;
 import 'package:lottie/lottie.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -26,8 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: FaIcon(FontAwesomeIcons.userCircle),
             onPressed: () async {
-              ExtendedNavigator.ofRouter<Router>()
-                  .pushNamed(Routes.profileScreen);
+              ExtendedNavigator.ofRouter<router_gr.Router>()
+                  .pushNamed(router_gr.Routes.profileScreen);
             },
           ), // set app bar icon and added action
         ],
@@ -83,9 +83,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             child: ListTile(
                               onTap: () {
-                                ExtendedNavigator.ofRouter<Router>().pushNamed(
-                                  Routes.futsalFieldInformation,
-                                  arguments: FutsalFieldInformationArguments(
+                                ExtendedNavigator.ofRouter<router_gr.Router>()
+                                    .pushNamed(
+                                  router_gr.Routes.futsalFieldInformation,
+                                  arguments:
+                                      router_gr.FutsalFieldInformationArguments(
                                     uid: futsalField.uid,
                                   ),
                                 );

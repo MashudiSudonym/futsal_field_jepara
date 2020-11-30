@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:futsal_field_jepara/model/data.dart';
 import 'package:futsal_field_jepara/model/futsal_field.dart';
-import 'package:futsal_field_jepara/utils/router.gr.dart';
+import 'package:futsal_field_jepara/utils/router.gr.dart' as router_gr;
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -55,9 +55,10 @@ class _LocationScreenState extends State<LocationScreen> {
             title: "${element.name.toUpperCase()}",
             snippet: "${element.address.toUpperCase()}",
             onTap: () {
-              ExtendedNavigator.ofRouter<Router>().pushNamed(
-                Routes.futsalFieldInformation,
-                arguments: FutsalFieldInformationArguments(uid: element.uid),
+              ExtendedNavigator.ofRouter<router_gr.Router>().pushNamed(
+                router_gr.Routes.futsalFieldInformation,
+                arguments:
+                    router_gr.FutsalFieldInformationArguments(uid: element.uid),
               );
             },
           ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
 import 'package:futsal_field_jepara/utils/route_guards.dart';
-import 'package:futsal_field_jepara/utils/router.gr.dart';
+import 'package:futsal_field_jepara/utils/router.gr.dart' as router_gr;
 
 void main() => runApp(MyApp());
 
@@ -28,8 +28,8 @@ class MyApp extends StatelessWidget {
           bodyText1: TextStyle(color: kBodyTextColor),
         ),
       ),
-      builder: (context, __) => ExtendedNavigator<Router>(
-        router: Router(),
+      builder: (context, __) => ExtendedNavigator<router_gr.Router>(
+        router: router_gr.Router(),
         guards: [AuthGuard()],
       ),
     );

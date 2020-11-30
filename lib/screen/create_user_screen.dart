@@ -7,9 +7,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
-import 'package:futsal_field_jepara/utils/router.gr.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:futsal_field_jepara/utils/router.gr.dart' as router_gr;
 import 'package:futsal_field_jepara/widget/text_field_custom.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:somedialog/somedialog.dart';
 
@@ -432,8 +432,9 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
             'address': _addressInputController.text,
             'imageProfile': downloadUrl.toString(),
           });
-          ExtendedNavigator.ofRouter<Router>().pushNamedAndRemoveUntil(
-              Routes.mainScreen, (Route<dynamic> route) => false);
+          ExtendedNavigator.ofRouter<router_gr.Router>()
+              .pushNamedAndRemoveUntil(
+                  router_gr.Routes.mainScreen, (Route<dynamic> route) => false);
           setState(() {
             _isLoading = false;
             _isSuccess = true;

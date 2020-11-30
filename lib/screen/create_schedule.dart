@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:futsal_field_jepara/model/data.dart';
+import 'package:futsal_field_jepara/model/schedule.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
-import 'package:futsal_field_jepara/utils/router.gr.dart';
+import 'package:futsal_field_jepara/utils/router.gr.dart' as router_gr;
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -37,6 +39,11 @@ class CreateSchedule extends StatefulWidget {
 
 class _CreateScheduleState extends State<CreateSchedule> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _checkFormKey = GlobalKey<FormState>();
+  TextEditingController _startTimePickerController = TextEditingController();
+  String _startTimeValue = '';
+  TimeOfDay _startTime = TimeOfDay.now();
+  bool visible = false;
   TextEditingController _datePickerController = TextEditingController();
   String _dateValue = "";
   DateTime _date = DateTime.now();
@@ -63,6 +70,8 @@ class _CreateScheduleState extends State<CreateSchedule> {
   int _priceSelected = 0;
   bool _isButtonFieldFlooringSelected = false;
   bool _isButtonFieldSynthesisSelected = false;
+  String userOrderFlooring;
+  String userOrderSynthesis;
 
   @override
   void initState() {
@@ -75,7 +84,34 @@ class _CreateScheduleState extends State<CreateSchedule> {
   @override
   void dispose() {
     _datePickerController.dispose();
+
+    _startTimePickerController.dispose();
     super.dispose();
+  }
+
+  Future<void> _selectStartTime(BuildContext context) async {
+    var _timePicker = await showTimePicker(
+      context: context,
+      initialTime: _startTime,
+      helpText: 'Masukkan jam dan menit dahulu, setelah itu tekan ok',
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            alwaysUse24HourFormat: true,
+          ),
+          child: child,
+        );
+      },
+    );
+
+    if (_timePicker != null && _timePicker != _startTime) {
+      setState(() {
+        _startTime = _timePicker;
+        _startTimeValue = _startTime.format(context);
+        _startTimePickerController =
+            TextEditingController(text: _startTimeValue.replaceAll(':', '.'));
+      });
+    }
   }
 
   Future<void> _getUserData() async {
@@ -136,349 +172,632 @@ class _CreateScheduleState extends State<CreateSchedule> {
         ),
         body: SingleChildScrollView(
           padding: EdgeInsets.all(MediaQuery.of(context).size.width / 100 * 4),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                TextFormField(
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return "tentukan tanggal pesan lapangan";
-                    }
-                    return null;
-                  },
-                  onTap: () {
-                    setState(() {
-                      _selectDate(context);
-                    });
-                  },
-                  controller: _datePickerController,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    hintText: "$_dateValue",
-                    labelText: "Pilih Tanggal",
-                    labelStyle: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width / 100 * 4,
-                      color: kTitleTextColor,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.greenAccent[400],
+          child: Column(
+            children: [
+              Text(
+                "Lakukan pengecekkan ketersediaan lapangan sebelum memesan!",
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.red,
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 100 * 2,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.height / 100 * 2),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(5),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 5,
+                      color: Colors.black26,
+                    )
+                  ],
+                ),
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                      title: Text(
+                        "Cek Ketersediaan Lapangan",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.greenAccent[400],
+                    Divider(),
+                    Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal:
+                              MediaQuery.of(context).size.height / 100 * 2),
+                      child: _widgetDateTimeField(context),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / 100 * 2,
+                    ),
+                    Visibility(
+                      maintainAnimation: true,
+                      maintainState: true,
+                      visible: visible,
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).size.height / 100 * 2,
+                          left: MediaQuery.of(context).size.height / 100 * 2,
+                          right: MediaQuery.of(context).size.height / 100 * 2,
+                        ),
+                        child: _widgetFieldScheduleTable(context),
                       ),
                     ),
-                  ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / 100 * 2,
+                    ),
+                  ],
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height / 100 * 2),
-                Text(
-                  "Jenis Lapangan",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height / 100 * 1),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: Row(
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 100 * 2,
+              ),
+              Visibility(
+                maintainAnimation: true,
+                maintainState: true,
+                visible: visible,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.all(
-                            MediaQuery.of(context).size.width / 100 * 2,
+                      Text(
+                        "Tanggal Pesan Lapangan",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 100 * 2,
+                      ),
+                      TextFormField(
+                        validator: (String value) {
+                          if (value.isEmpty) {
+                            return "tentukan tanggal pesan lapangan";
+                          }
+                          return null;
+                        },
+                        onTap: () {
+                          setState(() {
+                            _selectDate(context);
+                          });
+                        },
+                        controller: _datePickerController,
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          hintText: "$_dateValue",
+                          labelText: "Pilih Tanggal",
+                          labelStyle: TextStyle(
+                            fontSize:
+                                MediaQuery.of(context).size.width / 100 * 4,
+                            color: kTitleTextColor,
                           ),
-                          child: Container(
-                            height:
-                                MediaQuery.of(context).size.height / 100 * 6,
-                            child: RaisedButton(
-                              child: Text(
-                                "Lapangan Flooring",
-                                style: TextStyle(
-                                  fontSize: MediaQuery.of(context).size.width /
-                                      100 *
-                                      3.5,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              color: (_isButtonFieldFlooringSelected)
-                                  ? Colors.greenAccent[400]
-                                  : Colors.white,
-                              onPressed: (widget.numberOfFlooring == "0")
-                                  ? null
-                                  : () {
-                                      setState(() {
-                                        _isButtonFieldFlooringSelected = true;
-                                        _isButtonFieldSynthesisSelected = false;
-                                        _fieldTypeSelected =
-                                            "Lapangan Flooring";
-                                      });
-                                    },
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.greenAccent[400],
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.greenAccent[400],
                             ),
                           ),
                         ),
                       ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.all(
-                            MediaQuery.of(context).size.width / 100 * 3,
-                          ),
-                          child: Container(
-                            height:
-                                MediaQuery.of(context).size.height / 100 * 6,
-                            child: RaisedButton(
-                              child: Text(
-                                "Lapangan Sintesis",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: MediaQuery.of(context).size.width /
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height / 100 * 2),
+                      Text(
+                        "Jenis Lapangan",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height / 100 * 1),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.all(
+                                  MediaQuery.of(context).size.width / 100 * 2,
+                                ),
+                                child: Container(
+                                  height: MediaQuery.of(context).size.height /
                                       100 *
-                                      3.5,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
+                                      6,
+                                  child: RaisedButton(
+                                    child: Text(
+                                      "Lapangan Flooring",
+                                      style: TextStyle(
+                                        fontSize:
+                                            MediaQuery.of(context).size.width /
+                                                100 *
+                                                3.5,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    color: (_isButtonFieldFlooringSelected)
+                                        ? Colors.greenAccent[400]
+                                        : Colors.white,
+                                    onPressed: (widget.numberOfFlooring == "0")
+                                        ? null
+                                        : () {
+                                            setState(() {
+                                              _isButtonFieldFlooringSelected =
+                                                  true;
+                                              _isButtonFieldSynthesisSelected =
+                                                  false;
+                                              _fieldTypeSelected =
+                                                  "Lapangan Flooring";
+                                            });
+                                          },
+                                  ),
                                 ),
                               ),
-                              color: (_isButtonFieldSynthesisSelected)
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.all(
+                                  MediaQuery.of(context).size.width / 100 * 3,
+                                ),
+                                child: Container(
+                                  height: MediaQuery.of(context).size.height /
+                                      100 *
+                                      6,
+                                  child: RaisedButton(
+                                    child: Text(
+                                      "Lapangan Sintesis",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize:
+                                            MediaQuery.of(context).size.width /
+                                                100 *
+                                                3.5,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    color: (_isButtonFieldSynthesisSelected)
+                                        ? Colors.greenAccent[400]
+                                        : Colors.white,
+                                    onPressed: (widget.numberOfSynthesis == "0")
+                                        ? null
+                                        : () {
+                                            setState(() {
+                                              _isButtonFieldFlooringSelected =
+                                                  false;
+                                              _isButtonFieldSynthesisSelected =
+                                                  true;
+                                              _fieldTypeSelected =
+                                                  "Lapangan Sintesis";
+                                            });
+                                          },
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height / 100 * 2),
+                      Text(
+                        "Pesan Jam",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height / 100 * 1),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 100 * 28,
+                        child: GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            childAspectRatio: 16 / 9,
+                            mainAxisSpacing: 2,
+                          ),
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: _timeOrderList.length,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              color: (_timeOrderSelectedIndex != null &&
+                                      _timeOrderSelectedIndex == index)
                                   ? Colors.greenAccent[400]
-                                  : Colors.white,
-                              onPressed: (widget.numberOfSynthesis == "0")
-                                  ? null
-                                  : () {
-                                      setState(() {
-                                        _isButtonFieldFlooringSelected = false;
-                                        _isButtonFieldSynthesisSelected = true;
-                                        _fieldTypeSelected =
-                                            "Lapangan Sintesis";
-                                      });
-                                    },
+                                  : kPrimaryColor,
+                              child: Center(
+                                child: ListTile(
+                                  title: Text(
+                                    _timeOrderList[index],
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      _onTimeOrderSelected(index);
+                                    });
+                                  },
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                          height:
+                              MediaQuery.of(context).size.height / 100 * 25),
+                      Container(
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height / 100 * 7,
+                        padding: EdgeInsets.all(
+                            MediaQuery.of(context).size.height / 100 * 1),
+                        child: RaisedButton(
+                          child: Text(
+                            "Selanjutnya",
+                            style: TextStyle(
+                              color: Colors.black,
                             ),
                           ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          color: Colors.greenAccent[400],
+                          onPressed: () {
+                            if (_formKey.currentState.validate()) {
+                              print(_timeOrderSelected);
+                              print(_datePickerController.text);
+                              print(widget.uid);
+                              print(_userUID);
+                              print(widget.name);
+
+                              if (_fieldTypeSelected == "Lapangan Flooring") {
+                                switch (_timeOrderSelectedIndex) {
+                                  case 0:
+                                    _priceSelected = widget.priceDayFlooring;
+                                    print(_priceSelected);
+                                    break;
+                                  case 1:
+                                    _priceSelected = widget.priceDayFlooring;
+                                    print(_priceSelected);
+                                    break;
+                                  case 2:
+                                    _priceSelected = widget.priceDayFlooring;
+                                    print(_priceSelected);
+                                    break;
+                                  case 3:
+                                    _priceSelected = widget.priceDayFlooring;
+                                    print(_priceSelected);
+                                    break;
+                                  case 4:
+                                    _priceSelected = widget.priceDayFlooring;
+                                    print(_priceSelected);
+                                    break;
+                                  case 5:
+                                    _priceSelected = widget.priceDayFlooring;
+                                    print(_priceSelected);
+                                    break;
+                                  case 6:
+                                    _priceSelected = widget.priceDayFlooring;
+                                    print(_priceSelected);
+                                    break;
+                                  case 7:
+                                    _priceSelected = widget.priceDayFlooring;
+                                    print(_priceSelected);
+                                    break;
+                                  case 8:
+                                    _priceSelected = widget.priceNightFlooring;
+                                    print(_priceSelected);
+                                    break;
+                                  case 9:
+                                    _priceSelected = widget.priceNightFlooring;
+                                    print(_priceSelected);
+                                    break;
+                                  case 10:
+                                    _priceSelected = widget.priceNightFlooring;
+                                    print(_priceSelected);
+                                    break;
+                                  case 11:
+                                    _priceSelected = widget.priceNightFlooring;
+                                    print(_priceSelected);
+                                    break;
+                                  case 12:
+                                    _priceSelected = widget.priceNightFlooring;
+                                    print(_priceSelected);
+                                    break;
+                                  case 13:
+                                    _priceSelected = widget.priceNightFlooring;
+                                    print(_priceSelected);
+                                    break;
+                                  default:
+                                    _priceSelected = widget.priceNightFlooring;
+                                    print(_priceSelected);
+                                }
+                              } else {
+                                switch (_timeOrderSelectedIndex) {
+                                  case 0:
+                                    _priceSelected = widget.priceDaySynthesis;
+                                    print(_priceSelected);
+                                    break;
+                                  case 1:
+                                    _priceSelected = widget.priceDaySynthesis;
+                                    print(_priceSelected);
+                                    break;
+                                  case 2:
+                                    _priceSelected = widget.priceDaySynthesis;
+                                    print(_priceSelected);
+                                    break;
+                                  case 3:
+                                    _priceSelected = widget.priceDaySynthesis;
+                                    print(_priceSelected);
+                                    break;
+                                  case 4:
+                                    _priceSelected = widget.priceDaySynthesis;
+                                    print(_priceSelected);
+                                    break;
+                                  case 5:
+                                    _priceSelected = widget.priceDaySynthesis;
+                                    print(_priceSelected);
+                                    break;
+                                  case 6:
+                                    _priceSelected = widget.priceDaySynthesis;
+                                    print(_priceSelected);
+                                    break;
+                                  case 7:
+                                    _priceSelected = widget.priceDaySynthesis;
+                                    print(_priceSelected);
+                                    break;
+                                  case 8:
+                                    _priceSelected = widget.priceNightSynthesis;
+                                    print(_priceSelected);
+                                    break;
+                                  case 9:
+                                    _priceSelected = widget.priceNightSynthesis;
+                                    print(_priceSelected);
+                                    break;
+                                  case 10:
+                                    _priceSelected = widget.priceNightSynthesis;
+                                    print(_priceSelected);
+                                    break;
+                                  case 11:
+                                    _priceSelected = widget.priceNightSynthesis;
+                                    print(_priceSelected);
+                                    break;
+                                  case 12:
+                                    _priceSelected = widget.priceNightSynthesis;
+                                    print(_priceSelected);
+                                    break;
+                                  case 13:
+                                    _priceSelected = widget.priceNightSynthesis;
+                                    print(_priceSelected);
+                                    break;
+                                  default:
+                                    _priceSelected = widget.priceNightSynthesis;
+                                    print(_priceSelected);
+                                }
+                              }
+
+                              ExtendedNavigator.ofRouter<router_gr.Router>()
+                                  .pushNamed(
+                                router_gr.Routes.invoiceScreen,
+                                arguments: router_gr.InvoiceScreenArguments(
+                                  uid: widget.uid,
+                                  userUID: _userUID,
+                                  futsalFieldPhone: widget.phone,
+                                  timeOrderSelected: _timeOrderSelected,
+                                  fieldTypeSelected: _fieldTypeSelected,
+                                  fieldPrice: _priceSelected,
+                                  fieldName: widget.name,
+                                  dateOrderSelected: _datePickerController.text,
+                                ),
+                              );
+                            }
+                          },
                         ),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height / 100 * 2),
-                Text(
-                  "Pesan Jam",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height / 100 * 1),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 100 * 28,
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      childAspectRatio: 16 / 9,
-                      mainAxisSpacing: 2,
-                    ),
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: _timeOrderList.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        color: (_timeOrderSelectedIndex != null &&
-                                _timeOrderSelectedIndex == index)
-                            ? Colors.greenAccent[400]
-                            : kPrimaryColor,
-                        child: Center(
-                          child: ListTile(
-                            title: Text(
-                              _timeOrderList[index],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            onTap: () {
-                              setState(() {
-                                _onTimeOrderSelected(index);
-                              });
-                            },
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height / 100 * 25),
-                Container(
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height / 100 * 7,
-                  padding: EdgeInsets.all(
-                      MediaQuery.of(context).size.height / 100 * 1),
-                  child: RaisedButton(
-                    child: Text(
-                      "Selanjutnya",
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    color: Colors.greenAccent[400],
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        print(_timeOrderSelected);
-                        print(_datePickerController.text);
-                        print(widget.uid);
-                        print(_userUID);
-                        print(widget.name);
-
-                        if (_fieldTypeSelected == "Lapangan Flooring") {
-                          switch (_timeOrderSelectedIndex) {
-                            case 0:
-                              _priceSelected = widget.priceDayFlooring;
-                              print(_priceSelected);
-                              break;
-                            case 1:
-                              _priceSelected = widget.priceDayFlooring;
-                              print(_priceSelected);
-                              break;
-                            case 2:
-                              _priceSelected = widget.priceDayFlooring;
-                              print(_priceSelected);
-                              break;
-                            case 3:
-                              _priceSelected = widget.priceDayFlooring;
-                              print(_priceSelected);
-                              break;
-                            case 4:
-                              _priceSelected = widget.priceDayFlooring;
-                              print(_priceSelected);
-                              break;
-                            case 5:
-                              _priceSelected = widget.priceDayFlooring;
-                              print(_priceSelected);
-                              break;
-                            case 6:
-                              _priceSelected = widget.priceDayFlooring;
-                              print(_priceSelected);
-                              break;
-                            case 7:
-                              _priceSelected = widget.priceDayFlooring;
-                              print(_priceSelected);
-                              break;
-                            case 8:
-                              _priceSelected = widget.priceNightFlooring;
-                              print(_priceSelected);
-                              break;
-                            case 9:
-                              _priceSelected = widget.priceNightFlooring;
-                              print(_priceSelected);
-                              break;
-                            case 10:
-                              _priceSelected = widget.priceNightFlooring;
-                              print(_priceSelected);
-                              break;
-                            case 11:
-                              _priceSelected = widget.priceNightFlooring;
-                              print(_priceSelected);
-                              break;
-                            case 12:
-                              _priceSelected = widget.priceNightFlooring;
-                              print(_priceSelected);
-                              break;
-                            case 13:
-                              _priceSelected = widget.priceNightFlooring;
-                              print(_priceSelected);
-                              break;
-                            default:
-                              _priceSelected = widget.priceNightFlooring;
-                              print(_priceSelected);
-                          }
-                        } else {
-                          switch (_timeOrderSelectedIndex) {
-                            case 0:
-                              _priceSelected = widget.priceDaySynthesis;
-                              print(_priceSelected);
-                              break;
-                            case 1:
-                              _priceSelected = widget.priceDaySynthesis;
-                              print(_priceSelected);
-                              break;
-                            case 2:
-                              _priceSelected = widget.priceDaySynthesis;
-                              print(_priceSelected);
-                              break;
-                            case 3:
-                              _priceSelected = widget.priceDaySynthesis;
-                              print(_priceSelected);
-                              break;
-                            case 4:
-                              _priceSelected = widget.priceDaySynthesis;
-                              print(_priceSelected);
-                              break;
-                            case 5:
-                              _priceSelected = widget.priceDaySynthesis;
-                              print(_priceSelected);
-                              break;
-                            case 6:
-                              _priceSelected = widget.priceDaySynthesis;
-                              print(_priceSelected);
-                              break;
-                            case 7:
-                              _priceSelected = widget.priceDaySynthesis;
-                              print(_priceSelected);
-                              break;
-                            case 8:
-                              _priceSelected = widget.priceNightSynthesis;
-                              print(_priceSelected);
-                              break;
-                            case 9:
-                              _priceSelected = widget.priceNightSynthesis;
-                              print(_priceSelected);
-                              break;
-                            case 10:
-                              _priceSelected = widget.priceNightSynthesis;
-                              print(_priceSelected);
-                              break;
-                            case 11:
-                              _priceSelected = widget.priceNightSynthesis;
-                              print(_priceSelected);
-                              break;
-                            case 12:
-                              _priceSelected = widget.priceNightSynthesis;
-                              print(_priceSelected);
-                              break;
-                            case 13:
-                              _priceSelected = widget.priceNightSynthesis;
-                              print(_priceSelected);
-                              break;
-                            default:
-                              _priceSelected = widget.priceNightSynthesis;
-                              print(_priceSelected);
-                          }
-                        }
-
-                        ExtendedNavigator.ofRouter<Router>().pushNamed(
-                          Routes.invoiceScreen,
-                          arguments: InvoiceScreenArguments(
-                            uid: widget.uid,
-                            userUID: _userUID,
-                            futsalFieldPhone: widget.phone,
-                            timeOrderSelected: _timeOrderSelected,
-                            fieldTypeSelected: _fieldTypeSelected,
-                            fieldPrice: _priceSelected,
-                            fieldName: widget.name,
-                            dateOrderSelected: _datePickerController.text,
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
+      ),
+    );
+  }
+
+  Column _widgetFieldScheduleTable(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Tanggal Pesan ${_datePickerController.text}',
+          style: TextStyle(
+            fontWeight: FontWeight.w300,
+            fontSize: MediaQuery.of(context).size.height / 100 * 1.8,
+          ),
+        ),
+        Text(
+          'Lapangan Dipesan untuk Jam : ${_startTimePickerController.text}',
+          style: TextStyle(
+            fontWeight: FontWeight.w300,
+            fontSize: MediaQuery.of(context).size.height / 100 * 1.8,
+          ),
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: DataTable(
+            dividerThickness: 1.0,
+            headingTextStyle: TextStyle(
+              color: Colors.black,
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.w500,
+              fontSize: MediaQuery.of(context).size.height / 100 * 1.8,
+            ),
+            columns: [
+              DataColumn(
+                label: Text('Lapangan Flooring'),
+              ),
+              DataColumn(
+                label: Text('Lapangan Sintetis'),
+              ),
+            ],
+            rows: [
+              DataRow(cells: [
+                DataCell(
+                  (userOrderFlooring != null)
+                      ? Center(child: Text(userOrderFlooring))
+                      : Center(child: Text('-')),
+                ),
+                DataCell(
+                  (userOrderSynthesis != null)
+                      ? Center(child: Text(userOrderSynthesis))
+                      : Center(child: Text('-')),
+                ),
+              ]),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Form _widgetDateTimeField(BuildContext context) {
+    return Form(
+      key: _checkFormKey,
+      child: Column(
+        children: [
+          // select date schedule
+          TextFormField(
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'tentukan tanggal pesan lapangan';
+              }
+              return null;
+            },
+            onTap: () {
+              setState(() {
+                _selectDate(context);
+              });
+            },
+            controller: _datePickerController,
+            readOnly: true,
+            decoration: InputDecoration(
+              hintText: '$_dateValue',
+              labelText: 'Pilih Tanggal',
+              labelStyle: TextStyle(
+                fontSize: MediaQuery.of(context).size.width / 100 * 4,
+                color: Colors.black54,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.black54,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.black54,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height / 100 * 1.5,
+          ),
+          // select start time schedule
+          TextFormField(
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'tentukan jam mulai pesan lapangan';
+              }
+              return null;
+            },
+            onTap: () {
+              setState(() {
+                _selectStartTime(context);
+              });
+            },
+            controller: _startTimePickerController,
+            readOnly: true,
+            decoration: InputDecoration(
+              hintText: '$_startTimeValue',
+              labelText: 'Pilih Jam Mulai',
+              labelStyle: TextStyle(
+                fontSize: MediaQuery.of(context).size.width / 100 * 4,
+                color: Colors.black54,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.black54,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.black54,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height / 100 * 1.5,
+          ),
+          // select finish time schedule
+
+          // button submit
+          Container(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height / 100 * 5,
+            child: ElevatedButton(
+              onPressed: () {
+                userOrderFlooring = null;
+                userOrderSynthesis = null;
+                if (_formKey.currentState.validate()) {
+                  getScheduleData(widget.uid, _datePickerController.text,
+                          _startTimePickerController.text)
+                      .then((value) {
+                    print('LOG : ${value.documents}');
+
+                    value.documents.forEach((element) {
+                      var schedule = Schedule.fromMap(element.data);
+
+                      switch (schedule.fieldType) {
+                        case 'Lapangan Flooring':
+                          userOrderFlooring = schedule.bookBy;
+                          print(
+                              'LOG:    ${schedule.bookBy} $userOrderFlooring');
+                          break;
+                        case 'Lapangan Synthesis':
+                          userOrderSynthesis = schedule.bookBy;
+                          print(
+                              'LOG:    ${schedule.bookBy} $userOrderSynthesis');
+                          break;
+                        default:
+                          print('nope');
+                      }
+                    });
+                  });
+                  setState(() {
+                    visible = true;
+                  });
+                }
+              },
+              child: Text('Tampil Data'),
+            ),
+          ),
+        ],
       ),
     );
   }

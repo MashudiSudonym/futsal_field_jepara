@@ -3,7 +3,7 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
-import 'package:futsal_field_jepara/utils/router.gr.dart';
+import 'package:futsal_field_jepara/utils/router.gr.dart' as router_gr;
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -191,8 +191,9 @@ class _SignInScreenState extends State<SignInScreen> {
               _auth.signInWithCredential(phoneAuthCredential).then((value) {
                 setState(() {
                   _message = "success";
-                  ExtendedNavigator.ofRouter<Router>().pushNamedAndRemoveUntil(
-                      Routes.mainScreen, (Route<dynamic> route) => false);
+                  ExtendedNavigator.ofRouter<router_gr.Router>()
+                      .pushNamedAndRemoveUntil(router_gr.Routes.mainScreen,
+                          (Route<dynamic> route) => false);
                 });
               }).catchError((e) {
                 print(e);
@@ -310,9 +311,9 @@ class _SignInScreenState extends State<SignInScreen> {
                 setState(() {
                   if (user != null) {
                     _message = "success";
-                    ExtendedNavigator.ofRouter<Router>()
-                        .pushNamedAndRemoveUntil(
-                            Routes.mainScreen, (Route<dynamic> route) => false);
+                    ExtendedNavigator.ofRouter<router_gr.Router>()
+                        .pushNamedAndRemoveUntil(router_gr.Routes.mainScreen,
+                            (Route<dynamic> route) => false);
                   } else {
                     _message = "Sign in failed";
                     Navigator.of(context).pop();

@@ -1,13 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:futsal_field_jepara/model/data.dart';
 import 'package:futsal_field_jepara/model/user.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
 import 'package:futsal_field_jepara/utils/currency_formatter.dart';
-import 'package:futsal_field_jepara/utils/router.gr.dart';
-import 'package:futsal_field_jepara/model/data.dart';
+import 'package:futsal_field_jepara/utils/router.gr.dart' as router_gr;
 import 'package:sms_maintained/sms.dart';
-import 'package:somedialog/somedialog.dart';
 
 class InvoiceScreen extends StatefulWidget {
   final String uid;
@@ -325,8 +324,9 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   0,
                                 );
 
-                                ExtendedNavigator.ofRouter<Router>()
-                                    .pushNamedAndRemoveUntil(Routes.mainScreen,
+                                ExtendedNavigator.ofRouter<router_gr.Router>()
+                                    .pushNamedAndRemoveUntil(
+                                        router_gr.Routes.mainScreen,
                                         (Route<dynamic> route) => false);
                               },
                             )..show();
@@ -354,8 +354,9 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 onPressed: () {
-                  ExtendedNavigator.ofRouter<Router>().pushNamedAndRemoveUntil(
-                      Routes.mainScreen, (Route<dynamic> route) => false);
+                  ExtendedNavigator.ofRouter<router_gr.Router>()
+                      .pushNamedAndRemoveUntil(router_gr.Routes.mainScreen,
+                          (Route<dynamic> route) => false);
                 },
               ),
             ),

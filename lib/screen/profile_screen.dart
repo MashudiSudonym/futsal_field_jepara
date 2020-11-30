@@ -3,13 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:futsal_field_jepara/model/data.dart';
+import 'package:futsal_field_jepara/model/user.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
-import 'package:futsal_field_jepara/utils/router.gr.dart';
+import 'package:futsal_field_jepara/utils/router.gr.dart' as router_gr;
 import 'package:futsal_field_jepara/widget/text_user_data_custom.dart';
 import 'package:lottie/lottie.dart';
 import 'package:somedialog/somedialog.dart';
-import 'package:futsal_field_jepara/model/data.dart';
-import 'package:futsal_field_jepara/model/user.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -140,10 +140,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               color: Colors.redAccent,
                               onPressed: () {
-                                ExtendedNavigator.ofRouter<Router>().pushNamed(
-                                  Routes.editProfile,
-                                  arguments:
-                                      EditProfileArguments(uid: _userUID),
+                                ExtendedNavigator.ofRouter<router_gr.Router>()
+                                    .pushNamed(
+                                  router_gr.Routes.editProfile,
+                                  arguments: router_gr.EditProfileArguments(
+                                      uid: _userUID),
                                 );
                               },
                             ),
@@ -165,8 +166,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       content: "sign out of your account ?",
       submit: () async {
         await _auth.signOut().then((value) {
-          ExtendedNavigator.ofRouter<Router>().pushNamedAndRemoveUntil(
-              Routes.splashScreen, (Route<dynamic> route) => false);
+          ExtendedNavigator.ofRouter<router_gr.Router>()
+              .pushNamedAndRemoveUntil(router_gr.Routes.splashScreen,
+                  (Route<dynamic> route) => false);
         }).catchError((e) {
           print(e);
         });

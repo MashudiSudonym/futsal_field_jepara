@@ -5,6 +5,15 @@ import 'package:futsal_field_jepara/model/user.dart';
 
 final Firestore _fireStore = Firestore.instance;
 
+Future<QuerySnapshot> getScheduleData(
+    String futsalFieldUID, String date, String time) {
+  return _fireStore
+      .collection('futsalFields/$futsalFieldUID/schedule/')
+      .where('date', isEqualTo: date)
+      .where('startTime', isEqualTo: time)
+      .getDocuments();
+}
+
 Stream<QuerySnapshot> loadAllFutsalFields() {
   return _fireStore.collection('futsalFields').snapshots();
 }
