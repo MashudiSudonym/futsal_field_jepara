@@ -428,63 +428,63 @@ class _CreateScheduleState extends State<CreateSchedule> {
                             if (_formKey.currentState.validate()) {
                               if (_fieldTypeSelected == "Lapangan Flooring") {
                                 switch (_startTimePickerController.text) {
-                                  case "09:00":
+                                  case "09.00":
                                     _priceSelected = widget.priceDayFlooring;
                                     print(_priceSelected);
                                     break;
-                                  case "10:00":
+                                  case "10.00":
                                     _priceSelected = widget.priceDayFlooring;
                                     print(_priceSelected);
                                     break;
-                                  case "11:00":
+                                  case "11.00":
                                     _priceSelected = widget.priceDayFlooring;
                                     print(_priceSelected);
                                     break;
-                                  case "12:00":
+                                  case "12.00":
                                     _priceSelected = widget.priceDayFlooring;
                                     print(_priceSelected);
                                     break;
-                                  case "13:00":
+                                  case "13.00":
                                     _priceSelected = widget.priceDayFlooring;
                                     print(_priceSelected);
                                     break;
-                                  case "14:00":
+                                  case "14.00":
                                     _priceSelected = widget.priceDayFlooring;
                                     print(_priceSelected);
                                     break;
-                                  case "15:00":
+                                  case "15.00":
                                     _priceSelected = widget.priceDayFlooring;
                                     print(_priceSelected);
                                     break;
-                                  case "16:00":
+                                  case "16.00":
                                     _priceSelected = widget.priceDayFlooring;
                                     print(_priceSelected);
                                     break;
-                                  case "17:00":
+                                  case "17.00":
                                     _priceSelected = widget.priceDayFlooring;
                                     print(_priceSelected);
                                     break;
-                                  case "18:00":
+                                  case "18.00":
                                     _priceSelected = widget.priceNightFlooring;
                                     print(_priceSelected);
                                     break;
-                                  case "19:00":
+                                  case "19.00":
                                     _priceSelected = widget.priceNightFlooring;
                                     print(_priceSelected);
                                     break;
-                                  case "20:00":
+                                  case "20.00":
                                     _priceSelected = widget.priceNightFlooring;
                                     print(_priceSelected);
                                     break;
-                                  case "21:00":
+                                  case "21.00":
                                     _priceSelected = widget.priceNightFlooring;
                                     print(_priceSelected);
                                     break;
-                                  case "22:00":
+                                  case "22.00":
                                     _priceSelected = widget.priceNightFlooring;
                                     print(_priceSelected);
                                     break;
-                                  case "23:00":
+                                  case "23.00":
                                     _priceSelected = widget.priceNightFlooring;
                                     print(_priceSelected);
                                     break;
@@ -494,63 +494,63 @@ class _CreateScheduleState extends State<CreateSchedule> {
                                 }
                               } else {
                                 switch (_startTimePickerController.text) {
-                                  case "09:00":
+                                  case "09.00":
                                     _priceSelected = widget.priceDaySynthesis;
                                     print(_priceSelected);
                                     break;
-                                  case "10:00":
+                                  case "10.00":
                                     _priceSelected = widget.priceDaySynthesis;
                                     print(_priceSelected);
                                     break;
-                                  case "11:00":
+                                  case "11.00":
                                     _priceSelected = widget.priceDaySynthesis;
                                     print(_priceSelected);
                                     break;
-                                  case "12:00":
+                                  case "12.00":
                                     _priceSelected = widget.priceDaySynthesis;
                                     print(_priceSelected);
                                     break;
-                                  case "13:00":
+                                  case "13.00":
                                     _priceSelected = widget.priceDaySynthesis;
                                     print(_priceSelected);
                                     break;
-                                  case "14:00":
+                                  case "14.00":
                                     _priceSelected = widget.priceDaySynthesis;
                                     print(_priceSelected);
                                     break;
-                                  case "15:00":
+                                  case "15.00":
                                     _priceSelected = widget.priceDaySynthesis;
                                     print(_priceSelected);
                                     break;
-                                  case "16:00":
+                                  case "16.00":
                                     _priceSelected = widget.priceDaySynthesis;
                                     print(_priceSelected);
                                     break;
-                                  case "17:00":
+                                  case "17.00":
                                     _priceSelected = widget.priceDaySynthesis;
                                     print(_priceSelected);
                                     break;
-                                  case "18:00":
+                                  case "18.00":
                                     _priceSelected = widget.priceNightSynthesis;
                                     print(_priceSelected);
                                     break;
-                                  case "19:00":
+                                  case "19.00":
                                     _priceSelected = widget.priceNightSynthesis;
                                     print(_priceSelected);
                                     break;
-                                  case "20:00":
+                                  case "20.00":
                                     _priceSelected = widget.priceNightSynthesis;
                                     print(_priceSelected);
                                     break;
-                                  case "21:00":
+                                  case "21.00":
                                     _priceSelected = widget.priceNightSynthesis;
                                     print(_priceSelected);
                                     break;
-                                  case "22:00":
+                                  case "22.00":
                                     _priceSelected = widget.priceNightSynthesis;
                                     print(_priceSelected);
                                     break;
-                                  case "23:00":
+                                  case "23.00":
                                     _priceSelected = widget.priceNightSynthesis;
                                     print(_priceSelected);
                                     break;
