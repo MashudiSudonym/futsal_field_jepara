@@ -57,6 +57,7 @@ Future<User> getUserById(String uid) {
 
 Future<void> createUserOrder(
   String userUID,
+  String userName,
   String futsalFieldUID,
   String futsalFieldName,
   String orderDate,
@@ -69,6 +70,7 @@ Future<void> createUserOrder(
   return _fireStore.collection("userOrders").document(uid).setData({
     'uid': uid,
     'userUID': userUID,
+    'userName': userName,
     'futsalFieldUID': futsalFieldUID,
     'futsalFieldName': futsalFieldName,
     'orderDate': orderDate,
@@ -83,5 +85,6 @@ Stream<QuerySnapshot> loadUserOrderByUserId(String userUID) {
   return _fireStore
       .collection('userOrders')
       .where('userUID', isEqualTo: userUID)
+      .orderBy('orderDate', descending: true)
       .snapshots();
 }
