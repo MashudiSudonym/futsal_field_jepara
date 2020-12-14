@@ -111,12 +111,12 @@ class _CreateScheduleState extends State<CreateSchedule> {
 
   void _onFieldTypeSelected() {
     setState(() {
-      if (widget.numberOfFlooring == "0" || userOrderFlooring != null) {
+      if (widget.numberOfFlooring == "0") {
         _isButtonFieldFlooringSelected = false;
         _isButtonFieldSynthesisSelected = true;
         _fieldTypeSelected = "Lapangan Sintesis";
       }
-      if (widget.numberOfSynthesis == "0" || userOrderSynthesis != null) {
+      if (widget.numberOfSynthesis == "0") {
         _isButtonFieldFlooringSelected = true;
         _isButtonFieldSynthesisSelected = false;
         _fieldTypeSelected = "Lapangan Flooring";
@@ -751,16 +751,28 @@ class _CreateScheduleState extends State<CreateSchedule> {
                           setState(() {
                             userOrderFlooring = schedule.bookBy;
                           });
-                          print('LOG:     $userOrderFlooring');
+                          print('LOG F:     $userOrderFlooring');
                           break;
                         case 'Lapangan Sintesis':
                           setState(() {
                             userOrderSynthesis = schedule.bookBy;
                           });
-                          print('LOG:     $userOrderSynthesis');
+                          print('LOG S:     $userOrderSynthesis');
                           break;
                         default:
                           print('nope');
+                      }
+
+                      // otomatic select avaliable field
+                      if (userOrderFlooring != null) {
+                        _isButtonFieldFlooringSelected = false;
+                        _isButtonFieldSynthesisSelected = true;
+                        _fieldTypeSelected = "Lapangan Sintesis";
+                      }
+                      if (userOrderSynthesis != null) {
+                        _isButtonFieldFlooringSelected = true;
+                        _isButtonFieldSynthesisSelected = false;
+                        _fieldTypeSelected = "Lapangan Flooring";
                       }
                     });
                   });
