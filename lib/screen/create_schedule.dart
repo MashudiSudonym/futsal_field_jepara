@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:futsal_field_jepara/model/data.dart';
@@ -424,160 +425,212 @@ class _CreateScheduleState extends State<CreateSchedule> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           color: Colors.greenAccent[400],
-                          onPressed: () {
-                            if (_formKey.currentState.validate()) {
-                              if (_fieldTypeSelected == "Lapangan Flooring") {
-                                switch (_startTimePickerController.text) {
-                                  case "09.00":
-                                    _priceSelected = widget.priceDayFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case "10.00":
-                                    _priceSelected = widget.priceDayFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case "11.00":
-                                    _priceSelected = widget.priceDayFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case "12.00":
-                                    _priceSelected = widget.priceDayFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case "13.00":
-                                    _priceSelected = widget.priceDayFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case "14.00":
-                                    _priceSelected = widget.priceDayFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case "15.00":
-                                    _priceSelected = widget.priceDayFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case "16.00":
-                                    _priceSelected = widget.priceDayFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case "17.00":
-                                    _priceSelected = widget.priceDayFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case "18.00":
-                                    _priceSelected = widget.priceNightFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case "19.00":
-                                    _priceSelected = widget.priceNightFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case "20.00":
-                                    _priceSelected = widget.priceNightFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case "21.00":
-                                    _priceSelected = widget.priceNightFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case "22.00":
-                                    _priceSelected = widget.priceNightFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case "23.00":
-                                    _priceSelected = widget.priceNightFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  default:
-                                    _priceSelected = widget.priceNightFlooring;
-                                    print(_priceSelected);
-                                }
-                              } else {
-                                switch (_startTimePickerController.text) {
-                                  case "09.00":
-                                    _priceSelected = widget.priceDaySynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case "10.00":
-                                    _priceSelected = widget.priceDaySynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case "11.00":
-                                    _priceSelected = widget.priceDaySynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case "12.00":
-                                    _priceSelected = widget.priceDaySynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case "13.00":
-                                    _priceSelected = widget.priceDaySynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case "14.00":
-                                    _priceSelected = widget.priceDaySynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case "15.00":
-                                    _priceSelected = widget.priceDaySynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case "16.00":
-                                    _priceSelected = widget.priceDaySynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case "17.00":
-                                    _priceSelected = widget.priceDaySynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case "18.00":
-                                    _priceSelected = widget.priceNightSynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case "19.00":
-                                    _priceSelected = widget.priceNightSynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case "20.00":
-                                    _priceSelected = widget.priceNightSynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case "21.00":
-                                    _priceSelected = widget.priceNightSynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case "22.00":
-                                    _priceSelected = widget.priceNightSynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case "23.00":
-                                    _priceSelected = widget.priceNightSynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  default:
-                                    _priceSelected = widget.priceNightSynthesis;
-                                    print(_priceSelected);
-                                }
-                              }
+                          onPressed: (userOrderFlooring != null &&
+                                  userOrderSynthesis != null)
+                              ? null
+                              : () {
+                                  if (_formKey.currentState.validate()) {
+                                    if (_fieldTypeSelected ==
+                                        "Lapangan Flooring") {
+                                      switch (_startTimePickerController.text) {
+                                        case "09.00":
+                                          _priceSelected =
+                                              widget.priceDayFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "10.00":
+                                          _priceSelected =
+                                              widget.priceDayFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "11.00":
+                                          _priceSelected =
+                                              widget.priceDayFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "12.00":
+                                          _priceSelected =
+                                              widget.priceDayFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "13.00":
+                                          _priceSelected =
+                                              widget.priceDayFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "14.00":
+                                          _priceSelected =
+                                              widget.priceDayFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "15.00":
+                                          _priceSelected =
+                                              widget.priceDayFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "16.00":
+                                          _priceSelected =
+                                              widget.priceDayFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "17.00":
+                                          _priceSelected =
+                                              widget.priceDayFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "18.00":
+                                          _priceSelected =
+                                              widget.priceNightFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "19.00":
+                                          _priceSelected =
+                                              widget.priceNightFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "20.00":
+                                          _priceSelected =
+                                              widget.priceNightFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "21.00":
+                                          _priceSelected =
+                                              widget.priceNightFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "22.00":
+                                          _priceSelected =
+                                              widget.priceNightFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "23.00":
+                                          _priceSelected =
+                                              widget.priceNightFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        default:
+                                          _priceSelected =
+                                              widget.priceNightFlooring;
+                                          print(_priceSelected);
+                                      }
+                                    } else {
+                                      switch (_startTimePickerController.text) {
+                                        case "09.00":
+                                          _priceSelected =
+                                              widget.priceDaySynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "10.00":
+                                          _priceSelected =
+                                              widget.priceDaySynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "11.00":
+                                          _priceSelected =
+                                              widget.priceDaySynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "12.00":
+                                          _priceSelected =
+                                              widget.priceDaySynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "13.00":
+                                          _priceSelected =
+                                              widget.priceDaySynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "14.00":
+                                          _priceSelected =
+                                              widget.priceDaySynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "15.00":
+                                          _priceSelected =
+                                              widget.priceDaySynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "16.00":
+                                          _priceSelected =
+                                              widget.priceDaySynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "17.00":
+                                          _priceSelected =
+                                              widget.priceDaySynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "18.00":
+                                          _priceSelected =
+                                              widget.priceNightSynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "19.00":
+                                          _priceSelected =
+                                              widget.priceNightSynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "20.00":
+                                          _priceSelected =
+                                              widget.priceNightSynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "21.00":
+                                          _priceSelected =
+                                              widget.priceNightSynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "22.00":
+                                          _priceSelected =
+                                              widget.priceNightSynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "23.00":
+                                          _priceSelected =
+                                              widget.priceNightSynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        default:
+                                          _priceSelected =
+                                              widget.priceNightSynthesis;
+                                          print(_priceSelected);
+                                      }
+                                    }
 
-                              ExtendedNavigator.ofRouter<router_gr.Router>()
-                                  .pushNamed(
-                                router_gr.Routes.invoiceScreen,
-                                arguments: router_gr.InvoiceScreenArguments(
-                                  uid: widget.uid,
-                                  userUID: _userUID,
-                                  userName: _userName,
-                                  futsalFieldPhone: widget.phone,
-                                  timeOrderSelected:
-                                      _startTimePickerController.text,
-                                  fieldTypeSelected: _fieldTypeSelected,
-                                  fieldPrice: _priceSelected,
-                                  fieldName: widget.name,
-                                  dateOrderSelected: _datePickerController.text,
-                                ),
-                              );
-                            }
-                          },
+                                    if (_fieldTypeSelected != "") {
+                                      ExtendedNavigator.ofRouter<
+                                              router_gr.Router>()
+                                          .pushNamed(
+                                        router_gr.Routes.invoiceScreen,
+                                        arguments:
+                                            router_gr.InvoiceScreenArguments(
+                                          uid: widget.uid,
+                                          userUID: _userUID,
+                                          userName: _userName,
+                                          futsalFieldPhone: widget.phone,
+                                          timeOrderSelected:
+                                              _startTimePickerController.text,
+                                          fieldTypeSelected: _fieldTypeSelected,
+                                          fieldPrice: _priceSelected,
+                                          fieldName: widget.name,
+                                          dateOrderSelected:
+                                              _datePickerController.text,
+                                        ),
+                                      );
+                                    } else {
+                                      AwesomeDialog(
+                                        context: context,
+                                        dialogType: DialogType.WARNING,
+                                        animType: AnimType.BOTTOMSLIDE,
+                                        title: "Peringatan",
+                                        desc: "Anda belum memilih lapangan",
+                                        dismissOnTouchOutside: false,
+                                        dismissOnBackKeyPress: false,
+                                        btnOkOnPress: () {},
+                                      )..show();
+                                    }
+                                  }
+                                },
                         ),
                       ),
                     ],
