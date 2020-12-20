@@ -335,6 +335,23 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                             )..show();
                           } else if (state == SmsMessageState.Delivered) {
                             print("SMS is delivered!");
+                          } else {
+                            AwesomeDialog(
+                              context: context,
+                              dialogType: DialogType.ERROR,
+                              animType: AnimType.BOTTOMSLIDE,
+                              title: "Pesanan Gagal Dikirim",
+                              desc:
+                              "Periksa Pulsa Anda, atau koneksi Internet Anda",
+                              dismissOnTouchOutside: false,
+                              dismissOnBackKeyPress: false,
+                              btnOkOnPress: () {
+                                ExtendedNavigator.ofRouter<router_gr.Router>()
+                                    .pushNamedAndRemoveUntil(
+                                    router_gr.Routes.mainScreen,
+                                        (Route<dynamic> route) => false);
+                              },
+                            )..show();
                           }
                         });
                         sender.sendSms(message);
