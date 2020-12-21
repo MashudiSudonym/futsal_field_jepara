@@ -7,6 +7,7 @@ import 'package:futsal_field_jepara/model/data.dart';
 import 'package:futsal_field_jepara/model/schedule.dart';
 import 'package:futsal_field_jepara/utils/constants.dart';
 import 'package:futsal_field_jepara/utils/router.gr.dart' as router_gr;
+import 'package:interval_time_picker/interval_time_picker.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -43,30 +44,17 @@ class _CreateScheduleState extends State<CreateSchedule> {
   TextEditingController _startTimePickerController = TextEditingController();
   String _startTimeValue = '';
   TimeOfDay _startTime = TimeOfDay.now();
-  bool visible = false;
+  bool _scheduleVisible = false;
+  bool _formVisible = false;
   TextEditingController _datePickerController = TextEditingController();
   String _dateValue = "";
   DateTime _date = DateTime.now();
-  List<String> _timeOrderList = [
-    "09.00",
-    "10.00",
-    "12.00",
-    "13.00",
-    "14.00",
-    "15.00",
-    "16.00",
-    "17.00",
-    "18.00",
-    "19.00",
-    "20.00",
-    "21.00",
-    "22.00",
-    "23.00",
-  ];
+
   int _timeOrderSelectedIndex = 0;
   String _fieldTypeSelected = "";
-  String _timeOrderSelected = "";
+
   String _userUID = "";
+  String _userName = "";
   int _priceSelected = 0;
   bool _isButtonFieldFlooringSelected = false;
   bool _isButtonFieldSynthesisSelected = false;
@@ -77,23 +65,24 @@ class _CreateScheduleState extends State<CreateSchedule> {
   void initState() {
     _getUserData();
     _onFieldTypeSelected();
-    _onTimeOrderSelected(0);
     super.initState();
   }
 
   @override
   void dispose() {
     _datePickerController.dispose();
-
     _startTimePickerController.dispose();
     super.dispose();
   }
 
   Future<void> _selectStartTime(BuildContext context) async {
-    var _timePicker = await showTimePicker(
+    var _timePicker = await showIntervalTimePicker(
       context: context,
       initialTime: _startTime,
-      helpText: 'Masukkan jam dan menit dahulu, setelah itu tekan ok',
+      interval: 30,
+      visibleStep: VisibleStep.Twentieths,
+      helpText:
+          'Kami buka jam 9 pagi sampai jam 11 malam.\nMasukkan jam dan menit dahulu, setelah itu tekan ok',
       builder: (context, child) {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(
@@ -116,29 +105,25 @@ class _CreateScheduleState extends State<CreateSchedule> {
 
   Future<void> _getUserData() async {
     final _user = await _auth.currentUser();
+    var _getUserName = getUserById(_user.uid).then((value) => value.name);
     setState(() {
       _userUID = _user.uid;
+      _userName = _getUserName.toString();
     });
   }
 
   void _onFieldTypeSelected() {
     setState(() {
-      if (widget.numberOfFlooring == "0") {
+      if (widget.numberOfFlooring == "0" || userOrderFlooring != null) {
         _isButtonFieldFlooringSelected = false;
         _isButtonFieldSynthesisSelected = true;
         _fieldTypeSelected = "Lapangan Sintesis";
-      } else if (widget.numberOfSynthesis == "0") {
+      }
+      if (widget.numberOfSynthesis == "0" || userOrderSynthesis != null) {
         _isButtonFieldFlooringSelected = true;
         _isButtonFieldSynthesisSelected = false;
         _fieldTypeSelected = "Lapangan Flooring";
       }
-    });
-  }
-
-  void _onTimeOrderSelected(int index) {
-    setState(() {
-      _timeOrderSelectedIndex = index;
-      _timeOrderSelected = _timeOrderList[index];
     });
   }
 
@@ -220,7 +205,7 @@ class _CreateScheduleState extends State<CreateSchedule> {
                     Visibility(
                       maintainAnimation: true,
                       maintainState: true,
-                      visible: visible,
+                      visible: _scheduleVisible,
                       child: Container(
                         padding: EdgeInsets.only(
                           bottom: MediaQuery.of(context).size.height / 100 * 2,
@@ -242,7 +227,7 @@ class _CreateScheduleState extends State<CreateSchedule> {
               Visibility(
                 maintainAnimation: true,
                 maintainState: true,
-                visible: visible,
+                visible: _formVisible,
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -329,18 +314,20 @@ class _CreateScheduleState extends State<CreateSchedule> {
                                     color: (_isButtonFieldFlooringSelected)
                                         ? Colors.greenAccent[400]
                                         : Colors.white,
-                                    onPressed: (widget.numberOfFlooring == "0")
-                                        ? null
-                                        : () {
-                                            setState(() {
-                                              _isButtonFieldFlooringSelected =
-                                                  true;
-                                              _isButtonFieldSynthesisSelected =
-                                                  false;
-                                              _fieldTypeSelected =
-                                                  "Lapangan Flooring";
-                                            });
-                                          },
+                                    onPressed:
+                                        (widget.numberOfFlooring == "0" ||
+                                                userOrderFlooring != null)
+                                            ? null
+                                            : () {
+                                                setState(() {
+                                                  _isButtonFieldFlooringSelected =
+                                                      true;
+                                                  _isButtonFieldSynthesisSelected =
+                                                      false;
+                                                  _fieldTypeSelected =
+                                                      "Lapangan Flooring";
+                                                });
+                                              },
                                   ),
                                 ),
                               ),
@@ -370,18 +357,20 @@ class _CreateScheduleState extends State<CreateSchedule> {
                                     color: (_isButtonFieldSynthesisSelected)
                                         ? Colors.greenAccent[400]
                                         : Colors.white,
-                                    onPressed: (widget.numberOfSynthesis == "0")
-                                        ? null
-                                        : () {
-                                            setState(() {
-                                              _isButtonFieldFlooringSelected =
-                                                  false;
-                                              _isButtonFieldSynthesisSelected =
-                                                  true;
-                                              _fieldTypeSelected =
-                                                  "Lapangan Sintesis";
-                                            });
-                                          },
+                                    onPressed:
+                                        (widget.numberOfSynthesis == "0" ||
+                                                userOrderSynthesis != null)
+                                            ? null
+                                            : () {
+                                                setState(() {
+                                                  _isButtonFieldFlooringSelected =
+                                                      false;
+                                                  _isButtonFieldSynthesisSelected =
+                                                      true;
+                                                  _fieldTypeSelected =
+                                                      "Lapangan Sintesis";
+                                                });
+                                              },
                                   ),
                                 ),
                               ),
@@ -400,41 +389,23 @@ class _CreateScheduleState extends State<CreateSchedule> {
                       SizedBox(
                           height: MediaQuery.of(context).size.height / 100 * 1),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height / 100 * 28,
-                        child: GridView.builder(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
-                            childAspectRatio: 16 / 9,
-                            mainAxisSpacing: 2,
-                          ),
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: _timeOrderList.length,
-                          itemBuilder: (context, index) {
-                            return Card(
-                              color: (_timeOrderSelectedIndex != null &&
-                                      _timeOrderSelectedIndex == index)
-                                  ? Colors.greenAccent[400]
-                                  : kPrimaryColor,
-                              child: Center(
-                                child: ListTile(
-                                  title: Text(
-                                    _timeOrderList[index],
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    setState(() {
-                                      _onTimeOrderSelected(index);
-                                    });
-                                  },
-                                ),
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height / 100 * 7,
+                        child: Container(
+                          color: Colors.greenAccent[400],
+                          child: Center(
+                            child: Text(
+                              _startTimePickerController.text,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: MediaQuery.of(context).size.width /
+                                    100 *
+                                    5.5,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
                               ),
-                            );
-                          },
+                            ),
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -458,12 +429,6 @@ class _CreateScheduleState extends State<CreateSchedule> {
                           color: Colors.greenAccent[400],
                           onPressed: () {
                             if (_formKey.currentState.validate()) {
-                              print(_timeOrderSelected);
-                              print(_datePickerController.text);
-                              print(widget.uid);
-                              print(_userUID);
-                              print(widget.name);
-
                               if (_fieldTypeSelected == "Lapangan Flooring") {
                                 switch (_timeOrderSelectedIndex) {
                                   case 0:
@@ -499,7 +464,7 @@ class _CreateScheduleState extends State<CreateSchedule> {
                                     print(_priceSelected);
                                     break;
                                   case 8:
-                                    _priceSelected = widget.priceNightFlooring;
+                                    _priceSelected = widget.priceDayFlooring;
                                     print(_priceSelected);
                                     break;
                                   case 9:
@@ -519,6 +484,10 @@ class _CreateScheduleState extends State<CreateSchedule> {
                                     print(_priceSelected);
                                     break;
                                   case 13:
+                                    _priceSelected = widget.priceNightFlooring;
+                                    print(_priceSelected);
+                                    break;
+                                  case 14:
                                     _priceSelected = widget.priceNightFlooring;
                                     print(_priceSelected);
                                     break;
@@ -561,7 +530,7 @@ class _CreateScheduleState extends State<CreateSchedule> {
                                     print(_priceSelected);
                                     break;
                                   case 8:
-                                    _priceSelected = widget.priceNightSynthesis;
+                                    _priceSelected = widget.priceDaySynthesis;
                                     print(_priceSelected);
                                     break;
                                   case 9:
@@ -584,6 +553,10 @@ class _CreateScheduleState extends State<CreateSchedule> {
                                     _priceSelected = widget.priceNightSynthesis;
                                     print(_priceSelected);
                                     break;
+                                  case 14:
+                                    _priceSelected = widget.priceNightSynthesis;
+                                    print(_priceSelected);
+                                    break;
                                   default:
                                     _priceSelected = widget.priceNightSynthesis;
                                     print(_priceSelected);
@@ -596,8 +569,10 @@ class _CreateScheduleState extends State<CreateSchedule> {
                                 arguments: router_gr.InvoiceScreenArguments(
                                   uid: widget.uid,
                                   userUID: _userUID,
+                                  userName: _userName,
                                   futsalFieldPhone: widget.phone,
-                                  timeOrderSelected: _timeOrderSelected,
+                                  timeOrderSelected:
+                                      _startTimePickerController.text,
                                   fieldTypeSelected: _fieldTypeSelected,
                                   fieldPrice: _priceSelected,
                                   fieldName: widget.name,
@@ -660,12 +635,12 @@ class _CreateScheduleState extends State<CreateSchedule> {
                 DataCell(
                   (userOrderFlooring != null)
                       ? Center(child: Text(userOrderFlooring))
-                      : Center(child: Text('-')),
+                      : Center(child: Text('Tersedia')),
                 ),
                 DataCell(
                   (userOrderSynthesis != null)
                       ? Center(child: Text(userOrderSynthesis))
-                      : Center(child: Text('-')),
+                      : Center(child: Text('Tersedia')),
                 ),
               ]),
             ],
@@ -762,35 +737,40 @@ class _CreateScheduleState extends State<CreateSchedule> {
             height: MediaQuery.of(context).size.height / 100 * 5,
             child: ElevatedButton(
               onPressed: () {
-                userOrderFlooring = null;
-                userOrderSynthesis = null;
+                setState(() {
+                  userOrderFlooring = null;
+                  userOrderSynthesis = null;
+                });
+
                 if (_formKey.currentState.validate()) {
                   getScheduleData(widget.uid, _datePickerController.text,
                           _startTimePickerController.text)
                       .then((value) {
-                    print('LOG : ${value.documents}');
-
                     value.documents.forEach((element) {
                       var schedule = Schedule.fromMap(element.data);
 
                       switch (schedule.fieldType) {
                         case 'Lapangan Flooring':
-                          userOrderFlooring = schedule.bookBy;
-                          print(
-                              'LOG:    ${schedule.bookBy} $userOrderFlooring');
+                          setState(() {
+                            userOrderFlooring = schedule.bookBy;
+                          });
+                          print('LOG:     $userOrderFlooring');
                           break;
-                        case 'Lapangan Synthesis':
-                          userOrderSynthesis = schedule.bookBy;
-                          print(
-                              'LOG:    ${schedule.bookBy} $userOrderSynthesis');
+                        case 'Lapangan Sintesis':
+                          setState(() {
+                            userOrderSynthesis = schedule.bookBy;
+                          });
+                          print('LOG:     $userOrderSynthesis');
                           break;
                         default:
                           print('nope');
                       }
                     });
                   });
+
                   setState(() {
-                    visible = true;
+                    _scheduleVisible = true;
+                    _formVisible = true;
                   });
                 }
               },

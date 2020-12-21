@@ -13,6 +13,7 @@ import 'package:futsal_field_jepara/model/schedule.dart';
 import 'package:futsal_field_jepara/utils/currency_formatter.dart';
 import 'package:futsal_field_jepara/utils/router.gr.dart' as router_gr;
 import 'package:geolocator/geolocator.dart';
+import 'package:interval_time_picker/interval_time_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:map_launcher/map_launcher.dart';
 
@@ -89,9 +90,11 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
   }
 
   Future<void> _selectStartTime(BuildContext context) async {
-    var _timePicker = await showTimePicker(
+    var _timePicker = await showIntervalTimePicker(
       context: context,
       initialTime: _startTime,
+      interval: 30,
+      visibleStep: VisibleStep.Twentieths,
       helpText: 'Masukkan jam dan menit dahulu, setelah itu tekan ok',
       builder: (context, child) {
         return MediaQuery(
@@ -945,12 +948,12 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
                 DataCell(
                   (userOrderFlooring != null)
                       ? Center(child: Text(userOrderFlooring))
-                      : Center(child: Text('-')),
+                      : Center(child: Text('Tersedia')),
                 ),
                 DataCell(
                   (userOrderSynthesis != null)
                       ? Center(child: Text(userOrderSynthesis))
-                      : Center(child: Text('-')),
+                      : Center(child: Text('Tersedia')),
                 ),
               ]),
             ],
@@ -1047,27 +1050,30 @@ class _FutsalFieldInformationState extends State<FutsalFieldInformation> {
             height: MediaQuery.of(context).size.height / 100 * 5,
             child: ElevatedButton(
               onPressed: () {
-                userOrderFlooring = null;
-                userOrderSynthesis = null;
+                setState(() {
+                  userOrderFlooring = null;
+                  userOrderSynthesis = null;
+                });
+
                 if (_formKey.currentState.validate()) {
                   getScheduleData(widget.uid, _datePickerController.text,
                           _startTimePickerController.text)
                       .then((value) {
-                    print('LOG : ${value.documents}');
-
                     value.documents.forEach((element) {
                       var schedule = Schedule.fromMap(element.data);
 
                       switch (schedule.fieldType) {
                         case 'Lapangan Flooring':
-                          userOrderFlooring = schedule.bookBy;
-                          print(
-                              'LOG:    ${schedule.bookBy} $userOrderFlooring');
+                          setState(() {
+                            userOrderFlooring = schedule.bookBy;
+                          });
+                          print('LOG:     $userOrderFlooring');
                           break;
-                        case 'Lapangan Synthesis':
-                          userOrderSynthesis = schedule.bookBy;
-                          print(
-                              'LOG:    ${schedule.bookBy} $userOrderSynthesis');
+                        case 'Lapangan Sintesis':
+                          setState(() {
+                            userOrderSynthesis = schedule.bookBy;
+                          });
+                          print('LOG:     $userOrderSynthesis');
                           break;
                         default:
                           print('nope');

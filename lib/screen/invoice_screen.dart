@@ -12,6 +12,7 @@ class InvoiceScreen extends StatefulWidget {
   final String uid;
   final String futsalFieldPhone;
   final String userUID;
+  final String userName;
   final String fieldTypeSelected;
   final String timeOrderSelected;
   final String dateOrderSelected;
@@ -21,6 +22,7 @@ class InvoiceScreen extends StatefulWidget {
   const InvoiceScreen({
     @required this.uid,
     @required this.userUID,
+    @required this.userName,
     @required this.futsalFieldPhone,
     @required this.fieldTypeSelected,
     @required this.timeOrderSelected,
@@ -315,6 +317,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               btnOkOnPress: () {
                                 createUserOrder(
                                   widget.userUID,
+                                  _name,
                                   widget.uid,
                                   widget.fieldName,
                                   widget.dateOrderSelected,
