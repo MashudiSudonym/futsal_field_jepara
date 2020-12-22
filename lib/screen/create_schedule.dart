@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:futsal_field_jepara/model/data.dart';
@@ -49,10 +50,7 @@ class _CreateScheduleState extends State<CreateSchedule> {
   TextEditingController _datePickerController = TextEditingController();
   String _dateValue = "";
   DateTime _date = DateTime.now();
-
-  int _timeOrderSelectedIndex = 0;
   String _fieldTypeSelected = "";
-
   String _userUID = "";
   String _userName = "";
   int _priceSelected = 0;
@@ -119,7 +117,7 @@ class _CreateScheduleState extends State<CreateSchedule> {
         _isButtonFieldSynthesisSelected = true;
         _fieldTypeSelected = "Lapangan Sintesis";
       }
-      if (widget.numberOfSynthesis == "0" || userOrderSynthesis != null) {
+      if (widget.numberOfSynthesis == "0") {
         _isButtonFieldFlooringSelected = true;
         _isButtonFieldSynthesisSelected = false;
         _fieldTypeSelected = "Lapangan Flooring";
@@ -170,8 +168,8 @@ class _CreateScheduleState extends State<CreateSchedule> {
                 height: MediaQuery.of(context).size.height / 100 * 2,
               ),
               Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.height / 100 * 2),
+                margin:
+                    EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.height / 100 * 2),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(5),
@@ -195,8 +193,7 @@ class _CreateScheduleState extends State<CreateSchedule> {
                     Divider(),
                     Container(
                       margin: EdgeInsets.symmetric(
-                          horizontal:
-                              MediaQuery.of(context).size.height / 100 * 2),
+                          horizontal: MediaQuery.of(context).size.height / 100 * 2),
                       child: _widgetDateTimeField(context),
                     ),
                     SizedBox(
@@ -260,8 +257,7 @@ class _CreateScheduleState extends State<CreateSchedule> {
                           hintText: "$_dateValue",
                           labelText: "Pilih Tanggal",
                           labelStyle: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width / 100 * 4,
+                            fontSize: MediaQuery.of(context).size.width / 100 * 4,
                             color: kTitleTextColor,
                           ),
                           enabledBorder: OutlineInputBorder(
@@ -276,16 +272,14 @@ class _CreateScheduleState extends State<CreateSchedule> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height / 100 * 2),
+                      SizedBox(height: MediaQuery.of(context).size.height / 100 * 2),
                       Text(
                         "Jenis Lapangan",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height / 100 * 1),
+                      SizedBox(height: MediaQuery.of(context).size.height / 100 * 1),
                       Container(
                         width: MediaQuery.of(context).size.width,
                         child: Row(
@@ -296,17 +290,12 @@ class _CreateScheduleState extends State<CreateSchedule> {
                                   MediaQuery.of(context).size.width / 100 * 2,
                                 ),
                                 child: Container(
-                                  height: MediaQuery.of(context).size.height /
-                                      100 *
-                                      6,
+                                  height: MediaQuery.of(context).size.height / 100 * 6,
                                   child: RaisedButton(
                                     child: Text(
                                       "Lapangan Flooring",
                                       style: TextStyle(
-                                        fontSize:
-                                            MediaQuery.of(context).size.width /
-                                                100 *
-                                                3.5,
+                                        fontSize: MediaQuery.of(context).size.width / 100 * 3.5,
                                         color: Colors.black,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -314,20 +303,16 @@ class _CreateScheduleState extends State<CreateSchedule> {
                                     color: (_isButtonFieldFlooringSelected)
                                         ? Colors.greenAccent[400]
                                         : Colors.white,
-                                    onPressed:
-                                        (widget.numberOfFlooring == "0" ||
-                                                userOrderFlooring != null)
-                                            ? null
-                                            : () {
-                                                setState(() {
-                                                  _isButtonFieldFlooringSelected =
-                                                      true;
-                                                  _isButtonFieldSynthesisSelected =
-                                                      false;
-                                                  _fieldTypeSelected =
-                                                      "Lapangan Flooring";
-                                                });
-                                              },
+                                    onPressed: (widget.numberOfFlooring == "0" ||
+                                            userOrderFlooring != null)
+                                        ? null
+                                        : () {
+                                            setState(() {
+                                              _isButtonFieldFlooringSelected = true;
+                                              _isButtonFieldSynthesisSelected = false;
+                                              _fieldTypeSelected = "Lapangan Flooring";
+                                            });
+                                          },
                                   ),
                                 ),
                               ),
@@ -338,18 +323,13 @@ class _CreateScheduleState extends State<CreateSchedule> {
                                   MediaQuery.of(context).size.width / 100 * 3,
                                 ),
                                 child: Container(
-                                  height: MediaQuery.of(context).size.height /
-                                      100 *
-                                      6,
+                                  height: MediaQuery.of(context).size.height / 100 * 6,
                                   child: RaisedButton(
                                     child: Text(
                                       "Lapangan Sintesis",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontSize:
-                                            MediaQuery.of(context).size.width /
-                                                100 *
-                                                3.5,
+                                        fontSize: MediaQuery.of(context).size.width / 100 * 3.5,
                                         color: Colors.black,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -357,20 +337,16 @@ class _CreateScheduleState extends State<CreateSchedule> {
                                     color: (_isButtonFieldSynthesisSelected)
                                         ? Colors.greenAccent[400]
                                         : Colors.white,
-                                    onPressed:
-                                        (widget.numberOfSynthesis == "0" ||
-                                                userOrderSynthesis != null)
-                                            ? null
-                                            : () {
-                                                setState(() {
-                                                  _isButtonFieldFlooringSelected =
-                                                      false;
-                                                  _isButtonFieldSynthesisSelected =
-                                                      true;
-                                                  _fieldTypeSelected =
-                                                      "Lapangan Sintesis";
-                                                });
-                                              },
+                                    onPressed: (widget.numberOfSynthesis == "0" ||
+                                            userOrderSynthesis != null)
+                                        ? null
+                                        : () {
+                                            setState(() {
+                                              _isButtonFieldFlooringSelected = false;
+                                              _isButtonFieldSynthesisSelected = true;
+                                              _fieldTypeSelected = "Lapangan Sintesis";
+                                            });
+                                          },
                                   ),
                                 ),
                               ),
@@ -378,16 +354,14 @@ class _CreateScheduleState extends State<CreateSchedule> {
                           ],
                         ),
                       ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height / 100 * 2),
+                      SizedBox(height: MediaQuery.of(context).size.height / 100 * 2),
                       Text(
                         "Pesan Jam",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height / 100 * 1),
+                      SizedBox(height: MediaQuery.of(context).size.height / 100 * 1),
                       SizedBox(
                         width: double.infinity,
                         height: MediaQuery.of(context).size.height / 100 * 7,
@@ -398,9 +372,7 @@ class _CreateScheduleState extends State<CreateSchedule> {
                               _startTimePickerController.text,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: MediaQuery.of(context).size.width /
-                                    100 *
-                                    5.5,
+                                fontSize: MediaQuery.of(context).size.width / 100 * 5.5,
                                 color: Colors.black,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -408,14 +380,11 @@ class _CreateScheduleState extends State<CreateSchedule> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                          height:
-                              MediaQuery.of(context).size.height / 100 * 25),
+                      SizedBox(height: MediaQuery.of(context).size.height / 100 * 25),
                       Container(
                         width: double.infinity,
                         height: MediaQuery.of(context).size.height / 100 * 7,
-                        padding: EdgeInsets.all(
-                            MediaQuery.of(context).size.height / 100 * 1),
+                        padding: EdgeInsets.all(MediaQuery.of(context).size.height / 100 * 1),
                         child: RaisedButton(
                           child: Text(
                             "Selanjutnya",
@@ -427,160 +396,173 @@ class _CreateScheduleState extends State<CreateSchedule> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           color: Colors.greenAccent[400],
-                          onPressed: () {
-                            if (_formKey.currentState.validate()) {
-                              if (_fieldTypeSelected == "Lapangan Flooring") {
-                                switch (_timeOrderSelectedIndex) {
-                                  case 0:
-                                    _priceSelected = widget.priceDayFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case 1:
-                                    _priceSelected = widget.priceDayFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case 2:
-                                    _priceSelected = widget.priceDayFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case 3:
-                                    _priceSelected = widget.priceDayFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case 4:
-                                    _priceSelected = widget.priceDayFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case 5:
-                                    _priceSelected = widget.priceDayFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case 6:
-                                    _priceSelected = widget.priceDayFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case 7:
-                                    _priceSelected = widget.priceDayFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case 8:
-                                    _priceSelected = widget.priceDayFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case 9:
-                                    _priceSelected = widget.priceNightFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case 10:
-                                    _priceSelected = widget.priceNightFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case 11:
-                                    _priceSelected = widget.priceNightFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case 12:
-                                    _priceSelected = widget.priceNightFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case 13:
-                                    _priceSelected = widget.priceNightFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  case 14:
-                                    _priceSelected = widget.priceNightFlooring;
-                                    print(_priceSelected);
-                                    break;
-                                  default:
-                                    _priceSelected = widget.priceNightFlooring;
-                                    print(_priceSelected);
-                                }
-                              } else {
-                                switch (_timeOrderSelectedIndex) {
-                                  case 0:
-                                    _priceSelected = widget.priceDaySynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case 1:
-                                    _priceSelected = widget.priceDaySynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case 2:
-                                    _priceSelected = widget.priceDaySynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case 3:
-                                    _priceSelected = widget.priceDaySynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case 4:
-                                    _priceSelected = widget.priceDaySynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case 5:
-                                    _priceSelected = widget.priceDaySynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case 6:
-                                    _priceSelected = widget.priceDaySynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case 7:
-                                    _priceSelected = widget.priceDaySynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case 8:
-                                    _priceSelected = widget.priceDaySynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case 9:
-                                    _priceSelected = widget.priceNightSynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case 10:
-                                    _priceSelected = widget.priceNightSynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case 11:
-                                    _priceSelected = widget.priceNightSynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case 12:
-                                    _priceSelected = widget.priceNightSynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case 13:
-                                    _priceSelected = widget.priceNightSynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  case 14:
-                                    _priceSelected = widget.priceNightSynthesis;
-                                    print(_priceSelected);
-                                    break;
-                                  default:
-                                    _priceSelected = widget.priceNightSynthesis;
-                                    print(_priceSelected);
-                                }
-                              }
+                          onPressed: (userOrderFlooring != null && userOrderSynthesis != null)
+                              ? null
+                              : () {
+                                  if (_formKey.currentState.validate()) {
+                                    if (_fieldTypeSelected == "Lapangan Flooring") {
+                                      switch (_startTimePickerController.text) {
+                                        case "09.00":
+                                          _priceSelected = widget.priceDayFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "10.00":
+                                          _priceSelected = widget.priceDayFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "11.00":
+                                          _priceSelected = widget.priceDayFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "12.00":
+                                          _priceSelected = widget.priceDayFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "13.00":
+                                          _priceSelected = widget.priceDayFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "14.00":
+                                          _priceSelected = widget.priceDayFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "15.00":
+                                          _priceSelected = widget.priceDayFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "16.00":
+                                          _priceSelected = widget.priceDayFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "17.00":
+                                          _priceSelected = widget.priceDayFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "18.00":
+                                          _priceSelected = widget.priceNightFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "19.00":
+                                          _priceSelected = widget.priceNightFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "20.00":
+                                          _priceSelected = widget.priceNightFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "21.00":
+                                          _priceSelected = widget.priceNightFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "22.00":
+                                          _priceSelected = widget.priceNightFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        case "23.00":
+                                          _priceSelected = widget.priceNightFlooring;
+                                          print(_priceSelected);
+                                          break;
+                                        default:
+                                          _priceSelected = widget.priceNightFlooring;
+                                          print(_priceSelected);
+                                      }
+                                    } else {
+                                      switch (_startTimePickerController.text) {
+                                        case "09.00":
+                                          _priceSelected = widget.priceDaySynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "10.00":
+                                          _priceSelected = widget.priceDaySynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "11.00":
+                                          _priceSelected = widget.priceDaySynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "12.00":
+                                          _priceSelected = widget.priceDaySynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "13.00":
+                                          _priceSelected = widget.priceDaySynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "14.00":
+                                          _priceSelected = widget.priceDaySynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "15.00":
+                                          _priceSelected = widget.priceDaySynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "16.00":
+                                          _priceSelected = widget.priceDaySynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "17.00":
+                                          _priceSelected = widget.priceDaySynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "18.00":
+                                          _priceSelected = widget.priceNightSynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "19.00":
+                                          _priceSelected = widget.priceNightSynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "20.00":
+                                          _priceSelected = widget.priceNightSynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "21.00":
+                                          _priceSelected = widget.priceNightSynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "22.00":
+                                          _priceSelected = widget.priceNightSynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        case "23.00":
+                                          _priceSelected = widget.priceNightSynthesis;
+                                          print(_priceSelected);
+                                          break;
+                                        default:
+                                          _priceSelected = widget.priceNightSynthesis;
+                                          print(_priceSelected);
+                                      }
+                                    }
 
-                              ExtendedNavigator.ofRouter<router_gr.Router>()
-                                  .pushNamed(
-                                router_gr.Routes.invoiceScreen,
-                                arguments: router_gr.InvoiceScreenArguments(
-                                  uid: widget.uid,
-                                  userUID: _userUID,
-                                  userName: _userName,
-                                  futsalFieldPhone: widget.phone,
-                                  timeOrderSelected:
-                                      _startTimePickerController.text,
-                                  fieldTypeSelected: _fieldTypeSelected,
-                                  fieldPrice: _priceSelected,
-                                  fieldName: widget.name,
-                                  dateOrderSelected: _datePickerController.text,
-                                ),
-                              );
-                            }
-                          },
+                                    if (_fieldTypeSelected != "") {
+                                      ExtendedNavigator.ofRouter<router_gr.Router>().pushNamed(
+                                        router_gr.Routes.invoiceScreen,
+                                        arguments: router_gr.InvoiceScreenArguments(
+                                          uid: widget.uid,
+                                          userUID: _userUID,
+                                          userName: _userName,
+                                          futsalFieldPhone: widget.phone,
+                                          timeOrderSelected: _startTimePickerController.text,
+                                          fieldTypeSelected: _fieldTypeSelected,
+                                          fieldPrice: _priceSelected,
+                                          fieldName: widget.name,
+                                          dateOrderSelected: _datePickerController.text,
+                                        ),
+                                      );
+                                    } else {
+                                      AwesomeDialog(
+                                        context: context,
+                                        dialogType: DialogType.WARNING,
+                                        animType: AnimType.BOTTOMSLIDE,
+                                        title: "Peringatan",
+                                        desc: "Anda belum memilih lapangan",
+                                        dismissOnTouchOutside: false,
+                                        dismissOnBackKeyPress: false,
+                                        btnOkOnPress: () {},
+                                      )..show();
+                                    }
+                                  }
+                                },
                         ),
                       ),
                     ],
@@ -743,8 +725,8 @@ class _CreateScheduleState extends State<CreateSchedule> {
                 });
 
                 if (_formKey.currentState.validate()) {
-                  getScheduleData(widget.uid, _datePickerController.text,
-                          _startTimePickerController.text)
+                  getScheduleData(
+                          widget.uid, _datePickerController.text, _startTimePickerController.text)
                       .then((value) {
                     value.documents.forEach((element) {
                       var schedule = Schedule.fromMap(element.data);
@@ -754,16 +736,28 @@ class _CreateScheduleState extends State<CreateSchedule> {
                           setState(() {
                             userOrderFlooring = schedule.bookBy;
                           });
-                          print('LOG:     $userOrderFlooring');
+                          print('LOG F:     $userOrderFlooring');
                           break;
                         case 'Lapangan Sintesis':
                           setState(() {
                             userOrderSynthesis = schedule.bookBy;
                           });
-                          print('LOG:     $userOrderSynthesis');
+                          print('LOG S:     $userOrderSynthesis');
                           break;
                         default:
                           print('nope');
+                      }
+
+                      // otomatic select avaliable field
+                      if (userOrderFlooring != null) {
+                        _isButtonFieldFlooringSelected = false;
+                        _isButtonFieldSynthesisSelected = true;
+                        _fieldTypeSelected = "Lapangan Sintesis";
+                      }
+                      if (userOrderSynthesis != null) {
+                        _isButtonFieldFlooringSelected = true;
+                        _isButtonFieldSynthesisSelected = false;
+                        _fieldTypeSelected = "Lapangan Flooring";
                       }
                     });
                   });
